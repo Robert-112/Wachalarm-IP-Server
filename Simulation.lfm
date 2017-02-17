@@ -1,0 +1,235 @@
+object SimulationForm: TSimulationForm
+  Left = 696
+  Height = 600
+  Top = 134
+  Width = 800
+  ActiveControl = B_Einlesen
+  Caption = 'Alarm-Simulation'
+  ClientHeight = 600
+  ClientWidth = 800
+  OnCreate = FormCreate
+  Position = poScreenCenter
+  ShowInTaskBar = stAlways
+  LCLVersion = '1.6.2.0'
+  object P_Button: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 0
+    Height = 50
+    Top = 550
+    Width = 800
+    Anchors = [akLeft, akRight, akBottom]
+    BevelOuter = bvNone
+    ClientHeight = 50
+    ClientWidth = 800
+    TabOrder = 0
+    object B_Einlesen: TButton
+      AnchorSideLeft.Control = P_Button
+      AnchorSideTop.Control = P_Button
+      AnchorSideBottom.Control = P_Button
+      AnchorSideBottom.Side = asrBottom
+      Left = 10
+      Height = 46
+      Top = 2
+      Width = 198
+      Anchors = [akTop, akLeft, akBottom]
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 2
+      BorderSpacing.Bottom = 2
+      Caption = 'Vorlage nur einlesen'
+      OnClick = B_EinlesenClick
+      TabOrder = 0
+    end
+    object B_Simulieren: TButton
+      AnchorSideTop.Control = P_Button
+      AnchorSideRight.Control = P_Button
+      AnchorSideRight.Side = asrBottom
+      AnchorSideBottom.Control = P_Button
+      AnchorSideBottom.Side = asrBottom
+      Left = 592
+      Height = 46
+      Top = 2
+      Width = 198
+      Anchors = [akTop, akRight, akBottom]
+      BorderSpacing.Top = 2
+      BorderSpacing.Right = 10
+      BorderSpacing.Bottom = 2
+      Caption = 'Vorlage einlesen und alarmieren'
+      OnClick = B_SimulierenClick
+      TabOrder = 1
+    end
+  end
+  object PageControl1: TPageControl
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = P_Information
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = P_Button
+    Left = 0
+    Height = 500
+    Top = 50
+    Width = 800
+    ActivePage = TabSheet1
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    TabIndex = 0
+    TabOrder = 1
+    object TabSheet1: TTabSheet
+      Caption = 'Vorlage 1'
+      ClientHeight = 472
+      ClientWidth = 792
+      object Memo_Vorlage1: TMemo
+        Left = 0
+        Height = 472
+        Top = 0
+        Width = 792
+        Align = alClient
+        Lines.Strings = (
+          '~~Ort~~Musterstadt~~'
+          '~~Ortsteil~~klein Musterland~~'
+          '~~Strasse~~Muster-Mann-Straße 123~~'
+          '~~Objekt~~KH Birnenbaum~~'
+          '~~Objektnummer~~-1~~'
+          '~~Objektart~~~~'
+          '~~Einsatzart~~Sonstiges~~'
+          '~~Alarmgrund~~I:Testeinsatz~~'
+          '~~Sondersignal~~[mit Sondersignal]~~'
+          '~~Einsatznummer~~4160XXXXX~~'
+          '~~Besonderheiten~~Test Wachalarm-IP mit einigen Besonderheiten im Text!~~'
+          '~~Name~~Mustermann, Test~~'
+          '~~Status~~Fahrzeug~~Zuget~~Alarm~~Ausgerückt~~'
+          '~~ALARM~~192.168.1.120#~~CB FW Cottfbus 1ø~~FL CB 01/82-01~~17:16~~~~'
+          '~~ALARM~~192.168.1.120#~~CB FW Cottfbus 1ø~~FL CB 01/83-06~~17:16~~~~'
+          '~~ALARM~~192.168.1.120#~~CB FW Cottfbus 1ø~~FL CB T-Dienst~~17:16~~~~'
+          '~~ALARM~~192.168.1.121,192.168.1.122#~~CB FW Cottfbus 2ø~~FL CB 02/83-01~~17:16~~~~'
+          '~~ALARM~~@Titter-Test-Account#~~CB FW Ströbitzø~~FL CB 16/23-01~~17:16~~~~'
+          '~~ALARM~~@Titter-Test-Account#~~CB FW Ströbitzø~~FL CB 16/11-01~~17:16~~~~'
+          '~~Alarmzeit~~19.02.16&17:16~~'
+          '~~Disponent~~~~'
+          '~~AP~~99~~'
+          '~~WachennumerFW~~520201~~'
+        )
+        OnEditingDone = Memo_Vorlage1EditingDone
+        OnExit = Memo_Vorlage1Exit
+        ScrollBars = ssAutoBoth
+        TabOrder = 0
+      end
+    end
+    object TabSheet2: TTabSheet
+      Caption = 'Vorlage 2'
+      ClientHeight = 472
+      ClientWidth = 792
+      object Memo_Vorlage2: TMemo
+        Left = 0
+        Height = 472
+        Top = 0
+        Width = 792
+        Align = alClient
+        Lines.Strings = (
+          '~~Ort~~Musterstadt~~'
+          '~~Ortsteil~~Groß Musterland~~'
+          '~~Strasse~~Muster-Mann-Straße 123~~'
+          '~~Objekt~~KH Birnenbaum~~'
+          '~~Objektnummer~~-1~~'
+          '~~Objektart~~~~'
+          '~~Einsatzart~~Sonstiges~~'
+          '~~Alarmgrund~~I:Testeinsatz~~'
+          '~~Sondersignal~~[mit Sondersignal]~~'
+          '~~Einsatznummer~~4160XXXXX~~'
+          '~~Besonderheiten~~Test Wachalarm-IP mit einigen Besonderheiten im Text!~~'
+          '~~Name~~Mustermann, Test~~'
+          '~~Status~~Fahrzeug~~Zuget~~Alarm~~Ausgerückt~~'
+          '~~ALARM~~@Titter-Test-Account#~~CB FW Ströbitzø~~FL CB 16/23-01~~17:16~~~~'
+          '~~ALARM~~@Titter-Test-Account#~~CB FW Sandowø~~FL CB 16/11-01~~17:16~~~~'
+          '~~ALARM~~@Titter-Test-Account#~~CB FW Merzdorfø~~FL CB 16/11-01~~17:16~~~~'
+          '~~ALARM~~@Titter-Test-Account#~~CB FW Madlowø~~FL CB 16/11-01~~17:16~~~~'
+          '~~ALARM~~@Titter-Test-Account#~~CB FW Groß Gaglowø~~FL CB 16/11-01~~17:16~~~~'
+          '~~ALARM~~@Titter-Test-Account#~~CB FW Kahrenø~~FL CB 16/11-01~~17:16~~~~'
+          '~~ALARM~~@Titter-Test-Account#~~CB FW Kiekebuschø~~FL CB 16/11-01~~17:16~~~~'
+          '~~ALARM~~@Titter-Test-Account#~~SPN FW Kolkwitzø~~FL CB 16/11-01~~17:16~~~~'
+          '~~Alarmzeit~~19.02.16&17:16~~'
+          '~~Disponent~~~~'
+          '~~AP~~99~~'
+          '~~WachennumerFW~~520201~~'
+        )
+        OnEditingDone = Memo_Vorlage2EditingDone
+        ScrollBars = ssAutoBoth
+        TabOrder = 0
+      end
+    end
+    object TabSheet3: TTabSheet
+      Caption = 'Vorlage 3'
+      ClientHeight = 472
+      ClientWidth = 792
+      object Memo_Vorlage3: TMemo
+        Left = 0
+        Height = 472
+        Top = 0
+        Width = 792
+        Align = alClient
+        OnEditingDone = Memo_Vorlage3EditingDone
+        ScrollBars = ssAutoBoth
+        TabOrder = 0
+      end
+    end
+    object TabSheet4: TTabSheet
+      Caption = 'Vorlage 4'
+      ClientHeight = 472
+      ClientWidth = 792
+      object Memo_Vorlage4: TMemo
+        Left = 0
+        Height = 472
+        Top = 0
+        Width = 792
+        Align = alClient
+        Lines.Strings = (
+          ''
+        )
+        OnEditingDone = Memo_Vorlage4EditingDone
+        ScrollBars = ssAutoBoth
+        TabOrder = 0
+      end
+    end
+    object TabSheet5: TTabSheet
+      Caption = 'Vorlage 5'
+      ClientHeight = 472
+      ClientWidth = 792
+      object Memo_Vorlage5: TMemo
+        Left = 0
+        Height = 472
+        Top = 0
+        Width = 792
+        Align = alClient
+        OnEditingDone = Memo_Vorlage5EditingDone
+        ScrollBars = ssAutoBoth
+        TabOrder = 0
+      end
+    end
+  end
+  object P_Information: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 0
+    Height = 50
+    Top = 0
+    Width = 800
+    Anchors = [akTop, akLeft, akRight]
+    BevelOuter = bvNone
+    ClientHeight = 50
+    ClientWidth = 800
+    TabOrder = 2
+    object L_Information: TLabel
+      Left = 10
+      Height = 30
+      Top = 8
+      Width = 695
+      Caption = 'Bitte wählen Sie eine Vorlage aus. Mit dem Programmstart wird der Default-Wert geladen. Eine dauerhafte Speicherung erfolgt nicht.'#13#10'Die Simulation der gerade ausgewählten Vorlage erfolgt über den Button "Vorlage einlesen und alarmieren".'
+      ParentColor = False
+    end
+  end
+end
