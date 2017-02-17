@@ -1,0 +1,259 @@
+object PictureForm: TPictureForm
+  Left = -110
+  Height = 741
+  Top = 258
+  Width = 1176
+  Caption = 'Wachalarm-Bild'
+  ClientHeight = 741
+  ClientWidth = 1176
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  OnCreate = FormCreate
+  OnResize = FormResize
+  OnShow = FormShow
+  OnWindowStateChange = FormWindowStateChange
+  Position = poScreenCenter
+  ShowInTaskBar = stAlways
+  UseDockManager = True
+  LCLVersion = '1.6.0.4'
+  Visible = False
+  object P_Top: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 5
+    Height = 154
+    Top = 5
+    Width = 1166
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Around = 5
+    ClientHeight = 154
+    ClientWidth = 1166
+    TabOrder = 0
+    object LSondersig: TLabel
+      AnchorSideLeft.Control = LEinsatzart
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = P_Top
+      AnchorSideRight.Control = P_Top
+      AnchorSideRight.Side = asrBottom
+      AnchorSideBottom.Control = P_Top
+      AnchorSideBottom.Side = asrBottom
+      Left = 966
+      Height = 152
+      Top = 1
+      Width = 199
+      Alignment = taCenter
+      Anchors = [akTop, akRight, akBottom]
+      AutoSize = False
+      Caption = 'x'
+      Font.Color = 16748574
+      Font.Height = -93
+      Font.Quality = fqAntialiased
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      OnResize = LSondersigResize
+    end
+    object LEinsatzart: TLabel
+      AnchorSideLeft.Control = P_Top
+      AnchorSideTop.Control = P_Top
+      AnchorSideRight.Control = LSondersig
+      Left = 1
+      Height = 72
+      Top = 1
+      Width = 965
+      Align = alCustom
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
+      Caption = '<Einsatzart>'
+      Font.Color = clRed
+      Font.Height = -60
+      Font.Quality = fqAntialiased
+      Font.Style = [fsBold]
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      OnResize = LEinsatzartResize
+    end
+    object LAlarmGrund: TLabel
+      AnchorSideLeft.Control = LEinsatzart
+      AnchorSideTop.Control = LEinsatzart
+      AnchorSideTop.Side = asrBottom
+      AnchorSideRight.Control = LEinsatzart
+      AnchorSideRight.Side = asrBottom
+      AnchorSideBottom.Control = P_Top
+      AnchorSideBottom.Side = asrBottom
+      Left = 1
+      Height = 80
+      Top = 73
+      Width = 965
+      Anchors = [akTop, akLeft, akRight, akBottom]
+      AutoSize = False
+      Caption = '<Stichwort>'
+      Font.Color = 16748574
+      Font.Height = -53
+      Font.Quality = fqAntialiased
+      Font.Style = [fsBold]
+      ParentColor = False
+      ParentFont = False
+      ShowAccelChar = False
+      WordWrap = True
+      OnResize = LAlarmGrundResize
+    end
+  end
+  object P_Center: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = P_Top
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 5
+    Height = 502
+    Top = 164
+    Width = 1166
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 5
+    BorderSpacing.Right = 5
+    ClientHeight = 502
+    ClientWidth = 1166
+    TabOrder = 1
+    object P_Left: TPanel
+      AnchorSideLeft.Control = P_Center
+      AnchorSideTop.Control = P_Center
+      AnchorSideRight.Control = P_Right
+      AnchorSideBottom.Control = P_Center
+      AnchorSideBottom.Side = asrBottom
+      Left = 1
+      Height = 500
+      Top = 1
+      Width = 569
+      Anchors = [akTop, akLeft, akRight, akBottom]
+      ClientHeight = 500
+      ClientWidth = 569
+      TabOrder = 0
+      object LBesonder: TLabel
+        AnchorSideLeft.Control = P_Left
+        AnchorSideTop.Control = LOrtsdaten
+        AnchorSideTop.Side = asrBottom
+        AnchorSideRight.Control = P_Left
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = P_Left
+        AnchorSideBottom.Side = asrBottom
+        Left = 1
+        Height = 187
+        Top = 312
+        Width = 567
+        Anchors = [akLeft, akRight, akBottom]
+        AutoSize = False
+        Caption = '<Besonderheiten>'
+        Font.Color = 55295
+        Font.Height = -53
+        Font.Quality = fqAntialiased
+        Font.Style = [fsBold]
+        ParentColor = False
+        ParentFont = False
+        ShowAccelChar = False
+        WordWrap = True
+        OnResize = LBesonderResize
+      end
+      object LOrtsdaten: TLabel
+        AnchorSideLeft.Control = P_Left
+        AnchorSideTop.Control = P_Left
+        AnchorSideRight.Control = P_Left
+        AnchorSideRight.Side = asrBottom
+        AnchorSideBottom.Control = LBesonder
+        Left = 1
+        Height = 311
+        Top = 1
+        Width = 567
+        Anchors = [akTop, akLeft, akRight, akBottom]
+        AutoSize = False
+        Caption = '<Objekt>'#13#10'<Ort>'#13#10'<Ortsteil>'#13#10'<Straße>'
+        Font.Color = clWhite
+        Font.Height = -53
+        Font.Quality = fqAntialiased
+        Font.Style = [fsBold]
+        Layout = tlCenter
+        ParentColor = False
+        ParentFont = False
+        WordWrap = True
+        OnResize = LOrtsdatenResize
+      end
+    end
+    object P_Right: TPanel
+      AnchorSideLeft.Control = P_Left
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = P_Center
+      AnchorSideRight.Control = P_Center
+      AnchorSideRight.Side = asrBottom
+      AnchorSideBottom.Control = P_Center
+      AnchorSideBottom.Side = asrBottom
+      Left = 570
+      Height = 500
+      Top = 1
+      Width = 595
+      Anchors = [akTop, akRight, akBottom]
+      ClientHeight = 500
+      ClientWidth = 595
+      TabOrder = 1
+      object LEinsatzmittel: TLabel
+        Left = 1
+        Height = 498
+        Top = 1
+        Width = 593
+        Align = alClient
+        Alignment = taRightJustify
+        AutoSize = False
+        Caption = '<Einsatzmittel N>'#13#10'<Einsatzmittel 2>'#13#10'<Einsatzmittel 1>'
+        Font.Color = clRed
+        Font.Height = -60
+        Font.Quality = fqAntialiased
+        Font.Style = [fsBold]
+        Layout = tlBottom
+        ParentColor = False
+        ParentFont = False
+        OnResize = LEinsatzmittelResize
+      end
+    end
+  end
+  object P_Button: TPanel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = P_Center
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 5
+    Height = 65
+    Top = 671
+    Width = 1166
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Around = 5
+    ClientHeight = 65
+    ClientWidth = 1166
+    TabOrder = 2
+    object LMitaus: TLabel
+      Left = 1
+      Height = 63
+      Top = 1
+      Width = 1164
+      Align = alClient
+      Alignment = taCenter
+      Anchors = [akLeft, akBottom]
+      AutoSize = False
+      Caption = '<Mitalarmiert 1>, <Mitalarmiert 2>, <Mitalarmiert N>'
+      Font.Color = 206
+      Font.Height = -33
+      Font.Quality = fqAntialiased
+      Layout = tlCenter
+      ParentColor = False
+      ParentFont = False
+      WordWrap = True
+      OnResize = LMitausResize
+    end
+  end
+end
