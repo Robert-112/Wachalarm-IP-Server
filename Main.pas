@@ -149,7 +149,7 @@ var
   E_Ort, E_Ortsteil, E_Strasse, E_Objekt, E_Objektnummer, E_Objektart, E_Einsatzart, E_Stichwort, 
   E_Sondersignal, E_Einsatznummer, E_Besonderheiten, E_PName, E_Alarmzeit, E_Wachennummer, 
   E_Alarmierte_EM, E_Mitausgerueckte_EM, Dir, Slash, Udp_Sound, User, Pass: String;
-  Fehlerindex, Anzahl_aktuelle_Alarme: Integer;
+  Fehlerindex, Anzahl_aktuelle_Alarme, TmpFile_Timer: Integer;
   Config_INI: TIniFile;
 
 implementation
@@ -177,6 +177,7 @@ begin
   {$endif}
   Fehlerindex := 0;
   Anzahl_aktuelle_Alarme := 0;
+  TmpFile_Timer := 0;
   DefaultFormatSettings.DateSeparator := '.';
   DefaultFormatSettings.TimeSeparator := ':';
   DefaultFormatSettings.ShortDateFormat := 'dd.mm.yyyy';
@@ -298,8 +299,11 @@ begin
     // Unicode Character 'TELEVISION' (U+1F4FA)
     S_Typ := #$F0#$9F#$93#$BA + ' Wachalarm';
     // Wachalarm Client-Information von S_Meldung nach info_ok / info_err kopieren
-    Wachalarm_Client_Info := Copy(S_Meldung, pos(' {', S_Meldung), length(S_Meldung));
-    S_Meldung := StringReplace(S_Meldung, Wachalarm_Client_Info, '', []);
+    if pos(' {', S_Meldung) > 0 then
+    begin
+      Wachalarm_Client_Info := Copy(S_Meldung, pos(' {', S_Meldung), length(S_Meldung));
+      S_Meldung := StringReplace(S_Meldung, Wachalarm_Client_Info, '', []);
+    end;
     info_ok := 'Wachalarm(e) erfolgreich gesendet.' + Wachalarm_Client_Info;
     info_err := 'Fehler beim senden des Wachalarms, bitte Log-Datei pruefen!' + Wachalarm_Client_Info;
   end;
@@ -1058,11 +1062,12 @@ begin
   end;
 end;
 
-//zentrale Schnittstellen-Prozedur zum Auslesen der waip.txt
+// zentrale Schnittstellen-Prozedur zum Auslesen der waip.txt
 procedure TMainForm.Timer1Timer(Sender: TObject);
 var rename, Archiv_Dir, waip_txt, waip_pfad, s: String;
     tfIn: TextFile;
     Einlesen_erfolgreich: Boolean;
+    TmpFiles: TStringList;
 begin
   // Timer auf 500 ms gestellt
   waip_pfad := '';
@@ -1072,32 +1077,55 @@ begin
   if Assigned(ConfigForm) then
   begin
     ConfigForm.M_DirectoryList.Clear;
+    // Dateien in Übergabeordner gemäßig Config-Vorgaben (präfix * suffix) einlesen
     ListFileDir(ConfigForm.E_Pfad.Text + Slash, ConfigForm.E_waip_praefix.Text + '*' + ConfigForm.E_waip_suffix.Text, ConfigForm.M_DirectoryList.Lines);
-    //GetFilesInDirectory(ConfigForm.E_Pfad.Text + Slash , ConfigForm.E_waip_praefix.Text + '*' + ConfigForm.E_waip_suffix.Text, ConfigForm.M_DirectoryList.Lines, False, True);
-    //erste Übergabedatei in Liste auselsen
+    // erste Übergabedatei in Liste auselsen
     if ConfigForm.M_DirectoryList.Lines.Count > 0 then
     begin
       waip_pfad := ConfigForm.E_Pfad.Text + Slash;
       waip_txt := ConfigForm.M_DirectoryList.Lines[0]
     end;
+    // alle 10 Timer-Durchläufe prüfen, ob eine *.tmp-Datei im Übergabeordner liegt
+    TmpFile_Timer := TmpFile_Timer + 1;
+    if (TmpFile_Timer = 10) then
+    begin
+      TmpFiles := FindAllFiles(ConfigForm.E_Pfad.Text + Slash, ConfigForm.E_waip_praefix.Text + '*' + ConfigForm.E_waip_suffix.Text + '*.tmp', false); //find e.g. all pascal sourcefiles
+      TmpFiles.Add('');
+      try
+        // sollte eine *tmp-Datei vorliegen, so soll diese gemäß den Vorgaben umbenannt werden
+        if TmpFiles[0] <> '' then
+          RenameFile(TmpFiles[0], ConfigForm.E_Pfad.Text + Slash + ConfigForm.E_waip_praefix.Text + '.' + ConfigForm.E_waip_suffix.Text);
+      finally
+        TmpFiles.Free;
+      end;
+      TmpFile_Timer := 0;
+    end;
   end;
-
-
-
-
-  //Auslesen nur beginnen, wenn alle Alarme abgearbeitet
-  if Anzahl_aktuelle_Alarme = 0  then
+  // Auslesen nur beginnen, wenn alle Alarme abgearbeitet sind
+  if Anzahl_aktuelle_Alarme > 0  then
   begin
-    //prüfen ob neue waip*.txt vorliegt
-    if FileExists(waip_pfad + waip_txt) then
+    L_Auftragsstatus.Font.Color := clred;
+    L_Auftragsstatus.Caption := 'letzter Auftrag wird abgeschlossen, noch ' + inttostr(Anzahl_aktuelle_Alarme) + ' Alarm(e) offen';
+    PG_Verarbeitungsstatus.Position := 100;
+  end
+  else
+  begin
+    // prüfen ob neue Übergabedatei vorliegt
+    if not FileExists(waip_pfad + waip_txt) then
+    begin
+      L_Auftragsstatus.Font.Color := clgreen;
+      L_Auftragsstatus.Caption := 'Warte auf neuen Alarm';
+      PG_Verarbeitungsstatus.Position := 0;
+    end
+    else
     begin
       Log.Lines.Insert(0, datetostr(date) + '-' + timetostr(time) + ': neue Datei vorhanden. ' + waip_txt + ' wird jetzt verarbeitet.');
-      //kleinere GUI-Einstellungen
-      PG_Verarbeitungsstatus.Position:=25;
-      L_Auftragsstatus.Font.Color:=clred;
-      L_Auftragsstatus.Caption := waip_txt + ' wird verarbeitet';
+      // kleinere GUI-Einstellungen
+      L_Auftragsstatus.Font.Color := clred;
+      L_Auftragsstatus.Caption := waip_txt + ' wird eingelesen';
+      PG_Verarbeitungsstatus.Position := 20;
       Fehlerindex := 0;
-      //Textdatei einlesen
+      // Textdatei einlesen
       M_Auftrag.Lines.Clear;
       AssignFile(tfIn, waip_pfad + waip_txt);
       try
@@ -1111,6 +1139,17 @@ begin
         end;
         // Datei wieder schließen
         CloseFile(tfIn);
+        // waip.txt umbenennen (waip + tag + zeit.txt) und in Archiv verschieben
+        L_Auftragsstatus.Caption := waip_txt + ' wird in Archiv verschoben';
+        PG_Verarbeitungsstatus.Position := 40;
+        Archiv_Dir := waip_pfad + 'waip_archiv_' + StringReplace( copy(datetostr(Date),4,7),'.','_',[rfReplaceAll]);
+        If Not DirectoryExists(Archiv_Dir) then
+          CreateDir (Archiv_Dir);
+        rename := datetostr(Date) +' '+ timetostr(Time);
+        rename := StringReplace(rename,':','_',[rfReplaceAll]);
+        rename := StringReplace(rename,'.','_',[rfReplaceAll]);
+        RenameFile(waip_pfad + waip_txt, Archiv_Dir + Slash + 'waip ' + rename + '.txt');
+        // Einlesen OK
         Einlesen_erfolgreich := true;
       except
         on E: EInOutError do
@@ -1119,43 +1158,22 @@ begin
           Einlesen_erfolgreich := false;
         end;
       end;
-    end
-    else
-    begin
-      L_Auftragsstatus.Caption := 'Warte auf neuen Alarm';
-      L_Auftragsstatus.Font.Color := clgreen;
     end;
+    // Alarmierung nach erfolgreichem Einlesen der Übergabedatei durchführen
     if Einlesen_erfolgreich = true then
     begin
-      L_Auftragsstatus.Caption := waip_txt + ' wird in Archiv verschoben';
-      //waip.txt nach dem speichern in M_Auftrag umbenennen (waip + tag + zeit.txt)
-      Archiv_Dir := waip_pfad + 'waip_archiv_' + StringReplace( copy(datetostr(Date),4,7),'.','_',[rfReplaceAll]);
-      If Not DirectoryExists(Archiv_Dir) then
-        CreateDir (Archiv_Dir);
-      rename := datetostr(Date) +' '+ timetostr(Time);
-      rename := StringReplace(rename,':','_',[rfReplaceAll]);
-      rename := StringReplace(rename,'.','_',[rfReplaceAll]);
-      RenameFile(waip_pfad + waip_txt, Archiv_Dir + Slash + 'waip ' + rename + '.txt');
-      //eingelesene waip.txt interpretieren und alle Variablen füllen
+      // eingelesene waip.txt interpretieren und alle Variablen füllen
+      L_Auftragsstatus.Font.Color := clred;
       L_Auftragsstatus.Caption := 'Inhalt wird interpretiert';
-      PG_Verarbeitungsstatus.Position:=50;
-     // Anzahl_aktuelle_Alarme := Anzahl_aktuelle_Alarme +1;
+      PG_Verarbeitungsstatus.Position := 60;
       WAIP_Auslesen;
-      Log.Lines.Insert(0, datetostr(date) + '-' + timetostr(time) + ': Einsatz ' + E_Einsatznummer + ' wird verarbeitet.');
-      PG_Verarbeitungsstatus.Position:=75;
-      //Alarmierung durchführen
+      // Alarmierung durchführen
+      Log.Lines.Insert(0, datetostr(date) + '-' + timetostr(time) + ': Einsatz ' + E_Einsatznummer + ' wird verarbeitet / gesendet.');
+      L_Auftragsstatus.Font.Color := clred;
       L_Auftragsstatus.Caption := 'Alarme werden gesendet';
+      PG_Verarbeitungsstatus.Position := 80;
       Alarmierung_durchfuehren(false);
-
-      PG_Verarbeitungsstatus.Position:=0;
-    //  if Anzahl_aktuelle_Alarme > 1 then
-    //    Anzahl_aktuelle_Alarme := Anzahl_aktuelle_Alarme -1;
-     end;
-  end
-  else
-  begin
-    L_Auftragsstatus.Font.Color:=clred;
-    L_Auftragsstatus.Caption := 'letzter Auftrag wird abgeschlossen, noch ' + inttostr(Anzahl_aktuelle_Alarme) + ' Alarm(e) offen';
+    end;
   end;
 end;
 
