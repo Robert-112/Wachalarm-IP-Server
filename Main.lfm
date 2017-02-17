@@ -789,12 +789,12 @@ object MainForm: TMainForm
       ParentFont = False
     end
     object L_Version: TLabel
-      Left = 715
+      Left = 704
       Height = 16
       Top = 16
-      Width = 145
+      Width = 156
       Anchors = [akTop, akRight]
-      Caption = 'Version 2.8 (13.02.2017)'
+      Caption = 'Version 2.8.1 (17.02.2017)'
       ParentColor = False
     end
     object PG_Verarbeitungsstatus: TProgressBar
@@ -815,7 +815,7 @@ object MainForm: TMainForm
     Panels = <    
       item
         Text = 'Waip.txt-Pfad:'
-        Width = 500
+        Width = 600
       end    
       item
         Alignment = taRightJustify
