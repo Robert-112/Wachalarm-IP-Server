@@ -1,0 +1,346 @@
+object ConfigForm: TConfigForm
+  Left = 327
+  Height = 600
+  Top = 43
+  Width = 700
+  BorderStyle = bsToolWindow
+  Caption = 'Einstellungen'
+  ClientHeight = 600
+  ClientWidth = 700
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  OnClose = FormClose
+  OnCreate = FormCreate
+  Position = poDesktopCenter
+  LCLVersion = '1.6.2.0'
+  object Btn_Back: TButton
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 615
+    Height = 25
+    Top = 565
+    Width = 75
+    Anchors = [akRight, akBottom]
+    BorderSpacing.Right = 10
+    BorderSpacing.Bottom = 10
+    Caption = 'Zurück'
+    OnClick = Btn_BackClick
+    TabOrder = 0
+  end
+  object GroupBox1: TGroupBox
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 0
+    Height = 176
+    Top = 379
+    Width = 700
+    Anchors = [akLeft, akRight, akBottom]
+    BorderSpacing.Bottom = 45
+    Caption = 'Optionale Proxy-Einstellungen für Twitter'
+    ClientHeight = 158
+    ClientWidth = 696
+    TabOrder = 1
+    object ProxyPort: TEdit
+      AnchorSideLeft.Control = GroupBox1
+      AnchorSideTop.Control = GroupBox1
+      AnchorSideRight.Control = GroupBox1
+      AnchorSideRight.Side = asrBottom
+      Left = 150
+      Height = 21
+      Top = 45
+      Width = 536
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 150
+      BorderSpacing.Top = 45
+      BorderSpacing.Right = 10
+      OnEditingDone = ProxyPortEditingDone
+      TabOrder = 0
+    end
+    object ProxyUser: TEdit
+      AnchorSideLeft.Control = GroupBox1
+      AnchorSideTop.Control = GroupBox1
+      AnchorSideRight.Control = GroupBox1
+      AnchorSideRight.Side = asrBottom
+      Left = 150
+      Height = 21
+      Top = 80
+      Width = 536
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 150
+      BorderSpacing.Top = 80
+      BorderSpacing.Right = 10
+      OnEditingDone = ProxyUserEditingDone
+      TabOrder = 1
+    end
+    object ProxyPass: TEdit
+      AnchorSideLeft.Control = GroupBox1
+      AnchorSideTop.Control = GroupBox1
+      AnchorSideRight.Control = GroupBox1
+      AnchorSideRight.Side = asrBottom
+      Left = 150
+      Height = 21
+      Top = 115
+      Width = 536
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 150
+      BorderSpacing.Top = 115
+      BorderSpacing.Right = 10
+      OnEditingDone = ProxyPassEditingDone
+      TabOrder = 2
+    end
+    object Label7: TLabel
+      AnchorSideLeft.Control = GroupBox1
+      AnchorSideTop.Control = GroupBox1
+      Left = 10
+      Height = 13
+      Top = 115
+      Width = 75
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 115
+      Caption = 'Proxy Passwort'
+      ParentColor = False
+    end
+    object Label8: TLabel
+      AnchorSideLeft.Control = GroupBox1
+      AnchorSideTop.Control = GroupBox1
+      Left = 10
+      Height = 13
+      Top = 80
+      Width = 74
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 80
+      Caption = 'Proxy Benutzer'
+      ParentColor = False
+    end
+    object Label9: TLabel
+      AnchorSideLeft.Control = GroupBox1
+      AnchorSideTop.Control = GroupBox1
+      Left = 10
+      Height = 13
+      Top = 45
+      Width = 51
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 45
+      Caption = 'Proxy Port'
+      ParentColor = False
+    end
+    object Label10: TLabel
+      AnchorSideLeft.Control = GroupBox1
+      AnchorSideTop.Control = GroupBox1
+      Left = 10
+      Height = 13
+      Top = 10
+      Width = 91
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 10
+      Caption = 'Proxy Host oder IP'
+      ParentColor = False
+    end
+    object ProxyHost: TEdit
+      AnchorSideLeft.Control = GroupBox1
+      AnchorSideTop.Control = GroupBox1
+      AnchorSideRight.Control = GroupBox1
+      AnchorSideRight.Side = asrBottom
+      Left = 150
+      Height = 21
+      Top = 10
+      Width = 536
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 150
+      BorderSpacing.Top = 10
+      BorderSpacing.Right = 10
+      OnEditingDone = ProxyHostEditingDone
+      TabOrder = 3
+    end
+  end
+  object GroupBox2: TGroupBox
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = GroupBox1
+    Left = 0
+    Height = 379
+    Top = 0
+    Width = 700
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    Caption = 'Allgemeine Einstellungen zur Schnittstelle'
+    ClientHeight = 361
+    ClientWidth = 696
+    TabOrder = 2
+    object Label1: TLabel
+      AnchorSideLeft.Control = GroupBox2
+      AnchorSideTop.Control = GroupBox2
+      Left = 10
+      Height = 26
+      Top = 10
+      Width = 118
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 10
+      Caption = 'Pfad zur Übergabedatei:'#13#10'(waip.txt)'
+      ParentColor = False
+    end
+    object E_Pfad: TEdit
+      AnchorSideLeft.Control = GroupBox2
+      AnchorSideTop.Control = GroupBox2
+      AnchorSideRight.Control = GroupBox2
+      AnchorSideRight.Side = asrBottom
+      Left = 150
+      Height = 21
+      Top = 10
+      Width = 536
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 150
+      BorderSpacing.Top = 10
+      BorderSpacing.Right = 10
+      OnEditingDone = E_PfadEditingDone
+      TabOrder = 0
+    end
+    object L_Prozent: TLabel
+      AnchorSideLeft.Control = GroupBox2
+      AnchorSideTop.Control = GroupBox2
+      Left = 10
+      Height = 13
+      Top = 60
+      Width = 37
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 60
+      Caption = 'Prozent'
+      ParentColor = False
+    end
+    object M_DirectoryList: TMemo
+      AnchorSideLeft.Control = GroupBox2
+      AnchorSideTop.Control = GroupBox2
+      AnchorSideRight.Control = GroupBox2
+      AnchorSideRight.Side = asrBottom
+      AnchorSideBottom.Control = GroupBox2
+      AnchorSideBottom.Side = asrBottom
+      Left = 150
+      Height = 201
+      Top = 150
+      Width = 536
+      Anchors = [akTop, akLeft, akRight, akBottom]
+      BorderSpacing.Left = 150
+      BorderSpacing.Top = 150
+      BorderSpacing.Right = 10
+      BorderSpacing.Bottom = 10
+      ScrollBars = ssAutoBoth
+      TabOrder = 1
+      WordWrap = False
+    end
+    object L_Bildqual: TLabel
+      AnchorSideLeft.Control = GroupBox2
+      AnchorSideTop.Control = GroupBox2
+      Left = 10
+      Height = 13
+      Top = 45
+      Width = 54
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 45
+      Caption = 'Bildquallität'
+      ParentColor = False
+    end
+    object T_Qualli: TTrackBar
+      AnchorSideLeft.Control = GroupBox2
+      AnchorSideTop.Control = GroupBox2
+      AnchorSideRight.Control = GroupBox2
+      AnchorSideRight.Side = asrBottom
+      Left = 150
+      Height = 45
+      Top = 45
+      Width = 536
+      OnChange = T_QualliChange
+      Position = 10
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 150
+      BorderSpacing.Top = 45
+      BorderSpacing.Right = 10
+      TabOrder = 2
+    end
+    object Label2: TLabel
+      AnchorSideLeft.Control = GroupBox2
+      AnchorSideTop.Control = GroupBox2
+      Left = 10
+      Height = 78
+      Top = 150
+      Width = 115
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 150
+      Caption = 'aktueller Inhalt des '#13#10'Übergabeordners:'#13#10#13#10'(entsprechend Pfad'#13#10'zur Übergabedatei'#13#10'inkl. Zusammensetzung)'
+      ParentColor = False
+    end
+    object Label3: TLabel
+      AnchorSideLeft.Control = GroupBox2
+      AnchorSideTop.Control = GroupBox2
+      Left = 10
+      Height = 26
+      Top = 110
+      Width = 108
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 110
+      Caption = 'Zusammensetzung der'#13#10'Übergabedatei:'
+      ParentColor = False
+    end
+    object E_waip_praefix: TEdit
+      AnchorSideLeft.Control = GroupBox2
+      AnchorSideTop.Control = GroupBox2
+      Left = 150
+      Height = 21
+      Top = 110
+      Width = 100
+      BorderSpacing.Left = 150
+      BorderSpacing.Top = 110
+      OnEditingDone = E_waip_praefixEditingDone
+      TabOrder = 3
+      Text = 'waip'
+    end
+    object Label5: TLabel
+      AnchorSideLeft.Control = E_waip_praefix
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = GroupBox2
+      Left = 255
+      Height = 13
+      Top = 110
+      Width = 6
+      BorderSpacing.Left = 5
+      BorderSpacing.Top = 110
+      Caption = '*'
+      ParentColor = False
+    end
+    object E_waip_suffix: TEdit
+      AnchorSideLeft.Control = Label5
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = GroupBox2
+      Left = 266
+      Height = 21
+      Top = 110
+      Width = 100
+      BorderSpacing.Left = 5
+      BorderSpacing.Top = 110
+      OnEditingDone = E_waip_suffixEditingDone
+      TabOrder = 4
+      Text = 'txt'
+    end
+    object Label4: TLabel
+      AnchorSideLeft.Control = E_waip_suffix
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = GroupBox2
+      Left = 376
+      Height = 13
+      Top = 110
+      Width = 94
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 110
+      Caption = 'Beispiel: waip * .txt'
+      ParentColor = False
+    end
+  end
+end
