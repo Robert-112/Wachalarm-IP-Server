@@ -161,14 +161,32 @@ end;
 procedure TSimulationForm.B_EinlesenClick(Sender: TObject);
 begin
   Memo_Einlesen;
+  // Memo Auswerten
+  MainForm.L_Auftragsstatus.Font.Color := clred;
+  MainForm.L_Auftragsstatus.Caption := 'Inhalt wird interpretiert';
+  MainForm.PG_Verarbeitungsstatus.Position := 60;
   MainForm.WAIP_Auslesen;
+  // Alarmierung nur simulieren
+  MainForm.Log.Lines.Insert(0, datetostr(date) + '-' + timetostr(time) + ': Testeinsatz (Simulation) wird einglesen.');
+  MainForm.L_Auftragsstatus.Font.Color := clred;
+  MainForm.L_Auftragsstatus.Caption := 'Alarme werden gesendet';
+  MainForm.PG_Verarbeitungsstatus.Position := 80;
   MainForm.Alarmierung_durchfuehren(true);
 end;
 
 procedure TSimulationForm.B_SimulierenClick(Sender: TObject);
 begin
   Memo_Einlesen;
+  // Memo Auswerten
+  MainForm.L_Auftragsstatus.Font.Color := clred;
+  MainForm.L_Auftragsstatus.Caption := 'Inhalt wird interpretiert';
+  MainForm.PG_Verarbeitungsstatus.Position := 60;
   MainForm.WAIP_Auslesen;
+  // echte Alarmierung durchführen
+  MainForm.Log.Lines.Insert(0, datetostr(date) + '-' + timetostr(time) + ': Testeinsatz (Simulation) wird verarbeitet / gesendet.');
+  MainForm.L_Auftragsstatus.Font.Color := clred;
+  MainForm.L_Auftragsstatus.Caption := 'Alarme werden gesendet';
+  MainForm.PG_Verarbeitungsstatus.Position := 80;
   MainForm.Alarmierung_durchfuehren(false);
 end;
 
