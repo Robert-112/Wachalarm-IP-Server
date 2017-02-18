@@ -1067,7 +1067,7 @@ procedure TMainForm.Timer1Timer(Sender: TObject);
 var rename, Archiv_Dir, waip_txt, waip_pfad, s: String;
     tfIn: TextFile;
     Einlesen_erfolgreich: Boolean;
-    TmpFiles: TStringList;
+    WaipFiles, TmpFiles: TStringList;
 begin
   // Timer auf 500 ms gestellt
   waip_pfad := '';
@@ -1076,104 +1076,127 @@ begin
   // Übergabedateien auslesen
   if Assigned(ConfigForm) then
   begin
-    ConfigForm.M_DirectoryList.Clear;
     // Dateien in Übergabeordner gemäßig Config-Vorgaben (präfix * suffix) einlesen
-    ListFileDir(ConfigForm.E_Pfad.Text + Slash, ConfigForm.E_waip_praefix.Text + '*' + ConfigForm.E_waip_suffix.Text, ConfigForm.M_DirectoryList.Lines);
+    WaipFiles := TStringList.Create;
+    ListFileDir(ConfigForm.E_Pfad.Text + Slash, ConfigForm.E_waip_praefix.Text + '*' + ConfigForm.E_waip_suffix.Text, WaipFiles);
     // erste Übergabedatei in Liste auselsen
-    if ConfigForm.M_DirectoryList.Lines.Count > 0 then
-    begin
-      waip_pfad := ConfigForm.E_Pfad.Text + Slash;
-      waip_txt := ConfigForm.M_DirectoryList.Lines[0]
+    try
+      if WaipFiles.Count > 0 then
+      begin
+        waip_pfad := ConfigForm.E_Pfad.Text + Slash;
+        waip_txt := WaipFiles[0]
+      end;
+    finally
+      WaipFiles.Free;
     end;
-    // alle 10 Timer-Durchläufe prüfen, ob eine *.tmp-Datei im Übergabeordner liegt
+  end;
+  // prüfen ob eine *.tmp-Datei im Übergabeordner liegt, welche noch nicht eingelesen wurde
+  if Assigned(ConfigForm) then
+  begin
+    // erst nach min. 5 Timer-Durchläufen beginnen
     TmpFile_Timer := TmpFile_Timer + 1;
-    if (TmpFile_Timer = 10) then
+    if (TmpFile_Timer > 5) then
     begin
-      TmpFiles := FindAllFiles(ConfigForm.E_Pfad.Text + Slash, ConfigForm.E_waip_praefix.Text + '*' + ConfigForm.E_waip_suffix.Text + '*.tmp', false); //find e.g. all pascal sourcefiles
-      TmpFiles.Add('');
+      // auf *.tmp-Datei prüfen
+      TmpFiles := TStringList.Create;
+      TmpFiles := FindAllFiles(ConfigForm.E_Pfad.Text + Slash, ConfigForm.E_waip_praefix.Text + '*' + ConfigForm.E_waip_suffix.Text + '*.tmp', false);
+      // immer leeren String anfügen, damit nachfolgende Bedingung auch ohne *.tmp-Datei geprüft werden kann
+     // TmpFiles.Add('');
       try
-        // sollte eine *tmp-Datei vorliegen, so soll diese gemäß den Vorgaben umbenannt werden
-        if TmpFiles[0] <> '' then
-          RenameFile(TmpFiles[0], ConfigForm.E_Pfad.Text + Slash + ConfigForm.E_waip_praefix.Text + '.' + ConfigForm.E_waip_suffix.Text);
+        if TmpFiles.Count > 0 then
+        begin
+          // sollte eine *tmp-Datei vorliegen, so soll diese gemäß den Vorgaben umbenannt werden
+          if TmpFiles[0] <> '' then
+          begin
+            // vor dem Umbenennen nochmals etwas warten, falls die Datei durch die CELIOS-Schnittstelle umbenannt wurde
+            if (TmpFile_Timer > 10) then
+            begin
+              RenameFile(TmpFiles[0], ConfigForm.E_Pfad.Text + Slash + ConfigForm.E_waip_praefix.Text + '.' + ConfigForm.E_waip_suffix.Text);
+              TmpFile_Timer := 0;
+            end
+          end;
+        end;
       finally
         TmpFiles.Free;
       end;
+    end;
+    // TmpFile_Timer ab 100 wieder zurücksetzen
+    if (TmpFile_Timer > 100) then
       TmpFile_Timer := 0;
+  end;
+  // wenn keine Alarme verarbeitet werden und keine Datei vorhanden, dann Beschriftung zurücksetzen
+  if (Anzahl_aktuelle_Alarme = 0) AND (waip_txt = '') then
+  begin
+    L_Auftragsstatus.Font.Color := clgreen;
+    L_Auftragsstatus.Caption := 'Warte auf neuen Alarm';
+    PG_Verarbeitungsstatus.Position := 0;
+  end;
+  // wenn keine Alarme verarbeitet werden und neue Übergabedatei vorliegt, dann Alarmierung durchführen
+  if (Anzahl_aktuelle_Alarme = 0) AND (FileExists(waip_pfad + waip_txt)) then
+  begin
+    Log.Lines.Insert(0, datetostr(date) + '-' + timetostr(time) + ': neue Datei vorhanden. ' + waip_txt + ' wird jetzt verarbeitet.');
+    // kleinere GUI-Einstellungen
+    L_Auftragsstatus.Font.Color := clred;
+    L_Auftragsstatus.Caption := waip_txt + ' wird eingelesen';
+    PG_Verarbeitungsstatus.Position := 20;
+    Fehlerindex := 0;
+    // Textdatei einlesen
+    M_Auftrag.Lines.Clear;
+    AssignFile(tfIn, waip_pfad + waip_txt);
+    try
+      // Datei zum lesen öffnen
+      reset(tfIn);
+      // Zeilen auslesen, bis ende der Datei erreicht ist
+      while not eof(tfIn) do
+      begin
+        readln(tfIn, s);
+        M_Auftrag.Append(CP1252ToUTF8(s));
+      end;
+      // Datei wieder schließen
+      CloseFile(tfIn);
+      // Nach dem Einlesen waip.txt umbenennen (waip + tag + zeit.txt) und in Archiv verschieben
+      L_Auftragsstatus.Caption := waip_txt + ' wird in Archiv verschoben';
+      PG_Verarbeitungsstatus.Position := 40;
+      Archiv_Dir := waip_pfad + 'waip_archiv_' + StringReplace( copy(datetostr(Date),4,7),'.','_',[rfReplaceAll]);
+      // Archiv-Ordner erstellen, sollte dieser noch nicht vorhanden sein
+      If Not DirectoryExists(Archiv_Dir) then
+        CreateDir (Archiv_Dir);
+      // Datei umbennen
+      rename := datetostr(Date) +' '+ timetostr(Time);
+      rename := StringReplace(rename,':','_',[rfReplaceAll]);
+      rename := StringReplace(rename,'.','_',[rfReplaceAll]);
+      RenameFile(waip_pfad + waip_txt, Archiv_Dir + Slash + 'waip ' + rename + '.txt');
+      // Einlesen OK
+      Einlesen_erfolgreich := true;
+    except
+      on E: EInOutError do
+      begin
+        Log.Lines.Insert(0, datetostr(date) + '-' + timetostr(time) + ': Fehler bei Verarbeitung von ' + waip_txt + '; Details: ' + E.Message);
+        Einlesen_erfolgreich := false;
+      end;
     end;
   end;
-  // Auslesen nur beginnen, wenn alle Alarme abgearbeitet sind
-  if Anzahl_aktuelle_Alarme > 0  then
+  // Alarmierung nach erfolgreichem Einlesen der Übergabedatei durchführen
+  if (Anzahl_aktuelle_Alarme = 0) AND (Einlesen_erfolgreich = true) then
+  begin
+    // eingelesene waip.txt interpretieren und alle Variablen füllen
+    L_Auftragsstatus.Font.Color := clred;
+    L_Auftragsstatus.Caption := 'Inhalt wird interpretiert';
+    PG_Verarbeitungsstatus.Position := 60;
+    WAIP_Auslesen;
+    // Alarmierung durchführen
+    Log.Lines.Insert(0, datetostr(date) + '-' + timetostr(time) + ': Einsatz ' + E_Einsatznummer + ' wird verarbeitet / gesendet.');
+    L_Auftragsstatus.Font.Color := clred;
+    L_Auftragsstatus.Caption := 'Alarme werden gesendet';
+    PG_Verarbeitungsstatus.Position := 80;
+    Alarmierung_durchfuehren(false);
+  end;
+  // wenn noch Alarme abgearbeitet werden, dann Beschriftung anpassen
+  if Anzahl_aktuelle_Alarme > 0 then
   begin
     L_Auftragsstatus.Font.Color := clred;
     L_Auftragsstatus.Caption := 'letzter Auftrag wird abgeschlossen, noch ' + inttostr(Anzahl_aktuelle_Alarme) + ' Alarm(e) offen';
     PG_Verarbeitungsstatus.Position := 100;
-  end
-  else
-  begin
-    // prüfen ob neue Übergabedatei vorliegt
-    if not FileExists(waip_pfad + waip_txt) then
-    begin
-      L_Auftragsstatus.Font.Color := clgreen;
-      L_Auftragsstatus.Caption := 'Warte auf neuen Alarm';
-      PG_Verarbeitungsstatus.Position := 0;
-    end
-    else
-    begin
-      Log.Lines.Insert(0, datetostr(date) + '-' + timetostr(time) + ': neue Datei vorhanden. ' + waip_txt + ' wird jetzt verarbeitet.');
-      // kleinere GUI-Einstellungen
-      L_Auftragsstatus.Font.Color := clred;
-      L_Auftragsstatus.Caption := waip_txt + ' wird eingelesen';
-      PG_Verarbeitungsstatus.Position := 20;
-      Fehlerindex := 0;
-      // Textdatei einlesen
-      M_Auftrag.Lines.Clear;
-      AssignFile(tfIn, waip_pfad + waip_txt);
-      try
-        // Datei zum lesen öffnen
-        reset(tfIn);
-        // Zeilen auslesen, bis ende der Datei erreicht ist
-        while not eof(tfIn) do
-        begin
-          readln(tfIn, s);
-          M_Auftrag.Append(CP1252ToUTF8(s));
-        end;
-        // Datei wieder schließen
-        CloseFile(tfIn);
-        // waip.txt umbenennen (waip + tag + zeit.txt) und in Archiv verschieben
-        L_Auftragsstatus.Caption := waip_txt + ' wird in Archiv verschoben';
-        PG_Verarbeitungsstatus.Position := 40;
-        Archiv_Dir := waip_pfad + 'waip_archiv_' + StringReplace( copy(datetostr(Date),4,7),'.','_',[rfReplaceAll]);
-        If Not DirectoryExists(Archiv_Dir) then
-          CreateDir (Archiv_Dir);
-        rename := datetostr(Date) +' '+ timetostr(Time);
-        rename := StringReplace(rename,':','_',[rfReplaceAll]);
-        rename := StringReplace(rename,'.','_',[rfReplaceAll]);
-        RenameFile(waip_pfad + waip_txt, Archiv_Dir + Slash + 'waip ' + rename + '.txt');
-        // Einlesen OK
-        Einlesen_erfolgreich := true;
-      except
-        on E: EInOutError do
-        begin
-          Log.Lines.Insert(0, datetostr(date) + '-' + timetostr(time) + ': Fehler bei Verarbeitung von ' + waip_txt + '; Details: ' + E.Message);
-          Einlesen_erfolgreich := false;
-        end;
-      end;
-    end;
-    // Alarmierung nach erfolgreichem Einlesen der Übergabedatei durchführen
-    if Einlesen_erfolgreich = true then
-    begin
-      // eingelesene waip.txt interpretieren und alle Variablen füllen
-      L_Auftragsstatus.Font.Color := clred;
-      L_Auftragsstatus.Caption := 'Inhalt wird interpretiert';
-      PG_Verarbeitungsstatus.Position := 60;
-      WAIP_Auslesen;
-      // Alarmierung durchführen
-      Log.Lines.Insert(0, datetostr(date) + '-' + timetostr(time) + ': Einsatz ' + E_Einsatznummer + ' wird verarbeitet / gesendet.');
-      L_Auftragsstatus.Font.Color := clred;
-      L_Auftragsstatus.Caption := 'Alarme werden gesendet';
-      PG_Verarbeitungsstatus.Position := 80;
-      Alarmierung_durchfuehren(false);
-    end;
   end;
 end;
 
