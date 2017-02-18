@@ -491,7 +491,7 @@ List: TStrings; WithSubDirs, ClearList: Boolean);
   begin
     if FindFirst(Directory + Mask, faAnyFile and not faDirectory, SR) = 0 then try
       repeat
-        List.Add({'Directory + }SR.Name)
+        List.Add(Directory + SR.Name)
       until FindNext(SR) <> 0;
     finally
       FindClose(SR);
