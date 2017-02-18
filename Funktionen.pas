@@ -359,6 +359,7 @@ begin
       SetLength(StringGridData, StringGridData_Bytes);
       // Zeilenumbrüche entfernen
       StringGridData := StringReplace(StringGridData, #13#10, '', [rfReplaceAll]);
+      StringGridData := StringReplace(StringGridData, #10, '', [rfReplaceAll]);
     finally
       AStream.Free;
     end;

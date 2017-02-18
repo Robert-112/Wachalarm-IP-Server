@@ -8,7 +8,7 @@ uses
   SysUtils, Variants, Classes, Graphics, LazUTF8, base64, Controls,
   LConvEncoding, Forms, Dialogs, LCLType, StdCtrls, Menus, Grids, fpjson,
   ComCtrls, ExtCtrls, IniFiles, FileUtil, twitter, lclintf,
-  blcksock, ftpsend, funktionen, Types;
+  blcksock, ftpsend, Funktionen, Types;
 
 type
 
