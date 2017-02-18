@@ -6,22 +6,22 @@ interface
 
 uses
   SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ComCtrls, ExtCtrls, IniFiles;
+  Dialogs, StdCtrls, ComCtrls, ExtCtrls, IniFiles, LCLIntf;
 
 type
 
   { TConfigForm }
 
   TConfigForm = class(TForm)
+    Btn_OpenDir: TButton;
+    Btn_SelectDir: TButton;
     E_waip_praefix: TEdit;
     E_waip_suffix: TEdit;
     GroupBox1: TGroupBox;
     GroupBox2: TGroupBox;
-    Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
-    M_DirectoryList: TMemo;
     ProxyHost: TEdit;
     E_Pfad: TEdit;
     Label1: TLabel;
@@ -37,6 +37,8 @@ type
     T_Qualli: TTrackBar;
     Btn_Back: TButton;
     procedure Btn_BackClick(Sender: TObject);
+    procedure Btn_OpenDirClick(Sender: TObject);
+    procedure Btn_SelectDirClick(Sender: TObject);
     procedure E_PfadEditingDone(Sender: TObject);
     procedure E_waip_praefixEditingDone(Sender: TObject);
     procedure E_waip_suffixEditingDone(Sender: TObject);
@@ -183,6 +185,22 @@ end;
 procedure TConfigForm.Btn_BackClick(Sender: TObject);
 begin
   ConfigForm.Hide;
+end;
+
+procedure TConfigForm.Btn_OpenDirClick(Sender: TObject);
+begin
+  OpenDocument(E_Pfad.Text);
+end;
+
+procedure TConfigForm.Btn_SelectDirClick(Sender: TObject);
+var uebergabeordner, tmp_dir: String;
+begin
+  getdir(0, tmp_dir);
+  if selectdirectory('Bitte wählen Sie den Ordner aus, in welchem die Übergabedateien liegen', tmp_dir, uebergabeordner) then
+  begin
+    E_Pfad.Text := uebergabeordner;
+    SaveConfig;
+  end;
 end;
 
 procedure TConfigForm.FormClose(Sender: TObject);
