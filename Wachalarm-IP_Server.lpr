@@ -4,6 +4,10 @@ program WachalarmIPServer;
 
 uses
 
+  {$ifdef unix}
+    cthreads,
+  {$endif}
+
   Forms, Interfaces, Splash,
   Main in 'Main.pas' {MainForm},
   Config in 'Config.pas' {ConfigForm},

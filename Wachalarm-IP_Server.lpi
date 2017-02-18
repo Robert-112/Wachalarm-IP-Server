@@ -50,9 +50,11 @@
       <Unit0>
         <Filename Value="Wachalarm-IP_Server.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="18" Y="10"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <CursorPos X="3" Y="7"/>
         <UsageCount Value="209"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="Main.pas"/>
@@ -135,7 +137,6 @@
       <Unit10>
         <Filename Value="Funktionen.pas"/>
         <IsPartOfProject Value="True"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
         <TopLine Value="324"/>
         <CursorPos X="55" Y="362"/>
