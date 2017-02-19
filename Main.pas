@@ -41,6 +41,7 @@ type
     Label14: TLabel;
     Label16: TLabel;
     Label2: TLabel;
+    Label3: TLabel;
     Label7: TLabel;
     GroupBox1: TGroupBox;
     ImageList1: TImageList;
@@ -95,6 +96,7 @@ type
     Verbindung1: TMenuItem;
     Log: TMemo;
     procedure AlarmSimulation1Click(Sender: TObject);
+    procedure Label3Click(Sender: TObject);
     procedure LogChange(Sender: TObject);
     procedure M_StringReplace_PictureEditingDone(Sender: TObject);
     procedure M_StringReplace_TweetEditingDone(Sender: TObject);
@@ -1128,7 +1130,7 @@ begin
   if (Anzahl_aktuelle_Alarme = 0) AND (waip_txt = '') then
   begin
     L_Auftragsstatus.Font.Color := clgreen;
-    L_Auftragsstatus.Caption := 'Warte auf neuen Alarm';
+    L_Auftragsstatus.Caption := 'warte auf neuen Alarm';
     PG_Verarbeitungsstatus.Position := 0;
   end;
   // wenn keine Alarme verarbeitet werden und neue Übergabedatei vorliegt, dann Alarmierung durchführen
@@ -1373,6 +1375,11 @@ begin
   'FTP-Passwort: ' + Pass + #13#10 +
   'FTP-Port: 60144 (60143 Passiv)' + #13#10 +
   'UDP-Port: 60132');
+end;
+
+procedure TMainForm.Label3Click(Sender: TObject);
+begin
+  OpenURL('https://github.com/Robert-112/Wachalarm-IP-Server');
 end;
 
 procedure TMainForm.AlarmSimulation1Click(Sender: TObject);
