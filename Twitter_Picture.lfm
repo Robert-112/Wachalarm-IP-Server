@@ -1,7 +1,7 @@
 object TwitterForm: TTwitterForm
-  Left = 370
+  Left = 433
   Height = 512
-  Top = 330
+  Top = 184
   Width = 910
   BorderStyle = bsSingle
   Caption = 'Twitter-Bild'
@@ -1251,15 +1251,19 @@ object TwitterForm: TTwitterForm
     }
   end
   object L_Account_Name: TLabel
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
     Left = 25
-    Height = 68
-    Top = 0
-    Width = 455
+    Height = 60
+    Top = 8
+    Width = 434
+    Anchors = [akLeft, akBottom]
+    BorderSpacing.Bottom = 444
     Caption = '<Account-Name>'
     Font.CharSet = ANSI_CHARSET
     Font.Color = 3158227
-    Font.Height = -48
-    Font.Name = 'Arial Black'
+    Font.Height = -53
+    Font.Name = 'Arial'
     Font.Pitch = fpVariable
     Font.Quality = fqAntialiased
     Font.Style = [fsBold, fsItalic]

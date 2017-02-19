@@ -71,6 +71,19 @@ begin
     TwitterForm.I_Background.Picture.LoadFromFile(Dir + Slash + 'twitter_background.jpg');
   except
   end;
+  // Schriftart DejaVu Sans setzen, sofern vorhanden, sonst default
+  if Screen.Fonts.IndexOf('DejaVu Sans') <> -1 then
+  begin
+    L_Account_Name.Font.Name := 'DejaVu Sans';
+    L_Text_Einsatzort.Font.Name := 'DejaVu Sans';
+    L_Ort_Ortsteil.Font.Name := 'DejaVu Sans';
+    L_Text_Einsatzgrund.Font.Name := 'DejaVu Sans';
+    L_Einsatzart_Langtext.Font.Name := 'DejaVu Sans';
+    L_Stichwort_Langtext.Font.Name := 'DejaVu Sans';
+    L_Wachen_Einsatzmittel.Font.Name := 'DejaVu Sans';
+    L_Datum_Uhrzeit.Font.Name := 'DejaVu Sans';
+    L_At_Account.Font.Name := 'DejaVu Sans';
+  end;
 end;
 
 procedure TTwitterForm.L_Wachen_EinsatzmittelResize(Sender: TObject);
