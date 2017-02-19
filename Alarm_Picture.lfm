@@ -1,7 +1,7 @@
 object PictureForm: TPictureForm
-  Left = -110
+  Left = 338
   Height = 741
-  Top = 258
+  Top = 158
   Width = 1176
   Caption = 'Wachalarm-Bild'
   ClientHeight = 741
@@ -16,8 +16,7 @@ object PictureForm: TPictureForm
   Position = poScreenCenter
   ShowInTaskBar = stAlways
   UseDockManager = True
-  LCLVersion = '1.6.0.4'
-  Visible = False
+  LCLVersion = '1.6.2.0'
   object P_Top: TPanel
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = Owner

@@ -61,6 +61,17 @@ begin
   P_Right.BevelOuter := bvNone;
   P_Button.BevelOuter := bvNone;
   PictureForm.Color := clBlack;
+  // Schriftart DejaVu Sans setzen, sofern vorhanden, sonst default
+  if Screen.Fonts.IndexOf('DejaVu Sans') <> -1 then
+  begin
+    LEinsatzart.Font.Name := 'DejaVu Sans';
+    LAlarmGrund.Font.Name := 'DejaVu Sans';
+    LSondersig.Font.Name := 'DejaVu Sans';
+    LOrtsdaten.Font.Name := 'DejaVu Sans';
+    LBesonder.Font.Name := 'DejaVu Sans';
+    LEinsatzmittel.Font.Name := 'DejaVu Sans';
+    LMitaus.Font.Name := 'DejaVu Sans';
+  end;
 end;
 
 procedure TPictureForm.Form_anpassen;
