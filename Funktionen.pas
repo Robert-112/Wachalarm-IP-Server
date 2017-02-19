@@ -43,6 +43,12 @@ begin
   // ToDo: bessere Funktion für Windows und Linux finden
   try
     Form_for_Image.show;
+    // Bugfix für Bilderstellung unter Linux
+    {$ifdef unix}
+      Application.ProcessMessages;
+      Sleep(100);
+      Application.ProcessMessages;
+    {$endif}
     FormImage := Form_for_Image.GetFormImage;
     FormImage.Canvas.Changed;
     // JPG aus BMP erstellen
@@ -103,11 +109,14 @@ begin
   end;
   for i:=0 to sl.Count-1 do
   begin
-    if (Pos('IPv4', sl[i])=0) and (Pos('IP-', sl[i])=0) and (Pos('IP Address', sl[i])=0) then Continue;
+    if (Pos('IPv4', sl[i])=0) {and (Pos('IP-', sl[i])=0)} and (Pos('IP Address', sl[i])=0) then Continue;
     s:=sl[i];
     s:=Trim(Copy(s, Pos(':', s)+1, 999));
     if Pos(':', s)>0 then Continue; // IPv6
-    Result:=Result+s+'  ';
+    if Result = '' then
+      Result := s
+    else
+      Result := Result +', ' + s;
   end;
   {$ENDIF}
   {$IFDEF UNIX}
@@ -121,14 +130,22 @@ begin
   finally
     AProcess.Free();
   end;
-
   for i:=0 to sl.Count-1 do
   begin
-    n:=Pos('inet addr:', sl[i]);
+    n:=Pos('inet ', sl[i]);
     if n=0 then Continue;
     s:=sl[i];
-    s:=Copy(s, n+Length('inet addr:'), 999);
-    Result:=Result+Trim(Copy(s, 1, Pos(' ', s)))+'  ';
+    s:=Copy(s, n+Length('inet '), 999);
+    if pos('addr:' ,s) > 0 then
+      s:=StringReplace(s,'addr:','',[rfReplaceAll]);
+    s:=Trim(Copy(s, 1, Pos(' ', s)));
+    if leftstr(s,8) <> '127.0.0.' then
+    begin
+      if Result = '' then
+        Result := s
+      else
+        Result := Result +', ' + s;
+    end;
   end;
   {$ENDIF}
   sl.Free();
