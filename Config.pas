@@ -90,8 +90,6 @@ begin
   end;
 end;
 
-
-
 procedure TConfigForm.FormCreate(Sender: TObject);
 begin
   {$ifdef  Windows}
@@ -135,6 +133,18 @@ begin
       Config_INI.free;
     end;
   end;
+  // Standardwerte laden, falls noch keine Einstellungen vorhanden sind
+  if E_Pfad.Text = '' then
+    {$ifdef  Windows}
+      E_Pfad.Text := 'C:\';
+    {$else}
+      E_Pfad.Text := '/';
+  {$endif}
+  if E_waip_praefix.Text = '' then
+    E_waip_praefix.Text := 'waip';
+  if E_waip_suffix.Text = '' then
+    E_waip_suffix.Text := 'txt';
+  // sonstige GUI-Werte
   ConfigForm.L_Prozent.Caption := inttostr(ConfigForm.T_Qualli.Position*10) + '% ';
   MainForm.StatusBar1.Panels[0].Text := 'Waip.txt-Pfad: ' + ConfigForm.E_Pfad.Text;
   Create_form := false;
