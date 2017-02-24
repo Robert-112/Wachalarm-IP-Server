@@ -109,7 +109,7 @@ begin
   end;
   for i:=0 to sl.Count-1 do
   begin
-    if (Pos('IPv4', sl[i])=0) {and (Pos('IP-', sl[i])=0)} and (Pos('IP Address', sl[i])=0) then Continue;
+    if (Pos('IPv4', sl[i])=0) and (Pos('IP-Adresse', sl[i])=0) and (Pos('IP Address', sl[i])=0) then Continue;
     s:=sl[i];
     s:=Trim(Copy(s, Pos(':', s)+1, 999));
     if Pos(':', s)>0 then Continue; // IPv6
