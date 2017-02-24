@@ -60,8 +60,9 @@
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <TopLine Value="1101"/>
-        <CursorPos X="35" Y="1133"/>
+        <CursorPos X="27" Y="1107"/>
         <UsageCount Value="209"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -83,11 +84,10 @@
         <ComponentName Value="PictureForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="22"/>
         <CursorPos X="28" Y="64"/>
         <UsageCount Value="209"/>
-        <Loaded Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="C:\Lazarus\lcl\interfaces\win32\win32memostrings.inc"/>
@@ -138,10 +138,11 @@
       <Unit10>
         <Filename Value="Funktionen.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="1"/>
         <TopLine Value="92"/>
-        <CursorPos X="28" Y="135"/>
+        <CursorPos X="51" Y="112"/>
         <UsageCount Value="201"/>
+        <Loaded Value="True"/>
       </Unit10>
       <Unit11>
         <Filename Value="res\packages\websocket\http_server.pas"/>
@@ -189,12 +190,10 @@
         <ComponentName Value="TwitterForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <EditorIndex Value="2"/>
+        <EditorIndex Value="-1"/>
         <TopLine Value="48"/>
         <CursorPos X="29" Y="70"/>
         <UsageCount Value="200"/>
-        <Loaded Value="True"/>
       </Unit17>
       <Unit18>
         <Filename Value="Simulation.pas"/>
@@ -275,7 +274,7 @@
         <UsageCount Value="5"/>
       </Unit27>
     </Units>
-    <JumpHistory Count="25" HistoryIndex="24">
+    <JumpHistory Count="24" HistoryIndex="23">
       <Position1>
         <Filename Value="Main.pas"/>
         <Caret Line="897" TopLine="879"/>
@@ -372,19 +371,19 @@
         <Filename Value="Main.pas"/>
         <Caret Line="1389" Column="58" TopLine="1358"/>
       </Position24>
-      <Position25>
-        <Filename Value="Twitter_Picture.pas"/>
-        <Caret Line="88" Column="17" TopLine="32"/>
-      </Position25>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
     <PathDelim Value="\"/>
+    <Target>
+      <Filename Value="Wachalarm-IP-Server_$(TargetOS)"/>
+    </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
       <Libraries Value="lib"/>
       <OtherUnitFiles Value="packages\synapse;packages\twitter"/>
+      <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
       <Debugging>
