@@ -812,14 +812,14 @@ object MainForm: TMainForm
       AnchorSideTop.Control = GroupBox1
       AnchorSideRight.Control = GroupBox1
       AnchorSideRight.Side = asrBottom
-      Left = 710
+      Left = 699
       Height = 16
       Top = 15
-      Width = 156
+      Width = 167
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 15
       BorderSpacing.Right = 20
-      Caption = 'Version 2.8.3 (19.02.2017)'
+      Caption = 'Version 2.8.3.1 (03.03.2017)'
       ParentColor = False
     end
     object PG_Verarbeitungsstatus: TProgressBar
