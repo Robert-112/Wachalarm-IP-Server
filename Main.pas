@@ -151,7 +151,7 @@ var
   E_Ort, E_Ortsteil, E_Strasse, E_Objekt, E_Objektnummer, E_Objektart, E_Einsatzart, E_Stichwort, 
   E_Sondersignal, E_Einsatznummer, E_Besonderheiten, E_PName, E_Alarmzeit, E_Wachennummer, 
   E_Alarmierte_EM, E_Mitausgerueckte_EM, Dir, Slash, Udp_Sound, User, Pass: String;
-  Fehlerindex, Anzahl_aktuelle_Alarme, TmpFile_Timer: Integer;
+  Fehlerindex, Anzahl_aktuelle_Alarme, Reset_Timer: Integer;
   Config_INI: TIniFile;
 
 implementation
@@ -179,7 +179,7 @@ begin
   {$endif}
   Fehlerindex := 0;
   Anzahl_aktuelle_Alarme := 0;
-  TmpFile_Timer := 0;
+  Reset_Timer := 0;
   DefaultFormatSettings.DateSeparator := '.';
   DefaultFormatSettings.TimeSeparator := ':';
   DefaultFormatSettings.ShortDateFormat := 'dd.mm.yyyy';
@@ -459,7 +459,7 @@ begin
   // Objekt auslesen, entfernen, Variable setzen und Label zuweisen
   Auslesetext:= copy(MainForm.M_Auftrag.Lines.text,pos('Objekt~',MainForm.M_Auftrag.Text)+8,50);
   Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
-  E_Objekt := Auslesetext;
+  E_Objekt := TrimLeft(Auslesetext);
   // Objektnummer auslesen, Variable setzen und entfernen
   Auslesetext := copy(MainForm.M_Auftrag.Lines.text,pos('Objektnummer~',MainForm.M_Auftrag.Text)+14,20);
   Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
@@ -548,7 +548,7 @@ end;
 
 procedure TMainForm.Alarmierung_durchfuehren(Simulation: Boolean);
 var i, j: integer;
-    UDP_Funkkenner, Alarmweg_now, Alarmweg_rest, Alarmweg_alarmiert: string;
+    UDP_Funkkenner, Alarmweg_now, Alarmweg_rest, Alarmweg_alarmiert, TMP_E_Ortsteil: string;
 begin
   Alarmweg_alarmiert := '';
   // doppelte IP's aus Einsatzmittel.IP entfernen um doppelte Alarmierungen auszuschließen
@@ -645,8 +645,12 @@ begin
             // wenn kein @ in IP enthalten, dann FTP-Bild/UDP senden
             else
             begin
+              // kleine Anpassung des Ortsteils um ein Leerzeichen für UDP-String
+              TMP_E_Ortsteil := '';
+              if E_Ortsteil <> '' then
+                TMP_E_Ortsteil := ' ' + E_Ortsteil;
               // String für UDP-Soundausgabe erzeugen
-              Udp_Sound := E_Einsatzart +'|'+ E_Ort + ' ' + E_Ortsteil +'|'+ E_Stichwort +'|'+ UDP_Funkkenner + ' (' + StringReplace(E_Alarmierte_EM,', ', ' ',[rfReplaceAll]) + ') ' +'|'+ E_Sondersignal;
+              Udp_Sound := E_Einsatzart +'|'+ E_Ort + TMP_E_Ortsteil +'|'+ E_Stichwort +'|'+ UDP_Funkkenner + ' (' + StringReplace(E_Alarmierte_EM,', ', ' ',[rfReplaceAll]) + ') ' +'|'+ E_Sondersignal;
               // FTP-Upload durchfuehren
               FTP_Alarm(Einsatzmittel[i].Wache, E_Einsatznummer, Einsatzmittel[i].IP, Alarmweg_now, Udp_Sound, Simulation);
             end;
@@ -1069,7 +1073,7 @@ procedure TMainForm.Timer1Timer(Sender: TObject);
 var rename, Archiv_Dir, waip_txt, waip_pfad, s: String;
     tfIn: TextFile;
     Einlesen_erfolgreich: Boolean;
-    WaipFiles, TmpFiles: TStringList;
+    WaipFiles: TStringList;
 begin
   // Timer auf 500 ms gestellt
   waip_pfad := '';
@@ -1092,46 +1096,13 @@ begin
       WaipFiles.Free;
     end;
   end;
-  // prüfen ob eine *.tmp-Datei im Übergabeordner liegt, welche noch nicht eingelesen wurde
-  if Assigned(ConfigForm) then
-  begin
-    // erst nach min. 5 Timer-Durchläufen beginnen
-    TmpFile_Timer := TmpFile_Timer + 1;
-    if (TmpFile_Timer > 5) then
-    begin
-      // auf *.tmp-Datei prüfen
-      TmpFiles := TStringList.Create;
-      TmpFiles := FindAllFiles(ConfigForm.E_Pfad.Text + Slash, ConfigForm.E_waip_praefix.Text + '*' + ConfigForm.E_waip_suffix.Text + '*.tmp', false);
-      // immer leeren String anfügen, damit nachfolgende Bedingung auch ohne *.tmp-Datei geprüft werden kann
-     // TmpFiles.Add('');
-      try
-        if TmpFiles.Count > 0 then
-        begin
-          // sollte eine *tmp-Datei vorliegen, so soll diese gemäß den Vorgaben umbenannt werden
-          if TmpFiles[0] <> '' then
-          begin
-            // vor dem Umbenennen nochmals etwas warten, falls die Datei durch die CELIOS-Schnittstelle umbenannt wurde
-            if (TmpFile_Timer > 10) then
-            begin
-              RenameFile(TmpFiles[0], ConfigForm.E_Pfad.Text + Slash + ConfigForm.E_waip_praefix.Text + '.' + ConfigForm.E_waip_suffix.Text);
-              TmpFile_Timer := 0;
-            end
-          end;
-        end;
-      finally
-        TmpFiles.Free;
-      end;
-    end;
-    // TmpFile_Timer ab 100 wieder zurücksetzen
-    if (TmpFile_Timer > 100) then
-      TmpFile_Timer := 0;
-  end;
-  // wenn keine Alarme verarbeitet werden und keine Datei vorhanden, dann Beschriftung zurücksetzen
+  // wenn keine Alarme verarbeitet werden und keine Datei vorhanden, dann alles zurücksetzen
   if (Anzahl_aktuelle_Alarme = 0) AND (waip_txt = '') then
   begin
     L_Auftragsstatus.Font.Color := clgreen;
     L_Auftragsstatus.Caption := 'warte auf neuen Alarm';
     PG_Verarbeitungsstatus.Position := 0;
+    Reset_Timer := 0;
   end;
   // wenn keine Alarme verarbeitet werden und neue Übergabedatei vorliegt, dann Alarmierung durchführen
   if (Anzahl_aktuelle_Alarme = 0) AND (FileExists(waip_pfad + waip_txt)) then
@@ -1200,6 +1171,13 @@ begin
     L_Auftragsstatus.Caption := 'letzter Auftrag wird abgeschlossen, noch ' + inttostr(Anzahl_aktuelle_Alarme) + ' Alarm(e) offen';
     PG_Verarbeitungsstatus.Position := 100;
   end;
+  // Einlese-Prozess reseten, falls nach 1 Minute (120 Timer) noch nicht alle anstehenden Alarme gesendet wurden
+  if (Anzahl_aktuelle_Alarme > 0) AND (Reset_Timer > 120) then
+  begin
+    Anzahl_aktuelle_Alarme := 0;
+    Reset_Timer := 0;
+  end;
+  Reset_Timer := Reset_Timer + 1;
 end;
 
 procedure TMainForm.Timer1StopTimer(Sender: TObject);
