@@ -1316,10 +1316,9 @@ object TwitterForm: TTwitterForm
   end
   object L_Text_Einsatzgrund: TLabel
     Left = 25
-    Height = 45
+    Height = 38
     Top = 136
-    Width = 200
-    AutoSize = False
+    Width = 198
     Caption = 'Einsatzgrund:'
     Font.CharSet = ANSI_CHARSET
     Font.Color = clSilver
