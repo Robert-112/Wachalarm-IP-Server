@@ -477,7 +477,7 @@ begin
   FDSock := TTCPBlockSocket.Create;
   FDSock.Owner := self;
   FFtpList := TFTPList.Create;
-  FTimeout := 300000;
+  FTimeout := 200000;  //befor 300000
   FTargetPort := cFtpProtocol;
   FUsername := 'anonymous';
   FPassword := 'anonymous@' + FSock.LocalName;
