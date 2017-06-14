@@ -1343,7 +1343,7 @@ begin
     Log.Lines.Delete(Log.Lines.Count - 1);
   Log.SelStart := 0;
   //Logdatei speichern
-  Log.Lines.SaveToFile(Dir + Slash + 'Wa-Log.txt');
+  Log.Lines.SaveToFile(Dir + Slash + 'WA-Log.txt');
 end;
 
 procedure TMainForm.Verbindung1Click(Sender: TObject);
