@@ -662,7 +662,7 @@ begin
       exit;
 
   URL := TwitterAPIURL + '/1.1/statuses/update.json';
-  FOAuth.SendBody := ('status=' + EncodeURLElementRFC3896(Message));
+  FOAuth.SendBody := ('tweet_mode=extended&status=' + EncodeURLElementRFC3896(Message));
   // A 403 can indicate a duplicate tweet... or tweet limit reached. So return false to indicate status not updated
   Result := (FOauth.OAuthHTTPMethod('POST', URL) = 200);
 
@@ -681,7 +681,7 @@ begin
       exit;
 
   URL := TwitterAPIURL + '/1.1/statuses/update.json';
-  FOAuth.SendBody := ('status=' + EncodeURLElementRFC3896(Message));
+  FOAuth.SendBody := ('tweet_mode=extended&status=' + EncodeURLElementRFC3896(Message));
   // A 403 can indicate a duplicate tweet... or tweet limit reached. So return false to indicate status not updated
   if FOauth.OAuthHTTPMethod('POST', URL) = 200 then
     Result := ProcessTweets(FOAuth.ReceivedBody);
@@ -700,7 +700,7 @@ begin
     if not (Connect) then
       exit;
   // set Parameters and URL
-  Parameters := 'media_ids=' + media_ids + '&in_reply_to_status_id=' + in_reply_to_status_id + '&status=' + EncodeURLElementRFC3896(status);
+  Parameters := 'tweet_mode=extended&media_ids=' + media_ids + '&in_reply_to_status_id=' + in_reply_to_status_id + '&status=' + EncodeURLElementRFC3896(status);
   URL := TwitterAPIURL + '/1.1/statuses/update.json';
   // POST statuses/update
   FOAuth.SendBody := Parameters;
@@ -725,7 +725,7 @@ begin
   // set URL
   URL := 'https://upload.twitter.com/1.1/media/upload.json';
   // ppload Media
-  FOAuth.SendBody := ('media_data=' + EncodeURLElementRFC3896(media_data));
+  FOAuth.SendBody := ('tweet_mode=extended&media_data=' + EncodeURLElementRFC3896(media_data));
   // A 403 can indicate a duplicate tweet... or tweet limit reached. So return false to indicate status not updated
   if FOauth.OAuthHTTPMethod('POST', URL) = 200 then
     Result := FOAuth.ReceivedBody
