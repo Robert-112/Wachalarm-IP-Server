@@ -903,9 +903,9 @@ begin
       //Falls Wachen nicht gewollt, trotzdem Variable setzen
       T_Wachen := '-';
     end;
-    //abschließend den Tweet auf max 140 Zeichen kürzen, Wichtig UTF8Lenght für richtige länge benutzen!
-    if UTF8Length(Tweet) > 140 then
-      Tweet := UTF8LeftStr(Tweet, 136) + nbs + '...';
+    //abschließend den Tweet auf max 260 Zeichen kürzen, Wichtig UTF8Lenght für richtige länge benutzen! (Puffer für EMOJI)
+    if UTF8Length(Tweet) > 280 then
+      Tweet := UTF8LeftStr(Tweet, 260) + nbs + '...';
     // T_Einsatzdaten für Abgleich in Chronik zusammensetzen
     T_Einsatzdaten := E_Einsatzart +', '+ E_Stichwort +', '+ E_Ort +', '+ E_Ortsteil +', '+ T_Wachen +', '+ E_Alarmierte_EM +', '+ E_Sondersignal;
     // T_Einsatzdaten in UID umwandeln (kürzerer Text)
@@ -946,13 +946,13 @@ begin
           TwitterForm.L_Ort_Ortsteil.Caption := E_Ort + ', ' + E_Ortsteil;
         if E_Einsatzart = 'Brandeinsatz' then
         begin
-          TwitterForm.L_Einsatzart_Langtext.Font.Color := RGB(231 ,73, 70);
-          TwitterForm.L_Stichwort_Langtext.Font.Color := RGB(231 ,73, 70);
+          TwitterForm.L_Einsatzart_Langtext.Font.Color := RGB(226, 0, 38);
+          TwitterForm.L_Stichwort_Langtext.Font.Color := RGB(226, 0, 38);
         end;
         if E_Einsatzart = 'Hilfeleistungseinsatz' then
         begin
-          TwitterForm.L_Einsatzart_Langtext.Font.Color := RGB(64, 153, 255);
-          TwitterForm.L_Stichwort_Langtext.Font.Color := RGB(64, 153, 255);
+          TwitterForm.L_Einsatzart_Langtext.Font.Color := RGB(0, 172, 229);
+          TwitterForm.L_Stichwort_Langtext.Font.Color := RGB(0, 172, 229);
         end;
         if E_Einsatzart = 'Rettungseinsatz' then
         begin
