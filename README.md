@@ -112,9 +112,11 @@ Die Verteilung der Einsatzdaten an die Cleints bzw. an Twitter erfolgt über ein
 | 3 (Fahrzeug ausgerückt) | ALARM | 192.168.1.10# | CB FW Cottbus 1ø | FL CB 01/12-01 | 11:01 | 11:10 |
 | 3 (Twitter) | ALARM | @Twitter-Account# | CB FW Sachsendorfø | FL CB 14/23-02 | 11:14 |  |
 
+Die Werte für die Alarm-Adresse, die Wache und das Einsatzmittel müssen über die Schnittstelle gesetzt werden. Z.B. über die Datenpflege des Einsatzleitsystems
+
 # Einstellungen
+### Einstellungen zur Schnittstelle
 Im nachfolgenden wird erklärt, welche allgemeinen Einstellungen am Wachalarm-IP-Server getätigt werden können. Das entsprechende Fenster wird über das Menu *"Programm"* -> *"Einstellungen"* geöffnet. Alle Einstellungen werden im Unterordner *"config"* in der Datei *"config.ini"* gespeichert.
-### Einstellungen zur Schnittstellen
 #### Pfad zur Übergabedatei
 >Vollständiger Pfad in dem die Text-Dateien durch das Einsatzleitsystem abgelegt werden.
 #### Zusammensetzung der Übergabedatei
@@ -127,6 +129,11 @@ Im nachfolgenden wird erklärt, welche allgemeinen Einstellungen am Wachalarm-IP
 #### Proxy-Einstellungen (für Twitter)
 >Hier kein Proxy für die Veröffentlichung der Twitter-Nachrichten angegeben werden.
 
+### Einstellungen Wachalarm
+Im Reiter *"Wachalarm"* -> *"IP-Replace"* können Alarm-Adressen (die über die Schnittstellen-Datei ausgelesen werden) ersetzt werden. 
+Sollten in einer Wache mehrere Clients ausgeführt werden, oder hat die Wache auch einen Twitter-Account, so können hier zusätzliche IP-Adressen hinterlegt werden. Beispiel: 
+
+> 127.0.0.1 -> 127.0.0.1,@Twitter-Account,127.0.0.2
 
 ### Programm beenden
 Die Anwendung wird über das  Menu *"Programm"* -> *"Beenden"* geschlossen.
@@ -137,7 +144,9 @@ Die Anwendung wird über das  Menu *"Programm"* -> *"Beenden"* geschlossen.
 ## Alarmbild (Vorschau)
 ![Alarm](https://user-images.githubusercontent.com/19272095/47463988-2b154980-d7e8-11e8-9fe3-60ae368419a4.PNG)
 ## Twitter (Vorschau)
-![alt Twitter](https://user-images.githubusercontent.com/19272095/47464023-45e7be00-d7e8-11e8-8336-443903508102.PNG)
+![Twitter](https://user-images.githubusercontent.com/19272095/47464023-45e7be00-d7e8-11e8-8336-443903508102.PNG)
+## Alarm-Simulation
+![Simulation](https://user-images.githubusercontent.com/19272095/47464505-ab887a00-d7e9-11e8-98b8-2cc996b29dbe.PNG)
 # Lizenz
 
 #### [Creative Commons Attribution Share Alike 4.0 International](https://github.com/Robert-112/Wachalarm-IP-Server/blob/master/LICENSE.md)
