@@ -1,20 +1,21 @@
 object ConfigForm: TConfigForm
   Left = 622
-  Height = 450
+  Height = 500
   Top = 404
   Width = 700
   BorderStyle = bsToolWindow
   Caption = 'Einstellungen'
-  ClientHeight = 450
+  ClientHeight = 500
   ClientWidth = 700
   Color = clBtnFace
+  DesignTimePPI = 120
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   OnClose = FormClose
   OnCreate = FormCreate
   Position = poDesktopCenter
-  LCLVersion = '1.6.2.0'
+  LCLVersion = '1.8.4.0'
   object Btn_Back: TButton
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
@@ -22,7 +23,7 @@ object ConfigForm: TConfigForm
     AnchorSideBottom.Side = asrBottom
     Left = 615
     Height = 25
-    Top = 415
+    Top = 465
     Width = 75
     Anchors = [akRight, akBottom]
     BorderSpacing.Right = 10
@@ -40,13 +41,13 @@ object ConfigForm: TConfigForm
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
     Left = 0
-    Height = 175
-    Top = 230
+    Height = 185
+    Top = 270
     Width = 700
     Anchors = [akTop, akLeft, akRight, akBottom]
     BorderSpacing.Bottom = 45
     Caption = 'Optionale Proxy-Einstellungen für Twitter'
-    ClientHeight = 157
+    ClientHeight = 167
     ClientWidth = 696
     TabOrder = 1
     object ProxyPort: TEdit
@@ -168,12 +169,12 @@ object ConfigForm: TConfigForm
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     Left = 0
-    Height = 230
+    Height = 270
     Top = 0
     Width = 700
     Anchors = [akTop, akLeft, akRight]
     Caption = 'Allgemeine Einstellungen zur Schnittstelle'
-    ClientHeight = 212
+    ClientHeight = 252
     ClientWidth = 696
     TabOrder = 2
     object Label1: TLabel
@@ -336,6 +337,31 @@ object ConfigForm: TConfigForm
       Caption = 'Ordner auswählen'
       OnClick = Btn_SelectDirClick
       TabOrder = 5
+    end
+    object L_ip_web: TLabel
+      AnchorSideLeft.Control = GroupBox2
+      AnchorSideTop.Control = Label3
+      Left = 10
+      Height = 26
+      Top = 200
+      Width = 135
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 110
+      Caption = 'IP-Adresse für Waip-Web:'#13#10'(eigenständige Anwendung)'
+      ParentColor = False
+    end
+    object E_ip_web: TEdit
+      AnchorSideLeft.Control = GroupBox2
+      AnchorSideTop.Control = E_Pfad
+      Left = 150
+      Height = 21
+      Top = 200
+      Width = 216
+      BorderSpacing.Left = 150
+      BorderSpacing.Top = 190
+      OnEditingDone = E_ip_webEditingDone
+      TabOrder = 6
+      Text = '127.0.0.1'
     end
   end
 end

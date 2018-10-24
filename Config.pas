@@ -16,12 +16,14 @@ type
     Btn_OpenDir: TButton;
     Btn_SelectDir: TButton;
     E_waip_praefix: TEdit;
+    E_ip_web: TEdit;
     E_waip_suffix: TEdit;
     GroupBox1: TGroupBox;
     GroupBox2: TGroupBox;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
+    L_ip_web: TLabel;
     ProxyHost: TEdit;
     E_Pfad: TEdit;
     Label1: TLabel;
@@ -39,6 +41,7 @@ type
     procedure Btn_BackClick(Sender: TObject);
     procedure Btn_OpenDirClick(Sender: TObject);
     procedure Btn_SelectDirClick(Sender: TObject);
+    procedure E_ip_webEditingDone(Sender: TObject);
     procedure E_PfadEditingDone(Sender: TObject);
     procedure E_waip_praefixEditingDone(Sender: TObject);
     procedure E_waip_suffixEditingDone(Sender: TObject);
@@ -79,6 +82,7 @@ begin
       Config_INI.WriteInteger('Einstellungen','Bild_Quali',ConfigForm.T_Qualli.Position);
       Config_INI.WriteString('Einstellungen','Waip_Praefix',ConfigForm.E_waip_praefix.Text);
       Config_INI.WriteString('Einstellungen','Waip_Suffix',ConfigForm.E_waip_suffix.Text);
+      Config_INI.WriteString('Einstellungen','Waip-Web_IP',ConfigForm.E_ip_web.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Host',ConfigForm.ProxyHost.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Port',ConfigForm.ProxyPort.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Benutzer',ConfigForm.ProxyUser.Text);
@@ -109,6 +113,7 @@ begin
       ConfigForm.T_Qualli.Position := Config_INI.ReadInteger('Einstellungen','Bild_Quali',0);
       ConfigForm.E_waip_praefix.Text := Config_INI.ReadString('Einstellungen','Waip_Praefix','');
       ConfigForm.E_waip_suffix.Text := Config_INI.ReadString('Einstellungen','Waip_Suffix','');
+      ConfigForm.E_ip_web.Text := Config_INI.ReadString('Einstellungen','Waip-Web_IP','');
       ConfigForm.ProxyHost.Text := Config_INI.ReadString('Einstellungen','Proxy_Host','');
       ConfigForm.ProxyPort.Text := Config_INI.ReadString('Einstellungen','Proxy_Port','');
       ConfigForm.ProxyUser.Text := Config_INI.ReadString('Einstellungen','Proxy_Benutzer','');
@@ -125,6 +130,7 @@ begin
       Config_INI.WriteInteger('Einstellungen','Bild_Quali',ConfigForm.T_Qualli.Position);
       Config_INI.WriteString('Einstellungen','Waip_Praefix',ConfigForm.E_waip_praefix.Text);
       Config_INI.WriteString('Einstellungen','Waip_Suffix',ConfigForm.E_waip_suffix.Text);
+      Config_INI.WriteString('Einstellungen','Waip-Web_IP',ConfigForm.E_ip_web.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Host',ConfigForm.ProxyHost.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Port',ConfigForm.ProxyPort.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Benutzer',ConfigForm.ProxyUser.Text);
@@ -211,6 +217,11 @@ begin
     E_Pfad.Text := uebergabeordner;
     SaveConfig;
   end;
+end;
+
+procedure TConfigForm.E_ip_webEditingDone(Sender: TObject);
+begin
+  SaveConfig;
 end;
 
 procedure TConfigForm.FormClose(Sender: TObject);
