@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
   <ProjectOptions>
-    <Version Value="9"/>
+    <Version Value="10"/>
     <PathDelim Value="\"/>
     <General>
       <Flags>
@@ -24,9 +24,9 @@
       <MajorVersionNr Value="2"/>
       <MinorVersionNr Value="8"/>
       <RevisionNr Value="3"/>
-      <BuildNr Value="1"/>
+      <BuildNr Value="4"/>
       <Language Value="0407"/>
-      <StringTable ProductVersion=""/>
+      <StringTable ProductVersion="2.8.3.1"/>
     </VersionInfo>
     <BuildModes Count="1" Active="Default">
       <Item1 Name="Default" Default="True"/>
@@ -60,9 +60,8 @@
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="898"/>
-        <CursorPos X="124" Y="906"/>
+        <TopLine Value="732"/>
+        <CursorPos X="62" Y="760"/>
         <UsageCount Value="209"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -73,10 +72,13 @@
         <ComponentName Value="ConfigForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="112"/>
-        <CursorPos X="63" Y="138"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="73"/>
+        <CursorPos X="67" Y="89"/>
         <UsageCount Value="209"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
       </Unit2>
       <Unit3>
         <Filename Value="Alarm_Picture.pas"/>
@@ -104,7 +106,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="13" Y="7"/>
-        <UsageCount Value="90"/>
+        <UsageCount Value="94"/>
       </Unit5>
       <Unit6>
         <Filename Value="C:\lazarus\lcl\include\customform.inc"/>
@@ -139,7 +141,6 @@
         <Filename Value="Funktionen.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="118"/>
         <CursorPos X="20" Y="141"/>
         <UsageCount Value="201"/>
       </Unit10>
@@ -281,133 +282,133 @@
       </Unit28>
       <Unit29>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <EditorIndex Value="1"/>
+        <EditorIndex Value="2"/>
         <TopLine Value="677"/>
         <CursorPos X="87" Y="759"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="14"/>
         <Loaded Value="True"/>
       </Unit29>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="Main.pas"/>
-        <Caret Line="397" Column="23" TopLine="362"/>
+        <Filename Value="packages\twitter\twitter.pas"/>
+        <Caret Line="717" Column="17" TopLine="684"/>
       </Position1>
       <Position2>
-        <Filename Value="Main.pas"/>
-        <Caret Line="10" Column="47"/>
+        <Filename Value="packages\twitter\twitter.pas"/>
+        <Caret Line="739" Column="17" TopLine="706"/>
       </Position2>
       <Position3>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="638" Column="27" TopLine="628"/>
+        <Caret Line="770" Column="19" TopLine="737"/>
       </Position3>
       <Position4>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="674" Column="17" TopLine="641"/>
+        <Caret Line="103" Column="29" TopLine="84"/>
       </Position4>
       <Position5>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="694" Column="17" TopLine="661"/>
+        <Caret Line="316" Column="32" TopLine="307"/>
       </Position5>
       <Position6>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="717" Column="17" TopLine="684"/>
+        <Caret Line="435" Column="40" TopLine="403"/>
       </Position6>
       <Position7>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="739" Column="17" TopLine="706"/>
+        <Caret Line="451" Column="38" TopLine="419"/>
       </Position7>
       <Position8>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="770" Column="19" TopLine="737"/>
+        <Caret Line="458" Column="38" TopLine="426"/>
       </Position8>
       <Position9>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="103" Column="29" TopLine="84"/>
+        <Caret Line="480" Column="42" TopLine="448"/>
       </Position9>
       <Position10>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="316" Column="32" TopLine="307"/>
+        <Caret Line="508" Column="29" TopLine="476"/>
       </Position10>
       <Position11>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="435" Column="40" TopLine="403"/>
+        <Caret Line="516" Column="36" TopLine="484"/>
       </Position11>
       <Position12>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="451" Column="38" TopLine="419"/>
+        <Caret Line="523" Column="36" TopLine="491"/>
       </Position12>
       <Position13>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="458" Column="38" TopLine="426"/>
+        <Caret Line="530" Column="36" TopLine="498"/>
       </Position13>
       <Position14>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="480" Column="42" TopLine="448"/>
+        <Caret Line="545" Column="32" TopLine="513"/>
       </Position14>
       <Position15>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="508" Column="29" TopLine="476"/>
+        <Caret Line="595" Column="28" TopLine="562"/>
       </Position15>
       <Position16>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="516" Column="36" TopLine="484"/>
+        <Caret Line="95" Column="27" TopLine="73"/>
       </Position16>
       <Position17>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="523" Column="36" TopLine="491"/>
+        <Caret Line="151" Column="68" TopLine="128"/>
       </Position17>
       <Position18>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="530" Column="36" TopLine="498"/>
+        <Caret Line="645" Column="3" TopLine="624"/>
       </Position18>
       <Position19>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="545" Column="32" TopLine="513"/>
+        <Caret Line="72" Column="31" TopLine="52"/>
       </Position19>
       <Position20>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="595" Column="28" TopLine="562"/>
+        <Caret Line="703" Column="141" TopLine="141"/>
       </Position20>
       <Position21>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="95" Column="27" TopLine="73"/>
+        <Caret Line="345" Column="66" TopLine="312"/>
       </Position21>
       <Position22>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="151" Column="68" TopLine="128"/>
+        <Caret Line="428" Column="62" TopLine="336"/>
       </Position22>
       <Position23>
-        <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="645" Column="3" TopLine="624"/>
+        <Filename Value="Main.pas"/>
+        <Caret Line="909" TopLine="865"/>
       </Position23>
       <Position24>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="72" Column="31" TopLine="52"/>
+        <Caret Line="661" Column="20" TopLine="644"/>
       </Position24>
       <Position25>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="703" Column="141" TopLine="141"/>
+        <Caret Line="768" Column="23" TopLine="737"/>
       </Position25>
       <Position26>
-        <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="345" Column="66" TopLine="312"/>
+        <Filename Value="Config.pas"/>
+        <Caret Line="138" Column="63" TopLine="112"/>
       </Position26>
       <Position27>
-        <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="428" Column="62" TopLine="336"/>
+        <Filename Value="Config.pas"/>
+        <Caret Line="139" Column="63" TopLine="113"/>
       </Position27>
       <Position28>
-        <Filename Value="Main.pas"/>
-        <Caret Line="909" TopLine="865"/>
+        <Filename Value="Config.pas"/>
+        <Caret Line="132" Column="94" TopLine="132"/>
       </Position28>
       <Position29>
-        <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="661" Column="20" TopLine="644"/>
+        <Filename Value="Config.pas"/>
+        <Caret Line="134" Column="49" TopLine="176"/>
       </Position29>
       <Position30>
-        <Filename Value="packages\twitter\twitter.pas"/>
-        <Caret Line="768" Column="23" TopLine="737"/>
+        <Filename Value="Config.pas"/>
+        <Caret Line="217" Column="15" TopLine="176"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
