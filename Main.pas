@@ -24,6 +24,7 @@ type
     Thr_Stream: TMemoryStream;
     FTwitter: TTwitter;
     procedure ShowStatus;
+	procedure alert_Web;					
     procedure alert_FTP;
     procedure alert_Twitter;
   protected
@@ -121,6 +122,7 @@ type
     procedure Alarmierung_durchfuehren(Simulation: Boolean);
     procedure Twitter_Alarm(T_Wache, T_Einsatznummer, T_Empfanger_IP_all, T_Empfanger_IP_now: String; Simulation: Boolean);
     procedure FTP_Alarm(F_Wache, F_Einsatznummer, F_Empfanger_IP_all, F_Empfanger_IP_now, F_UDP_Text: String; Simulation: Boolean);
+	procedure Web_Alarm(Simulation: Boolean);										 
     procedure Client_Status(S_Fehlerindex: integer; S_Typ, S_Wache, S_IP, S_Einsatznummer, S_Meldung: String);
     procedure FormCreate(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
@@ -149,7 +151,7 @@ var
   MainForm: TMainForm;
   Einsatzmittel: Array Of TEinsatzRecord;
   E_Ort, E_Ortsteil, E_Strasse, E_Objekt, E_Objektnummer, E_Objektart, E_Einsatzart, E_Stichwort, 
-  E_Sondersignal, E_Einsatznummer, E_Besonderheiten, E_PName, E_Alarmzeit, E_Wachennummer, 
+  E_Sondersignal, E_Einsatznummer, E_Besonderheiten, E_PName, E_Alarmzeit, E_Wachennummer, E_X, E_Y,
   E_Alarmierte_EM, E_Mitausgerueckte_EM, Dir, Slash, Udp_Sound, User, Pass: String;
   Fehlerindex, Anzahl_aktuelle_Alarme, Reset_Timer: Integer;
   Config_INI: TIniFile;
@@ -296,6 +298,15 @@ begin
   info_ok := '';
   info_err := '';
   // Fehlermeldungen festlegen
+  if S_Typ = 'WEB' then
+  begin
+    // Unicode Character 'GLOBE WITH MERIDIANS' (U+1F310)
+    S_Typ := #$F0#$9F#$8C#$90 + ' Web';
+    // Wachalarm Client-Information von S_Meldung nach info_ok / info_err kopieren
+    S_Meldung := 'Siehe externe Anwendung.';
+    info_ok := '';
+    info_err := '';
+  end;		   
   if S_Typ = 'FTP' then
   begin
     // Unicode Character 'TELEVISION' (U+1F4FA)
@@ -500,6 +511,17 @@ begin
   Auslesetext := copy(MainForm.M_Auftrag.Lines.text,pos('WachennumerFW~',MainForm.M_Auftrag.Text)+15,6);
   Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
   E_Wachennummer := Auslesetext;
+  if (pos('WGS84_X~',MainForm.M_Auftrag.Text) > 0) and (pos('WGS84_Y~',MainForm.M_Auftrag.Text) > 0) then
+  begin
+    // X-Koordinate auslesen, Variable setzen und entfernen
+    Auslesetext := copy(MainForm.M_Auftrag.Lines.text,pos('WGS84_X~',MainForm.M_Auftrag.Text)+9,12);
+    Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
+    E_X := Auslesetext;
+    // Y-Koordinate auslesen, Variable setzen und entfernen
+    Auslesetext := copy(MainForm.M_Auftrag.Lines.text,pos('WGS84_Y~',MainForm.M_Auftrag.Text)+9,12);
+    Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
+    E_Y := Auslesetext;
+  end;  
   // Beteiligte Einsatzmittel auslesen (inkl. IP und Wachennname)
   for i := 0 to MainForm.M_Auftrag.Lines.Count do
   begin
@@ -551,6 +573,8 @@ var i, j: integer;
     UDP_Funkkenner, Alarmweg_now, Alarmweg_rest, Alarmweg_alarmiert, TMP_E_Ortsteil: string;
 begin
   Alarmweg_alarmiert := '';
+  // Alarm an Wachalarm-Web uebergeben
+  Web_Alarm(Simulation);
   // doppelte IP's aus Einsatzmittel.IP entfernen um doppelte Alarmierungen auszuschließen
   for i:=0 to high(Einsatzmittel) do
   begin
@@ -665,6 +689,87 @@ begin
         end;
       end;
     end;
+  end;
+end;
+
+procedure TMainForm.Web_Alarm(Simulation: Boolean);
+var
+  MyThread: TMyThread;
+  i: integer;
+  JSON_Sondersignal, JSONString: String;
+begin
+  // Sondersignal anpassen
+  if E_Sondersignal = '[mit Sondersignal]' then
+    JSON_Sondersignal := '1'
+  else
+    JSON_Sondersignal := '0';
+  // JSON erzeugen
+  JSONString := '{' +
+    '"einsatzdaten": {' +
+      '"nummer": "' + E_Einsatznummer + '",' +
+      '"alarmzeit": "' + E_Alarmzeit + '",' +
+      '"art": "' + E_Einsatzart + '",' +
+      '"stichwort": "' + E_Stichwort + '",' +
+      '"sondersignal": ' + JSON_Sondersignal + ',' +
+      '"besonderheiten": "' + E_Besonderheiten + '",' +
+      '"patient": "' + E_PName + '"' +
+    '},' +
+    '"ortsdaten": {' +
+      '"ort": "' + E_Ort + '",' +
+      '"ortsteil": "' + E_Ortsteil + '",' +
+      '"strasse": "' + E_Strasse + '",' +
+      '"objekt": "' + E_Objekt + '",' +
+      '"objektnr": "' + E_Objektnummer + '",' +
+      '"objektart": "' + E_Objektart + '",' +
+      '"wachfolge": "' + E_Wachennummer + '",' +
+      '"wgs84_x": "' + E_X + '",' +
+      '"wgs84_y": "' + E_Y + '"' +
+    '},' +
+    '"alarmdaten": [';
+  for i:=0 to high(Einsatzmittel) do
+  begin
+    JSONString := JSONString +
+      '{"typ": "' + Einsatzmittel[i].Status + '",' +
+      '"netzadresse": "' + Einsatzmittel[i].IP + '",' +
+      '"wachenname": "' + Einsatzmittel[i].Wache + '",' +
+      '"einsatzmittel": "' + Einsatzmittel[i].Fahrzeug + '",' +
+      '"zeit_a": "' + Einsatzmittel[i].Zuget_zeit + '",' +
+      '"zeit_b": "' + Einsatzmittel[i].Alarm_zeit + '",' +
+      '"zeit_c": "' + Einsatzmittel[i].Ausrueck_zeit + '"}';
+    if i <> high(Einsatzmittel) then
+      JSONString := JSONString + ', '
+  end;
+  JSONString := JSONString +  ']}';
+  // Thread vorbereiten
+  MyThread := TMyThread.Create(True); // With the True parameter it doesn't start automatically
+  if Assigned(MyThread.FatalException) then
+    raise MyThread.FatalException;
+  // Variablen an Thread zuweisen
+  MyThread.Thr_Type := 'WEB';
+  MyThread.Thr_Tw_Text := '';
+  MyThread.Thr_Tw_ConsumerKey := '';
+  MyThread.Thr_Tw_ConsumerSecret := '';
+  MyThread.Thr_Tw_AuthToken := '';
+  MyThread.Thr_Tw_AuthSecret := '';
+  MyThread.Thr_Tw_ProxyHost := '';
+  MyThread.Thr_Tw_ProxyPort := '';
+  MyThread.Thr_Tw_ProxyUser := '';
+  MyThread.Thr_Tw_ProxyPass := '';
+  MyThread.Thr_FTP_User := '';
+  MyThread.Thr_FTP_Pass := '';
+  MyThread.Thr_Stream := nil;
+  MyThread.Thr_Empfaenger_IP_now := ConfigForm.E_ip_web.Text;
+  MyThread.Thr_Empfaenger_IP_all := '';
+  MyThread.Thr_Empfaenger_Wache := '';
+  MyThread.Thr_Einsatznummer := '';
+  MyThread.Thr_Zusatztext := JSONString;
+  // Simulation?
+  if Simulation = false then
+  begin
+    // Alarm zur Anzahl der aktuellen Alarme hinzuzählen
+    Anzahl_aktuelle_Alarme := Anzahl_aktuelle_Alarme + 1;
+    // Thread ausfuehren
+    MyThread.start;
   end;
 end;
 
@@ -1352,7 +1457,8 @@ begin
   'FTP-Username: ' + User + #13#10 +
   'FTP-Passwort: ' + Pass + #13#10 +
   'FTP-Port: 60144 (60143 Passiv)' + #13#10 +
-  'UDP-Port: 60132');
+  '1. UDP-Port: 60132 (Waip-Client)' + #13#10 +
+  '2. UDP-Port: 60233 (Waip-Web)');
 end;
 
 procedure TMainForm.Label3Click(Sender: TObject);
@@ -1433,6 +1539,9 @@ end;
 
 procedure TMyThread.Execute;
 begin
+  // Web-Teilthread
+  if Thr_Type = 'WEB' then
+    alert_Web;
   // FTP-Teilthread
   if Thr_Type = 'FTP' then
     alert_FTP;
@@ -1442,6 +1551,28 @@ begin
   Synchronize(@ShowStatus);
 end;
 
+procedure TMyThread.alert_Web;
+var
+  UDP_Port: string;
+  UDP: TUDPBlockSocket;
+begin
+  // Variablen zurücksetzen
+  Thr_Log_Text := '';
+  Thr_Fehlerindex := 0;
+  // UDP-Socket erstellen und JSON senden
+  UDP := TUDPBlockSocket.Create;
+  UDP_Port := '60233';
+  try
+    UDP.Connect(Thr_Empfaenger_IP_now, UDP_Port);
+    UDP.SendString(Thr_Zusatztext);
+    UDP.CloseSocket;
+  finally
+    UDP.Free;
+  end;
+  Thr_Zusatztext := '';
+  // Text für Log übergeben
+  Thr_Log_Text := (datetostr(date) + '-' + timetostr(time) + ': Web-Alarm fuer ' + Thr_Empfaenger_Wache +' (Einsatz-Nr. ' + Thr_Einsatznummer + ') an ' + Thr_Empfaenger_IP_now + ':' + UDP_Port + ' gesendet.')
+end;
 procedure TMyThread.alert_FTP;
 var
   UDP_Port: string;

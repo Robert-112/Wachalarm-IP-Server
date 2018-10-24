@@ -5,9 +5,10 @@ object MainForm: TMainForm
   Width = 890
   ActiveControl = PageControl1
   Caption = 'Wachalarm-IP Server'
-  ClientHeight = 480
+  ClientHeight = 475
   ClientWidth = 890
   Color = clBtnFace
+  DesignTimePPI = 120
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
@@ -152,10 +153,10 @@ object MainForm: TMainForm
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   Position = poScreenCenter
-  LCLVersion = '1.6.2.0'
+  LCLVersion = '1.8.4.0'
   object PageControl1: TPageControl
     Left = 0
-    Height = 317
+    Height = 306
     Top = 140
     Width = 890
     ActivePage = TabSheet4
@@ -165,12 +166,12 @@ object MainForm: TMainForm
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'Statusübersicht'
-      ClientHeight = 274
+      ClientHeight = 263
       ClientWidth = 882
       ImageIndex = 1
       object SG_Clients: TStringGrid
         Left = 0
-        Height = 274
+        Height = 263
         Hint = 'Wird bei jedem neuen Alarm automatisch nach Zeit sortiert.'#13#10'''Entfernen'' drücken, um ausgewählte Zeile zu löschen.'
         Top = 0
         Width = 882
@@ -812,14 +813,14 @@ object MainForm: TMainForm
       AnchorSideTop.Control = GroupBox1
       AnchorSideRight.Control = GroupBox1
       AnchorSideRight.Side = asrBottom
-      Left = 700
+      Left = 699
       Height = 16
       Top = 15
-      Width = 166
+      Width = 167
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 15
       BorderSpacing.Right = 20
-      Caption = 'Version 2.8.4.0 (08.11.2017)'
+      Caption = 'Version 2.9.0.0 (24.10.2018)'
       ParentColor = False
     end
     object PG_Verarbeitungsstatus: TProgressBar
@@ -863,8 +864,8 @@ object MainForm: TMainForm
   end
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 23
-    Top = 457
+    Height = 29
+    Top = 446
     Width = 890
     Panels = <    
       item
