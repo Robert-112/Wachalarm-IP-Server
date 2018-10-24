@@ -139,7 +139,7 @@ begin
     if pos('addr:' ,s) > 0 then
       s:=StringReplace(s,'addr:','',[rfReplaceAll]);
     if pos('Adresse:' ,s) > 0 then
-      s:=StringReplace(s,'addr:','',[rfReplaceAll]);
+      s:=StringReplace(s,'Adresse:','',[rfReplaceAll]);
     s:=Trim(Copy(s, 1, Pos(' ', s)));
     if leftstr(s,8) <> '127.0.0.' then
     begin
