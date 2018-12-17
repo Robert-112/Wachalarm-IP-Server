@@ -33,4 +33,4 @@ _ressourcen/
 # Application bundle for Mac OS
 *.app/
 *.obj
-credentials.res
+#credentials.res
