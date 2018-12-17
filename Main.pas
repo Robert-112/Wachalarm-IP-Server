@@ -569,7 +569,7 @@ begin
 end;
 
 procedure TMainForm.Alarmierung_durchfuehren(Simulation: Boolean);
-var i, j: integer;
+var i, j, direkter_Alarm: integer;
     UDP_Funkkenner, Alarmweg_now, Alarmweg_rest, Alarmweg_alarmiert, TMP_E_Ortsteil: string;
 begin
   Alarmweg_alarmiert := '';
@@ -604,8 +604,19 @@ begin
       // Funkkenner auf "Alarm" oder "Mitaus" zuweisen (für jede Wache unterschiedlich)
       for j:=0 to high(Einsatzmittel) do
       begin
+        direkter_Alarm := 0;
         // Korrektur für CELIOS: Zeilen ohne Alarm_zeit nicht alarmieren
-        if (Einsatzmittel[j].Status = 'ALARM') AND (Einsatzmittel[j].Zuget_zeit <> '') AND (Einsatzmittel[j].Alarm_zeit='') AND (Einsatzmittel[i].Wache = Einsatzmittel[j].Wache) then
+        if config.ConfigForm.CB_Alarm_Zeit.Checked then
+        begin
+          if (Einsatzmittel[j].Status = 'ALARM') AND (Einsatzmittel[j].Alarm_zeit='') AND (Einsatzmittel[i].Wache = Einsatzmittel[j].Wache) then
+            direkter_Alarm := 1;
+        end
+        else
+        begin
+          if (Einsatzmittel[j].Status = 'ALARM') AND (Einsatzmittel[j].Zuget_zeit <> '') AND (Einsatzmittel[j].Alarm_zeit='') AND (Einsatzmittel[i].Wache = Einsatzmittel[j].Wache) then
+            direkter_Alarm := 1;
+        end;
+        if direkter_Alarm = 1 then
         begin
           // Alarmierte Einsatzmittel ermitteln
           if Einsatzmittel[j].Fahrzeug <> '' then

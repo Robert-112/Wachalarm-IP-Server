@@ -15,6 +15,7 @@ type
   TConfigForm = class(TForm)
     Btn_OpenDir: TButton;
     Btn_SelectDir: TButton;
+    CB_Alarm_Zeit: TCheckBox;
     E_waip_praefix: TEdit;
     E_ip_web: TEdit;
     E_waip_suffix: TEdit;
@@ -41,6 +42,7 @@ type
     procedure Btn_BackClick(Sender: TObject);
     procedure Btn_OpenDirClick(Sender: TObject);
     procedure Btn_SelectDirClick(Sender: TObject);
+    procedure CB_Alarm_ZeitChange(Sender: TObject);
     procedure E_ip_webEditingDone(Sender: TObject);
     procedure E_PfadEditingDone(Sender: TObject);
     procedure E_waip_praefixEditingDone(Sender: TObject);
@@ -87,6 +89,7 @@ begin
       Config_INI.WriteString('Einstellungen','Proxy_Port',ConfigForm.ProxyPort.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Benutzer',ConfigForm.ProxyUser.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Passwort',ConfigForm.ProxyPass.Text);
+      Config_INI.WriteBool('Einstellungen','Alarm_Zeit',ConfigForm.CB_Alarm_Zeit.Checked);
     finally
       Config_INI.free;
     end;
@@ -118,6 +121,7 @@ begin
       ConfigForm.ProxyPort.Text := Config_INI.ReadString('Einstellungen','Proxy_Port','');
       ConfigForm.ProxyUser.Text := Config_INI.ReadString('Einstellungen','Proxy_Benutzer','');
       ConfigForm.ProxyPass.Text := Config_INI.ReadString('Einstellungen','Proxy_Passwort','');
+      ConfigForm.CB_Alarm_Zeit.Checked := Config_INI.ReadBool('Einstellungen','Alarm_Zeit',true);
     finally
       Config_INI.free;
     end;
@@ -135,6 +139,7 @@ begin
       Config_INI.WriteString('Einstellungen','Proxy_Port',ConfigForm.ProxyPort.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Benutzer',ConfigForm.ProxyUser.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Passwort',ConfigForm.ProxyPass.Text);
+      Config_INI.WriteBool('Einstellungen','Alarm_Zeit',ConfigForm.CB_Alarm_Zeit.Checked);
     finally
       Config_INI.free;
     end;
@@ -217,6 +222,11 @@ begin
     E_Pfad.Text := uebergabeordner;
     SaveConfig;
   end;
+end;
+
+procedure TConfigForm.CB_Alarm_ZeitChange(Sender: TObject);
+begin
+  SaveConfig;
 end;
 
 procedure TConfigForm.E_ip_webEditingDone(Sender: TObject);
