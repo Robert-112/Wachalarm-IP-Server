@@ -819,7 +819,7 @@ object MainForm: TMainForm
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 15
       BorderSpacing.Right = 20
-      Caption = 'Version 2.9.0.1 (17.12.2018)'
+      Caption = 'Version 2.9.0.2 (02.01.2019)'
       ParentColor = False
     end
     object PG_Verarbeitungsstatus: TProgressBar
