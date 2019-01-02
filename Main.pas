@@ -1062,8 +1062,8 @@ begin
           TwitterForm.L_Ort_Ortsteil.Caption := E_Ort + ', ' + E_Ortsteil;
         if E_Einsatzart = 'Brandeinsatz' then
         begin
-          TwitterForm.L_Einsatzart_Langtext.Font.Color := RGB(226, 0, 38);
-          TwitterForm.L_Stichwort_Langtext.Font.Color := RGB(226, 0, 38);
+          TwitterForm.L_Einsatzart_Langtext.Font.Color := RGB(255, 80, 80);
+          TwitterForm.L_Stichwort_Langtext.Font.Color := RGB(255, 80, 80);
         end;
         if E_Einsatzart = 'Hilfeleistungseinsatz' then
         begin
