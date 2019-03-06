@@ -1574,9 +1574,17 @@ begin
   UDP := TUDPBlockSocket.Create;
   UDP_Port := '60233';
   try
+    // sende zunächst an Empfaenger-IP
     UDP.Connect(Thr_Empfaenger_IP_now, UDP_Port);
     UDP.SendString(Thr_Zusatztext);
     UDP.CloseSocket;
+    // sende auch noch einmal an Localhost
+    if  Thr_Empfaenger_IP_now <> '127.0.0.1' then
+    begin
+      UDP.Connect('127.0.0.1', UDP_Port);
+      UDP.SendString(Thr_Zusatztext);
+      UDP.CloseSocket;
+    end;
   finally
     UDP.Free;
   end;
