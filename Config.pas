@@ -21,6 +21,7 @@ type
     E_waip_suffix: TEdit;
     GroupBox1: TGroupBox;
     GroupBox2: TGroupBox;
+    Label2: TLabel;
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
