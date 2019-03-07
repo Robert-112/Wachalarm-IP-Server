@@ -14,7 +14,7 @@ object ConfigForm: TConfigForm
   OnClose = FormClose
   OnCreate = FormCreate
   Position = poDesktopCenter
-  LCLVersion = '1.8.0.6'
+  LCLVersion = '2.0.0.4'
   object Btn_Back: TButton
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
@@ -355,7 +355,7 @@ object ConfigForm: TConfigForm
       Left = 150
       Height = 21
       Top = 200
-      Width = 216
+      Width = 100
       BorderSpacing.Left = 150
       BorderSpacing.Top = 190
       OnEditingDone = E_ip_webEditingDone
@@ -378,6 +378,18 @@ object ConfigForm: TConfigForm
       Caption = 'Alarme ohne '#13#10'"Alarm_Zeit" trotzdem versenden'
       OnChange = CB_Alarm_ZeitChange
       TabOrder = 7
+    end
+    object Label2: TLabel
+      AnchorSideLeft.Control = E_ip_web
+      AnchorSideLeft.Side = asrBottom
+      AnchorSideTop.Control = E_ip_web
+      Left = 260
+      Height = 26
+      Top = 200
+      Width = 75
+      BorderSpacing.Left = 10
+      Caption = 'und 127.0.0.1'#13#10'(immer gesetzt)'
+      ParentColor = False
     end
   end
 end
