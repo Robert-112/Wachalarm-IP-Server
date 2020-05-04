@@ -1,7 +1,7 @@
 object TwitterForm: TTwitterForm
-  Left = 433
+  Left = 577
   Height = 512
-  Top = 184
+  Top = 245
   Width = 910
   BorderStyle = bsSingle
   Caption = 'Twitter-Bild'
@@ -11,7 +11,7 @@ object TwitterForm: TTwitterForm
   OnShow = FormShow
   Position = poScreenCenter
   ShowInTaskBar = stAlways
-  LCLVersion = '1.6.2.0'
+  LCLVersion = '2.0.2.0'
   object I_Background: TImage
     Left = 0
     Height = 512

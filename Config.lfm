@@ -1,7 +1,7 @@
 object ConfigForm: TConfigForm
-  Left = 622
+  Left = 829
   Height = 500
-  Top = 404
+  Top = 539
   Width = 700
   BorderStyle = bsToolWindow
   Caption = 'Einstellungen'
@@ -14,7 +14,7 @@ object ConfigForm: TConfigForm
   OnClose = FormClose
   OnCreate = FormCreate
   Position = poDesktopCenter
-  LCLVersion = '2.0.0.4'
+  LCLVersion = '2.0.2.0'
   object Btn_Back: TButton
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
@@ -346,7 +346,7 @@ object ConfigForm: TConfigForm
       Width = 135
       BorderSpacing.Left = 10
       BorderSpacing.Top = 110
-      Caption = 'IP-Adresse für Waip-Web:'#13#10'(eigenständige Anwendung)'
+      Caption = 'IP:Port für Waip-Web:'#13#10'(eigenständige Anwendung)'
       ParentColor = False
     end
     object E_ip_web: TEdit
@@ -360,7 +360,7 @@ object ConfigForm: TConfigForm
       BorderSpacing.Top = 190
       OnEditingDone = E_ip_webEditingDone
       TabOrder = 6
-      Text = '127.0.0.1'
+      Text = '127.0.0.1:60233'
     end
     object CB_Alarm_Zeit: TCheckBox
       AnchorSideLeft.Control = GroupBox2
@@ -386,9 +386,9 @@ object ConfigForm: TConfigForm
       Left = 260
       Height = 26
       Top = 200
-      Width = 75
+      Width = 103
       BorderSpacing.Left = 10
-      Caption = 'und 127.0.0.1'#13#10'(immer gesetzt)'
+      Caption = 'und 127.0.0.1:60233'#13#10'(immer gesetzt)'
       ParentColor = False
     end
   end

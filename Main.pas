@@ -542,7 +542,8 @@ begin
       // vor weiterer Verarbeitung IP-Adresse ggf. noch ersetzten bzw. weitere hinzufügen
       for j := 1 to SG_IP_Replace.RowCount - 1 do
       begin
-        if Pos(SG_IP_Replace.Cells[0, j],Einsatzmittel[em].IP) <> 0 then
+        // Tabelle mit Einsatzmittel.IP vergleichen
+        if Trim(SG_IP_Replace.Cells[0, j]) = Trim(Einsatzmittel[em].IP) then
         begin
           Einsatzmittel[em].IP := StringReplace(Einsatzmittel[em].IP, SG_IP_Replace.Cells[0, j], SG_IP_Replace.Cells[1, j], [rfReplaceAll, rfIgnoreCase]);
         end;
@@ -1565,29 +1566,31 @@ end;
 procedure TMyThread.alert_Web;
 var
   UDP_Port: string;
+  IP_UDP: TStringArray;
   UDP: TUDPBlockSocket;
 begin
   // Variablen zurücksetzen
   Thr_Log_Text := '';
+  IP_UDP := NIL;
   Thr_Fehlerindex := 0;
   // UDP-Socket erstellen und JSON senden
   UDP := TUDPBlockSocket.Create;
   UDP_Port := '60233';
   try
     // sende auch noch einmal an Localhost
-    if Thr_Empfaenger_IP_now <> '127.0.0.1' then
+    if Thr_Empfaenger_IP_now <> '127.0.0.1:60233' then
     begin
       UDP.Connect('127.0.0.1', UDP_Port);
       UDP.SendString(Thr_Zusatztext);
       UDP.CloseSocket;
     end;
     // sende an Empfaenger-IP
-    UDP.Connect(Thr_Empfaenger_IP_now, UDP_Port);
+    IP_UDP := Thr_Empfaenger_IP_now.Split(':');
+    UDP.Connect(IP_UDP[0], IP_UDP[1]);
     UDP.SendString(Thr_Zusatztext);
     UDP.CloseSocket;
-
   finally
-    UDP.Free;
+    UDP.Free;    
   end;
   Thr_Zusatztext := '';
   // Text für Log übergeben
