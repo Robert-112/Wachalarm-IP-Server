@@ -1,7 +1,7 @@
 object ConfigForm: TConfigForm
-  Left = 829
+  Left = 212
   Height = 500
-  Top = 539
+  Top = 810
   Width = 700
   BorderStyle = bsToolWindow
   Caption = 'Einstellungen'
@@ -40,13 +40,13 @@ object ConfigForm: TConfigForm
     AnchorSideBottom.Control = Owner
     AnchorSideBottom.Side = asrBottom
     Left = 0
-    Height = 185
-    Top = 270
+    Height = 161
+    Top = 294
     Width = 700
     Anchors = [akTop, akLeft, akRight, akBottom]
     BorderSpacing.Bottom = 45
     Caption = 'Optionale Proxy-Einstellungen für Twitter'
-    ClientHeight = 167
+    ClientHeight = 143
     ClientWidth = 696
     TabOrder = 1
     object ProxyPort: TEdit
@@ -168,12 +168,12 @@ object ConfigForm: TConfigForm
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
     Left = 0
-    Height = 270
+    Height = 294
     Top = 0
     Width = 700
     Anchors = [akTop, akLeft, akRight]
     Caption = 'Allgemeine Einstellungen zur Schnittstelle'
-    ClientHeight = 252
+    ClientHeight = 276
     ClientWidth = 696
     TabOrder = 2
     object Label1: TLabel
@@ -389,6 +389,35 @@ object ConfigForm: TConfigForm
       Width = 103
       BorderSpacing.Left = 10
       Caption = 'und 127.0.0.1:60233'#13#10'(immer gesetzt)'
+      ParentColor = False
+    end
+    object E_dbrd_link: TEdit
+      AnchorSideLeft.Control = GroupBox2
+      AnchorSideTop.Control = E_ip_web
+      AnchorSideRight.Control = GroupBox2
+      AnchorSideRight.Side = asrBottom
+      Left = 150
+      Height = 21
+      Top = 240
+      Width = 536
+      Anchors = [akTop, akLeft, akRight]
+      BorderSpacing.Left = 150
+      BorderSpacing.Top = 40
+      BorderSpacing.Right = 10
+      OnEditingDone = E_dbrd_linkEditingDone
+      TabOrder = 8
+      Text = 'https://localhost/dbrd/'
+    end
+    object L_dbrd_link: TLabel
+      AnchorSideLeft.Control = GroupBox2
+      AnchorSideTop.Control = L_ip_web
+      Left = 10
+      Height = 13
+      Top = 240
+      Width = 123
+      BorderSpacing.Left = 10
+      BorderSpacing.Top = 40
+      Caption = 'Basis-URL für Dashboard:'
       ParentColor = False
     end
   end

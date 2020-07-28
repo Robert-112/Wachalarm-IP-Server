@@ -40,6 +40,7 @@ type
     Label11: TLabel;
     Label13: TLabel;
     Label14: TLabel;
+    Label15: TLabel;
     Label16: TLabel;
     Label2: TLabel;
     Label3: TLabel;
@@ -60,9 +61,11 @@ type
     AlarmSimulation1: TMenuItem;
     M_StringReplace_Picture: TMemo;
     M_Wachenfilter: TMemo;
+    SG_WaipChronik: TStringGrid;
     SG_Twitter_Filter: TStringGrid;
     TabSheet12: TTabSheet;
     TabSheet13: TTabSheet;
+    TabSheet14: TTabSheet;
     TwitterFenster1: TMenuItem;
     WachalarmFenster1: TMenuItem;
     M_Auftrag: TMemo;
@@ -152,7 +155,7 @@ var
   Einsatzmittel: Array Of TEinsatzRecord;
   E_Ort, E_Ortsteil, E_Strasse, E_Objekt, E_Objektnummer, E_Objektart, E_Einsatzart, E_Stichwort, 
   E_Sondersignal, E_Einsatznummer, E_Besonderheiten, E_PName, E_Alarmzeit, E_Wachennummer, E_X, E_Y,
-  E_Alarmierte_EM, E_Mitausgerueckte_EM, Dir, Slash, Udp_Sound, User, Pass: String;
+  E_Alarmierte_EM, E_Mitausgerueckte_EM, E_UUID, Dir, Slash, Udp_Sound, User, Pass: String;
   Fehlerindex, Anzahl_aktuelle_Alarme, Reset_Timer: Integer;
   Config_INI: TIniFile;
 
@@ -243,6 +246,14 @@ begin
   begin
     LoadStringGrid_IniLines(Dir + Slash + 'config.ini', SG_IP_Replace);
     SaveStringGrid_IniXML(Dir + Slash + 'config.ini', SG_IP_Replace);
+  end;
+  // Twitter-Chronik laden
+  if IniSectionExists(Dir + Slash + 'config.ini', SG_WaipChronik.Name + '.XML') = true then
+    LoadStringGrid_IniXML(Dir + Slash + 'config.ini', SG_WaipChronik)
+  else
+  begin
+    LoadStringGrid_IniLines(Dir + Slash + 'config.ini', SG_WaipChronik);
+    SaveStringGrid_IniXML(Dir + Slash + 'config.ini', SG_WaipChronik);
   end;
   // Twitter-Accounts laden
   if IniSectionExists(Dir + Slash + 'config.ini', SG_Twitter.Name + '.XML') = true then
@@ -431,12 +442,13 @@ end;
 
 procedure TMainForm.WAIP_Auslesen;
 var i, j, em: integer;
-    Auslesetext, Zeile_I: string;
+    Auslesetext, Zeile_I, tmp_Ortslage: string;
 begin
   // lokale Variablen zurücksetzen
   Auslesetext := '';
   Zeile_I := '';
   em := 0;
+  tmp_Ortslage := '';
   // globale Einsatz-Variablen zurücksetzen
   E_Ort := '';
   E_Ortsteil := '';
@@ -463,6 +475,19 @@ begin
   Auslesetext := copy(MainForm.M_Auftrag.Lines.text,pos('Ortsteil~',MainForm.M_Auftrag.Text)+10,50);
   Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
   E_Ortsteil := Auslesetext;
+  // Ortslage auslesen, entfernen, Variable setzen und Label zuweisen
+  Auslesetext := copy(MainForm.M_Auftrag.Lines.text,pos('Ortslage~',MainForm.M_Auftrag.Text)+10,50);
+  Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
+  tmp_Ortslage := Auslesetext;
+  // Orsteil und Ortslage verketten, falls Ortslage vorhanden
+  if Trim(tmp_Ortslage) <> '' then
+  begin
+    // wenn Ortsteil leer, aber Ortslage, dann Ortslage hinterlegen, sonst Ortslage hinzufuegen
+    if Trim(E_Ortsteil) = '' then
+      E_Ortsteil := tmp_Ortslage
+    else
+      E_Ortsteil := E_Ortsteil + ' / ' + tmp_Ortslage;
+  end;
   // Strasse auslesen, entfernen, Variable setzen und Label zuweisen
   Auslesetext := copy(MainForm.M_Auftrag.Lines.text,pos('Strasse~',MainForm.M_Auftrag.Text)+9,50);
   Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
@@ -571,9 +596,33 @@ end;
 
 procedure TMainForm.Alarmierung_durchfuehren(Simulation: Boolean);
 var i, j, direkter_Alarm: integer;
+    TmpGuid: TGUID;
     UDP_Funkkenner, Alarmweg_now, Alarmweg_rest, Alarmweg_alarmiert, TMP_E_Ortsteil: string;
 begin
   Alarmweg_alarmiert := '';
+  // Prüfen ob UUID zu deisem Einsatz bereits existiert
+  E_UUID := '';
+  for i := 1 to SG_WaipChronik.RowCount - 1 do
+  begin
+    // Prüfen ob in WAIP-Chronik zu gleicher Einsatznummer (E_Einsatznummer) bereits ein Eintrag vorhanden ist
+    if SG_WaipChronik.Cells[0,i] = E_Einsatznummer then
+      E_UUID := SG_WaipChronik.Cells[1,i];
+  end;
+  // UUID erzeugen, falls noch nicht hinterlegt
+  if E_UUID = '' then
+  begin
+    CreateGUID(TmpGuid);
+    E_UUID := GUIDToString(TmpGuid);
+    // Werte in Tabelle hinterlegen
+    SG_WaipChronik.Cells[0, SG_WaipChronik.RowCount - 1] := E_Einsatznummer;
+    SG_WaipChronik.Cells[1, SG_WaipChronik.RowCount - 1] := E_UUID;
+  end;
+  // Waip-Chronik auf 100 Einträge begrenzen
+  while SG_WaipChronik.RowCount - 1 > 100 do
+  begin
+    GridDeleteRow(SG_WaipChronik,1);
+  end;
+  SG_WaipChronik.AutoSizeColumns;
   // Alarm an Wachalarm-Web uebergeben
   Web_Alarm(Simulation);
   // doppelte IP's aus Einsatzmittel.IP entfernen um doppelte Alarmierungen auszuschließen
@@ -718,19 +767,20 @@ begin
   // JSON erzeugen
   JSONString := '{' +
     '"einsatzdaten": {' +
+      '"uuid": "' + E_UUID + '",' +
       '"nummer": "' + E_Einsatznummer + '",' +
       '"alarmzeit": "' + E_Alarmzeit + '",' +
       '"art": "' + E_Einsatzart + '",' +
       '"stichwort": "' + E_Stichwort + '",' +
       '"sondersignal": ' + JSON_Sondersignal + ',' +
-      '"besonderheiten": "' + E_Besonderheiten + '",' +
+      '"besonderheiten": "' + StringReplace(E_Besonderheiten, #34, '', [rfReplaceAll]) + '",' +
       '"patient": "' + E_PName + '"' +
     '},' +
     '"ortsdaten": {' +
-      '"ort": "' + E_Ort + '",' +
-      '"ortsteil": "' + E_Ortsteil + '",' +
-      '"strasse": "' + E_Strasse + '",' +
-      '"objekt": "' + E_Objekt + '",' +
+      '"ort": "' + StringReplace(E_Ort, #34, '', [rfReplaceAll]) + '",' +
+      '"ortsteil": "' + StringReplace(E_Ortsteil, #34, '', [rfReplaceAll]) + '",' +
+      '"strasse": "' + StringReplace(E_Strasse, #34, '', [rfReplaceAll]) + '",' +
+      '"objekt": "' + StringReplace(E_Objekt, #34, '', [rfReplaceAll]) + '",' +
       '"objektnr": "' + E_Objektnummer + '",' +
       '"objektart": "' + E_Objektart + '",' +
       '"wachfolge": "' + E_Wachennummer + '",' +
@@ -742,9 +792,9 @@ begin
   begin
     JSONString := JSONString +
       '{"typ": "' + Einsatzmittel[i].Status + '",' +
-      '"netzadresse": "' + Einsatzmittel[i].IP + '",' +
-      '"wachenname": "' + Einsatzmittel[i].Wache + '",' +
-      '"einsatzmittel": "' + Einsatzmittel[i].Fahrzeug + '",' +
+      '"netzadresse": "' + StringReplace(Einsatzmittel[i].IP, #34, '', [rfReplaceAll]) + '",' +
+      '"wachenname": "' + StringReplace(Einsatzmittel[i].Wache, #34, '', [rfReplaceAll]) + '",' +
+      '"einsatzmittel": "' + StringReplace(Einsatzmittel[i].Fahrzeug, #34, '', [rfReplaceAll]) + '",' +
       '"zeit_a": "' + Einsatzmittel[i].Zuget_zeit + '",' +
       '"zeit_b": "' + Einsatzmittel[i].Alarm_zeit + '",' +
       '"zeit_c": "' + Einsatzmittel[i].Ausrueck_zeit + '"}';
@@ -896,7 +946,7 @@ var i, j, Wachenfilter, Tweetfilter, T_Account_Zeile, Wachen_Zeile :integer;
     Arr_Wachen: Array of String;
     Wachen_zu_EM: Array Of TEinsatzRecord;
 begin
-  // Tweet zusammensetzen nach: [Datum&Uhrzeit] [Stichwort] [Einsatzort und Ortsteil] Wachen: [Alarmierte Wachen]
+  // Tweet zusammensetzen nach: [Datum&Uhrzeit] [Stichwort] [Einsatzort und Ortsteil] Wachen: [Alarmierte Wachen] [Dashboard-Link]
   T_Wachen := '';
   T_Einsatzdaten := '';
   SetLength(Arr_Wachen, 0);
@@ -1023,6 +1073,11 @@ begin
     //abschließend den Tweet auf max 260 Zeichen kürzen, Wichtig UTF8Lenght für richtige länge benutzen! (Puffer für EMOJI)
     if UTF8Length(Tweet) > 280 then
       Tweet := UTF8LeftStr(Tweet, 260) + nbs + '...';
+    // Dashboard-URL zum Tweet hinzufügen, falls gewollt, URL zählt nicht in Twitter-Zeichenbegrenzung
+    if SG_Twitter.Cells[9, T_Account_Zeile] = '1' then
+    begin
+      Tweet := Tweet + ' ' + ConfigForm.E_dbrd_link.Text + E_UUID;
+    end;
     // T_Einsatzdaten für Abgleich in Chronik zusammensetzen
     T_Einsatzdaten := E_Einsatzart +', '+ E_Stichwort +', '+ E_Ort +', '+ E_Ortsteil +', '+ T_Wachen +', '+ E_Alarmierte_EM +', '+ E_Sondersignal;
     // T_Einsatzdaten in UID umwandeln (kürzerer Text)
@@ -1524,6 +1579,7 @@ begin
       //ShowMessage('Aktuelle Daten werden gespeichert, bitte warten.');
       Timer1.Enabled := false;
       SaveStringGrid_IniXML(Dir + Slash + 'config.ini', SG_Clients);
+      SaveStringGrid_IniXML(Dir + Slash + 'config.ini', SG_WaipChronik);
       SaveStringGrid_IniXML(Dir + Slash + 'config.ini', SG_TWeetChronik);
       Terminate
     end

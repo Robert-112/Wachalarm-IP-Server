@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 296
+  Left = 115
   Height = 500
-  Top = 480
+  Top = 284
   Width = 890
   ActiveControl = PageControl1
   Caption = 'Wachalarm-IP Server'
@@ -158,16 +158,24 @@ object MainForm: TMainForm
     Height = 317
     Top = 140
     Width = 890
-    ActivePage = TabSheet4
+    ActivePage = TabSheet7
     Align = alClient
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
     Images = ImageList1
-    TabIndex = 0
+    ParentFont = False
+    TabIndex = 1
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'Statusübersicht'
       ClientHeight = 274
       ClientWidth = 882
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
       ImageIndex = 1
+      ParentFont = False
       object SG_Clients: TStringGrid
         Left = 0
         Height = 274
@@ -203,7 +211,11 @@ object MainForm: TMainForm
             Title.Caption = 'weitere Info'
           end>
         FixedCols = 0
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
         Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goDblClickAutoSize, goTruncCellHints, goCellEllipsis]
+        ParentFont = False
         ParentShowHint = False
         RowCount = 1
         ShowHint = True
@@ -218,27 +230,39 @@ object MainForm: TMainForm
       Caption = 'Wachalarm'
       ClientHeight = 274
       ClientWidth = 882
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
       ImageIndex = 6
+      ParentFont = False
       object PageControl3: TPageControl
         Left = 0
         Height = 274
         Top = 0
         Width = 882
-        ActivePage = TabSheet11
+        ActivePage = TabSheet14
         Align = alClient
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
         Images = ImageList1
-        TabIndex = 2
+        ParentFont = False
+        TabIndex = 3
         TabOrder = 0
         object TabSheet5: TTabSheet
           Caption = 'letzte waip.txt'
-          ClientHeight = 251
-          ClientWidth = 984
+          ClientHeight = 231
+          ClientWidth = 874
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
           ImageIndex = 7
+          ParentFont = False
           object M_Auftrag: TMemo
             Left = 0
-            Height = 251
+            Height = 231
             Top = 0
-            Width = 984
+            Width = 874
             Align = alClient
             Font.Color = clWindowText
             Font.Height = -11
@@ -253,7 +277,11 @@ object MainForm: TMainForm
           Caption = 'letztes Alarmbild'
           ClientHeight = 231
           ClientWidth = 874
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
           ImageIndex = 20
+          ParentFont = False
           object I_Alarmbild: TImage
             Left = 0
             Height = 231
@@ -268,14 +296,22 @@ object MainForm: TMainForm
           Caption = 'IP-Replace'
           ClientHeight = 231
           ClientWidth = 874
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
           ImageIndex = 18
+          ParentFont = False
           object Label11: TLabel
             Left = 8
             Height = 39
             Top = 8
             Width = 801
             Caption = 'Sollten in einer Wache mehrere Clients ausgeführt werden, oder hat die Wache auch einen Twitter-Account, so können hier zusätzliche IP-Adressen hinterlegt werden.'#13#10'Anwendung je Zeile: '#13#10'Spalte 1 - IP-Adresse aus waip.txt; Spalte 2 - neue IP-Adressen (Bsp: 127.0.0.1 -> 127.0.0.1,@Twitter-Account,127.0.0.2)'
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
             ParentColor = False
+            ParentFont = False
           end
           object SG_IP_Replace: TStringGrid
             AnchorSideLeft.Control = TabSheet11
@@ -295,7 +331,11 @@ object MainForm: TMainForm
             BorderSpacing.Top = 8
             ColCount = 2
             FixedCols = 0
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
             Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goEditing, goAutoAddRows, goDblClickAutoSize, goSmoothScroll]
+            ParentFont = False
             ParentShowHint = False
             RowCount = 2
             ShowHint = True
@@ -320,13 +360,74 @@ object MainForm: TMainForm
             )
           end
         end
+        object TabSheet14: TTabSheet
+          Caption = 'WAIP-Chronik'
+          ClientHeight = 231
+          ClientWidth = 874
+          ImageIndex = 27
+          object SG_WaipChronik: TStringGrid
+            AnchorSideLeft.Control = TabSheet1
+            AnchorSideTop.Control = Label13
+            AnchorSideTop.Side = asrBottom
+            AnchorSideRight.Control = TabSheet1
+            AnchorSideRight.Side = asrBottom
+            AnchorSideBottom.Control = TabSheet1
+            AnchorSideBottom.Side = asrBottom
+            Left = 0
+            Height = 189
+            Hint = 'Zeigt die letzten 100 Einsätze'
+            Top = 42
+            Width = 874
+            Align = alCustom
+            Anchors = [akTop, akLeft, akRight, akBottom]
+            AutoEdit = False
+            BorderSpacing.Top = 8
+            ColCount = 2
+            Columns = <            
+              item
+                Title.Caption = 'Einsatznummer'
+              end            
+              item
+                Title.Caption = 'UUID'
+              end>
+            FixedCols = 0
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goAutoAddRows, goDblClickAutoSize, goSmoothScroll]
+            ParentFont = False
+            ParentShowHint = False
+            RowCount = 1
+            ShowHint = True
+            TabOrder = 0
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -11
+            TitleFont.Name = 'Tahoma'
+          end
+          object Label15: TLabel
+            Left = 8
+            Height = 26
+            Top = 8
+            Width = 441
+            Caption = 'Die WAIP-Chronik listet die letzten 100 Einsätze auf.'#13#10'Hinweis: Die Liste wird genutzt um bei gleichen Einsätzen immer die selbe UUID zu erzeugen.'
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
+            ParentColor = False
+            ParentFont = False
+          end
+        end
       end
     end
     object TabSheet3: TTabSheet
       Caption = 'Twitter'
       ClientHeight = 274
       ClientWidth = 882
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
       ImageIndex = 10
+      ParentFont = False
       object PageControl2: TPageControl
         Left = 0
         Height = 274
@@ -334,14 +435,22 @@ object MainForm: TMainForm
         Width = 882
         ActivePage = TabSheet1
         Align = alClient
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
         Images = ImageList1
+        ParentFont = False
         TabIndex = 5
         TabOrder = 0
         object TabSheet6: TTabSheet
           Caption = 'Twitter-Accounts'
           ClientHeight = 231
           ClientWidth = 874
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
           ImageIndex = 25
+          ParentFont = False
           object SG_Twitter: TStringGrid
             AnchorSideLeft.Control = TabSheet6
             AnchorSideTop.Control = Label16
@@ -358,7 +467,7 @@ object MainForm: TMainForm
             Align = alCustom
             Anchors = [akTop, akLeft, akRight, akBottom]
             BorderSpacing.Top = 8
-            ColCount = 9
+            ColCount = 10
             Columns = <            
               item
                 Title.Caption = '@Twitter-Account'
@@ -390,9 +499,17 @@ object MainForm: TMainForm
                 Font.Color = clWindowText
                 Font.Height = -11
                 Title.Caption = 'Access Token Secret'
+              end            
+              item
+                ButtonStyle = cbsCheckboxColumn
+                Title.Caption = 'Dashboard-Link'
               end>
             FixedCols = 0
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
             Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goEditing, goAutoAddRows, goDblClickAutoSize, goSmoothScroll]
+            ParentFont = False
             ParentShowHint = False
             RowCount = 2
             ShowHint = True
@@ -416,21 +533,33 @@ object MainForm: TMainForm
             Top = 8
             Width = 724
             Caption = 'Hier werden die einzelnen Twitter-Accounts hinterlegt. Findet sich einer dieser Accounts in der Schnittstelle wieder, so erfolgt eine Weiterverarbeitung.'#13#10'Für jeden Account sind Consumer Key, Consumer Secret, Access Token und Access Token Secret zwingend zu hinterlegen.'#13#10'Außerdem kann festgelegt werden ob die Wachen-Namen im Tweet erscheinen sollen und ob ein Bild mit mehr Informationen veröffentlicht werden soll.'#13#10'Hinweis: Der Bild-Upload erfolgt vor der Veröffentlichung des Tweets. Mitteilungen brauchen so ca. 2-3 Sekunden länger.'
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
             ParentColor = False
+            ParentFont = False
           end
         end
         object TabSheet8: TTabSheet
           Caption = 'Filter für Wachen'
           ClientHeight = 231
           ClientWidth = 874
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
           ImageIndex = 16
+          ParentFont = False
           object Label9: TLabel
             Left = 8
             Height = 52
             Top = 8
             Width = 557
             Caption = 'Die hier hinterlegten Wachen-Namen dienen als Filter zur Reduzierung der Wachen im veröffentlichten Text.'#13#10'Im Tweet und im angehängten Bild erscheinen nur die hier angegebenen Wachen.'#13#10'Nach der Eingabe neuer Wachen bzw. nach einer Änderung, werden alle Einträge automatisch alphabetisch sortiert.'#13#10'Je Zeile ist ein Wachen-Name anzugeben. Dieser muss dem Wachen-Namen der Schnittstelle entsprechen.'
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
             ParentColor = False
+            ParentFont = False
           end
           object M_Wachenfilter: TMemo
             AnchorSideLeft.Control = TabSheet8
@@ -447,10 +576,14 @@ object MainForm: TMainForm
             Align = alCustom
             Anchors = [akTop, akLeft, akRight, akBottom]
             BorderSpacing.Top = 8
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
             Lines.Strings = (
               'CB FW'
             )
             OnEditingDone = M_WachenfilterEditingDone
+            ParentFont = False
             ScrollBars = ssAutoBoth
             TabOrder = 0
           end
@@ -459,7 +592,11 @@ object MainForm: TMainForm
           Caption = 'Filter nach Einsatzart'
           ClientHeight = 231
           ClientWidth = 874
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
           ImageIndex = 15
+          ParentFont = False
           object SG_Twitter_Filter: TStringGrid
             AnchorSideLeft.Control = TabSheet12
             AnchorSideTop.Control = Label14
@@ -503,7 +640,11 @@ object MainForm: TMainForm
                 Title.Caption = 'Sonstiges?'
               end>
             FixedCols = 0
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
             Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goEditing, goAutoAddRows, goDblClickAutoSize, goSmoothScroll]
+            ParentFont = False
             ParentShowHint = False
             RowCount = 2
             ShowHint = True
@@ -520,14 +661,22 @@ object MainForm: TMainForm
             Top = 8
             Width = 561
             Caption = 'Dieser Filter legt fest, für welche Einsatzarten bei bestimmten Accounts _keine_ Tweets veröffentlicht werden sollen.'#13#10'Beispiel für BF Cottbus sollen keine Rettungsdienst-, Kranktransport- und Sonstige-Einsätze veröffentlicht werden:'#13#10'@Lst_Lau_CB_BF | ☑ | ☑ |   |   |   |'
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
             ParentColor = False
+            ParentFont = False
           end
         end
         object TabSheet9: TTabSheet
           Caption = 'Text-Ersetzungen im Tweet'
-          ClientHeight = 251
-          ClientWidth = 984
+          ClientHeight = 231
+          ClientWidth = 874
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
           ImageIndex = 22
+          ParentFont = False
           object M_StringReplace_Tweet: TMemo
             AnchorSideLeft.Control = TabSheet9
             AnchorSideTop.Control = Label7
@@ -537,9 +686,9 @@ object MainForm: TMainForm
             AnchorSideBottom.Control = TabSheet9
             AnchorSideBottom.Side = asrBottom
             Left = 0
-            Height = 196
+            Height = 176
             Top = 55
-            Width = 984
+            Width = 874
             Align = alCustom
             Anchors = [akTop, akLeft, akRight, akBottom]
             BorderSpacing.Top = 8
@@ -563,14 +712,22 @@ object MainForm: TMainForm
             Top = 8
             Width = 429
             Caption = 'Hier werden Regeln zum ersetzen bestimmter Textinhalte innerhalb des Tweets definiert. '#13#10'Die Ausnahmen gelten für den gesamten Bereich. Anwendung je Zeile: '#13#10'zu ersetzender Text==neuer Text'
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
             ParentColor = False
+            ParentFont = False
           end
         end
         object TabSheet13: TTabSheet
           Caption = 'Text-Ersetzungen im Bild'
-          ClientHeight = 251
-          ClientWidth = 984
+          ClientHeight = 231
+          ClientWidth = 874
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
           ImageIndex = 21
+          ParentFont = False
           object M_StringReplace_Picture: TMemo
             AnchorSideLeft.Control = TabSheet13
             AnchorSideTop.Control = Label8
@@ -606,14 +763,22 @@ object MainForm: TMainForm
             Top = 8
             Width = 421
             Caption = 'Hier werden Regeln zum ersetzen bestimmter Textinhalte innerhalb des Bildes definiert. '#13#10'Die Ausnahmen gelten nur für die Einsatzart und das Stichwort.'#13#10'Anwendung je Zeile: '#13#10'zu ersetzender Text==neuer Text'
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
             ParentColor = False
+            ParentFont = False
           end
         end
         object TabSheet1: TTabSheet
-          Caption = 'Chronik'
+          Caption = 'Twitter-Chronik'
           ClientHeight = 231
           ClientWidth = 874
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
           ImageIndex = 27
+          ParentFont = False
           object SG_TweetChronik: TStringGrid
             AnchorSideLeft.Control = TabSheet1
             AnchorSideTop.Control = Label13
@@ -646,7 +811,11 @@ object MainForm: TMainForm
                 Title.Caption = 'Tweet-ID'
               end>
             FixedCols = 0
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
             Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goAutoAddRows, goDblClickAutoSize, goSmoothScroll]
+            ParentFont = False
             ParentShowHint = False
             RowCount = 1
             ShowHint = True
@@ -662,7 +831,11 @@ object MainForm: TMainForm
             Top = 8
             Width = 467
             Caption = 'Die Twitter-Chronik listet die letzten 100 generierten Tweets auf.'#13#10'Hinweis: Die Liste wird unter anderem genutzt um doppelte Tweets eines Einsatzes zu verwerfen.'
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'Tahoma'
             ParentColor = False
+            ParentFont = False
           end
         end
       end
@@ -671,7 +844,11 @@ object MainForm: TMainForm
       Caption = 'Log-Datei'
       ClientHeight = 274
       ClientWidth = 882
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'Tahoma'
       ImageIndex = 26
+      ParentFont = False
       object Log: TMemo
         AnchorSideLeft.Control = TabSheet2
         AnchorSideTop.Control = Label2
@@ -687,10 +864,14 @@ object MainForm: TMainForm
         Align = alCustom
         Anchors = [akTop, akLeft, akRight, akBottom]
         BorderSpacing.Top = 8
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
         Lines.Strings = (
           'Es werden nur neue Einträge angezeigt. Alte Log-Daten sind aus der Datei "wa-log.txt" zu beziehen'
         )
         OnChange = LogChange
+        ParentFont = False
         ReadOnly = True
         ScrollBars = ssAutoBoth
         TabOrder = 0
@@ -702,7 +883,11 @@ object MainForm: TMainForm
         Top = 8
         Width = 438
         Caption = 'Hinweis: Die Log-Datei ist auf max. 10.000 Zeilen begrenzt. Neueste Einträge stehen oben.'
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'Tahoma'
         ParentColor = False
+        ParentFont = False
       end
     end
   end
@@ -819,8 +1004,14 @@ object MainForm: TMainForm
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 15
       BorderSpacing.Right = 20
-      Caption = 'Version 2.9.0.5 (30.04.2020)'
+      Caption = 'Version 2.9.2.0 (28.07.2020)'
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
       ParentColor = False
+      ParentFont = False
     end
     object PG_Verarbeitungsstatus: TProgressBar
       AnchorSideLeft.Control = GroupBox1
@@ -835,6 +1026,12 @@ object MainForm: TMainForm
       BorderSpacing.Left = 135
       BorderSpacing.Top = 75
       BorderSpacing.Right = 20
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -13
+      Font.Name = 'Arial'
+      Font.Style = [fsBold]
+      ParentFont = False
       Step = 50
       TabOrder = 0
     end
@@ -866,6 +1063,9 @@ object MainForm: TMainForm
     Height = 23
     Top = 457
     Width = 890
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
     Panels = <    
       item
         Text = 'Waip.txt-Pfad:'
@@ -876,6 +1076,7 @@ object MainForm: TMainForm
         Text = '©️ Leitstelle Lausitz     '
         Width = 100
       end>
+    ParentFont = False
     SimplePanel = False
   end
   object Timer1: TTimer

@@ -16,6 +16,7 @@ type
     Btn_OpenDir: TButton;
     Btn_SelectDir: TButton;
     CB_Alarm_Zeit: TCheckBox;
+    E_dbrd_link: TEdit;
     E_waip_praefix: TEdit;
     E_ip_web: TEdit;
     E_waip_suffix: TEdit;
@@ -26,6 +27,7 @@ type
     Label4: TLabel;
     Label5: TLabel;
     L_ip_web: TLabel;
+    L_dbrd_link: TLabel;
     ProxyHost: TEdit;
     E_Pfad: TEdit;
     Label1: TLabel;
@@ -44,6 +46,7 @@ type
     procedure Btn_OpenDirClick(Sender: TObject);
     procedure Btn_SelectDirClick(Sender: TObject);
     procedure CB_Alarm_ZeitChange(Sender: TObject);
+    procedure E_dbrd_linkEditingDone(Sender: TObject);
     procedure E_ip_webEditingDone(Sender: TObject);
     procedure E_PfadEditingDone(Sender: TObject);
     procedure E_waip_praefixEditingDone(Sender: TObject);
@@ -86,6 +89,7 @@ begin
       Config_INI.WriteString('Einstellungen','Waip_Praefix',ConfigForm.E_waip_praefix.Text);
       Config_INI.WriteString('Einstellungen','Waip_Suffix',ConfigForm.E_waip_suffix.Text);
       Config_INI.WriteString('Einstellungen','Waip-Web_IP',ConfigForm.E_ip_web.Text);
+      Config_INI.WriteString('Einstellungen','Dashboard-Link',ConfigForm.E_dbrd_link.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Host',ConfigForm.ProxyHost.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Port',ConfigForm.ProxyPort.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Benutzer',ConfigForm.ProxyUser.Text);
@@ -118,6 +122,7 @@ begin
       ConfigForm.E_waip_praefix.Text := Config_INI.ReadString('Einstellungen','Waip_Praefix','');
       ConfigForm.E_waip_suffix.Text := Config_INI.ReadString('Einstellungen','Waip_Suffix','');
       ConfigForm.E_ip_web.Text := Config_INI.ReadString('Einstellungen','Waip-Web_IP','');
+      ConfigForm.E_dbrd_link.Text := Config_INI.ReadString('Einstellungen','Dashboard-Link','');
       ConfigForm.ProxyHost.Text := Config_INI.ReadString('Einstellungen','Proxy_Host','');
       ConfigForm.ProxyPort.Text := Config_INI.ReadString('Einstellungen','Proxy_Port','');
       ConfigForm.ProxyUser.Text := Config_INI.ReadString('Einstellungen','Proxy_Benutzer','');
@@ -136,6 +141,7 @@ begin
       Config_INI.WriteString('Einstellungen','Waip_Praefix',ConfigForm.E_waip_praefix.Text);
       Config_INI.WriteString('Einstellungen','Waip_Suffix',ConfigForm.E_waip_suffix.Text);
       Config_INI.WriteString('Einstellungen','Waip-Web_IP',ConfigForm.E_ip_web.Text);
+      Config_INI.WriteString('Einstellungen','Dashboard-Link',ConfigForm.E_dbrd_link.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Host',ConfigForm.ProxyHost.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Port',ConfigForm.ProxyPort.Text);
       Config_INI.WriteString('Einstellungen','Proxy_Benutzer',ConfigForm.ProxyUser.Text);
@@ -226,6 +232,11 @@ begin
 end;
 
 procedure TConfigForm.CB_Alarm_ZeitChange(Sender: TObject);
+begin
+  SaveConfig;
+end;
+
+procedure TConfigForm.E_dbrd_linkEditingDone(Sender: TObject);
 begin
   SaveConfig;
 end;

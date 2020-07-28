@@ -18,7 +18,6 @@ uses
 {$R *.res}
 
 begin
-  Application.Title := 'Wachalarm-IP Server';
   Application.Initialize;
   Application.CreateForm(TFrm_Splash, Frm_Splash);
   frm_Splash.ShowModal;
