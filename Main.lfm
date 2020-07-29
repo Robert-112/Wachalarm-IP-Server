@@ -158,14 +158,14 @@ object MainForm: TMainForm
     Height = 317
     Top = 140
     Width = 890
-    ActivePage = TabSheet7
+    ActivePage = TabSheet3
     Align = alClient
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Tahoma'
     Images = ImageList1
     ParentFont = False
-    TabIndex = 1
+    TabIndex = 2
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'Statusübersicht'
@@ -240,14 +240,14 @@ object MainForm: TMainForm
         Height = 274
         Top = 0
         Width = 882
-        ActivePage = TabSheet14
+        ActivePage = TabSheet11
         Align = alClient
         Font.Color = clWindowText
         Font.Height = -11
         Font.Name = 'Tahoma'
         Images = ImageList1
         ParentFont = False
-        TabIndex = 3
+        TabIndex = 2
         TabOrder = 0
         object TabSheet5: TTabSheet
           Caption = 'letzte waip.txt'
@@ -737,9 +737,9 @@ object MainForm: TMainForm
             AnchorSideBottom.Control = TabSheet13
             AnchorSideBottom.Side = asrBottom
             Left = 0
-            Height = 183
+            Height = 163
             Top = 68
-            Width = 984
+            Width = 874
             Align = alCustom
             Anchors = [akTop, akLeft, akRight, akBottom]
             BorderSpacing.Top = 8
@@ -1004,7 +1004,7 @@ object MainForm: TMainForm
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 15
       BorderSpacing.Right = 20
-      Caption = 'Version 2.9.2.0 (28.07.2020)'
+      Caption = 'Version 2.9.2.1 (29.07.2020)'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -1026,12 +1026,6 @@ object MainForm: TMainForm
       BorderSpacing.Left = 135
       BorderSpacing.Top = 75
       BorderSpacing.Right = 20
-      Font.CharSet = ANSI_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Arial'
-      Font.Style = [fsBold]
-      ParentFont = False
       Step = 50
       TabOrder = 0
     end

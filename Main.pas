@@ -613,6 +613,9 @@ begin
   begin
     CreateGUID(TmpGuid);
     E_UUID := GUIDToString(TmpGuid);
+    E_UUID := LowerCase(E_UUID);
+    E_UUID := StringReplace(E_UUID, '{', '', []);
+    E_UUID := StringReplace(E_UUID, '}', '', []);
     // Werte in Tabelle hinterlegen
     SG_WaipChronik.Cells[0, SG_WaipChronik.RowCount - 1] := E_Einsatznummer;
     SG_WaipChronik.Cells[1, SG_WaipChronik.RowCount - 1] := E_UUID;
