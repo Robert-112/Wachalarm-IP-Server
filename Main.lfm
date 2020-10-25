@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 115
+  Left = 938
   Height = 500
-  Top = 284
+  Top = 322
   Width = 890
   ActiveControl = PageControl1
   Caption = 'Wachalarm-IP Server'
@@ -158,14 +158,14 @@ object MainForm: TMainForm
     Height = 317
     Top = 140
     Width = 890
-    ActivePage = TabSheet3
+    ActivePage = TabSheet4
     Align = alClient
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Tahoma'
     Images = ImageList1
     ParentFont = False
-    TabIndex = 2
+    TabIndex = 0
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'Statusübersicht'
@@ -208,6 +208,7 @@ object MainForm: TMainForm
             Title.Caption = 'Alarm-Text'
           end        
           item
+            MaxSize = 200
             Title.Caption = 'weitere Info'
           end>
         FixedCols = 0
@@ -240,14 +241,14 @@ object MainForm: TMainForm
         Height = 274
         Top = 0
         Width = 882
-        ActivePage = TabSheet11
+        ActivePage = TabSheet14
         Align = alClient
         Font.Color = clWindowText
         Font.Height = -11
         Font.Name = 'Tahoma'
         Images = ImageList1
         ParentFont = False
-        TabIndex = 2
+        TabIndex = 3
         TabOrder = 0
         object TabSheet5: TTabSheet
           Caption = 'letzte waip.txt'
@@ -365,45 +366,6 @@ object MainForm: TMainForm
           ClientHeight = 231
           ClientWidth = 874
           ImageIndex = 27
-          object SG_WaipChronik: TStringGrid
-            AnchorSideLeft.Control = TabSheet1
-            AnchorSideTop.Control = Label13
-            AnchorSideTop.Side = asrBottom
-            AnchorSideRight.Control = TabSheet1
-            AnchorSideRight.Side = asrBottom
-            AnchorSideBottom.Control = TabSheet1
-            AnchorSideBottom.Side = asrBottom
-            Left = 0
-            Height = 189
-            Hint = 'Zeigt die letzten 100 Einsätze'
-            Top = 42
-            Width = 874
-            Align = alCustom
-            Anchors = [akTop, akLeft, akRight, akBottom]
-            AutoEdit = False
-            BorderSpacing.Top = 8
-            ColCount = 2
-            Columns = <            
-              item
-                Title.Caption = 'Einsatznummer'
-              end            
-              item
-                Title.Caption = 'UUID'
-              end>
-            FixedCols = 0
-            Font.Color = clWindowText
-            Font.Height = -11
-            Font.Name = 'Tahoma'
-            Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goColSizing, goAutoAddRows, goDblClickAutoSize, goSmoothScroll]
-            ParentFont = False
-            ParentShowHint = False
-            RowCount = 1
-            ShowHint = True
-            TabOrder = 0
-            TitleFont.Color = clWindowText
-            TitleFont.Height = -11
-            TitleFont.Name = 'Tahoma'
-          end
           object Label15: TLabel
             Left = 8
             Height = 26
@@ -415,6 +377,37 @@ object MainForm: TMainForm
             Font.Name = 'Tahoma'
             ParentColor = False
             ParentFont = False
+          end
+          object SG_WaipChronik: TStringGrid
+            AnchorSideLeft.Control = TabSheet14
+            AnchorSideTop.Control = Label15
+            AnchorSideTop.Side = asrBottom
+            AnchorSideRight.Control = TabSheet14
+            AnchorSideRight.Side = asrBottom
+            AnchorSideBottom.Control = TabSheet14
+            AnchorSideBottom.Side = asrBottom
+            Left = 0
+            Height = 189
+            Top = 42
+            Width = 874
+            Anchors = [akTop, akLeft, akRight, akBottom]
+            BorderSpacing.Top = 8
+            ColCount = 2
+            FixedCols = 0
+            RowCount = 1
+            TabOrder = 0
+            TitleFont.Color = clWindowText
+            TitleFont.Height = -11
+            TitleFont.Name = 'Tahoma'
+            Cells = (
+              2
+              0
+              0
+              'Einsatznummer'
+              1
+              0
+              'UUID'
+            )
           end
         end
       end
@@ -1004,7 +997,7 @@ object MainForm: TMainForm
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 15
       BorderSpacing.Right = 20
-      Caption = 'Version 2.9.2.1 (29.07.2020)'
+      Caption = 'Version 2.9.3.0 (01.10.2020)'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
