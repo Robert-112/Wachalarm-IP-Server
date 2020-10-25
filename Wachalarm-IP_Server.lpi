@@ -23,9 +23,8 @@
       <AutoIncrementBuild Value="True"/>
       <MajorVersionNr Value="2"/>
       <MinorVersionNr Value="9"/>
-      <RevisionNr Value="2"/>
+      <RevisionNr Value="3"/>
       <Language Value="0407"/>
-      <StringTable ProductVersion="2.9.2.0"/>
     </VersionInfo>
     <BuildModes Count="1" Active="Default">
       <Item1 Name="Default" Default="True"/>
@@ -48,9 +47,10 @@
       <Unit0>
         <Filename Value="Wachalarm-IP_Server.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="4" Y="7"/>
+        <EditorIndex Value="1"/>
+        <CursorPos Y="21"/>
         <UsageCount Value="209"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="Main.pas"/>
@@ -58,9 +58,8 @@
         <ComponentName Value="MainForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="1489"/>
-        <CursorPos X="5" Y="1512"/>
+        <TopLine Value="112"/>
+        <CursorPos X="29" Y="126"/>
         <UsageCount Value="209"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -71,9 +70,10 @@
         <ComponentName Value="ConfigForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="157"/>
-        <CursorPos X="97" Y="125"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="212"/>
+        <CursorPos X="20" Y="226"/>
         <UsageCount Value="209"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -94,7 +94,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="49"/>
         <CursorPos Y="89"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit4>
       <Unit5>
         <Filename Value="Splash.pas"/>
@@ -104,63 +104,65 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="13" Y="7"/>
-        <UsageCount Value="105"/>
+        <UsageCount Value="121"/>
       </Unit5>
       <Unit6>
         <Filename Value="C:\lazarus\lcl\include\customform.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2564"/>
         <CursorPos X="61" Y="2574"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit6>
       <Unit7>
-        <Filename Value="C:\Lazarus\lcl\grids.pas"/>
+        <Filename Value="C:\lazarus\lcl\grids.pas"/>
         <UnitName Value="Grids"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="2392"/>
-        <CursorPos Y="2413"/>
-        <UsageCount Value="9"/>
+        <TopLine Value="10620"/>
+        <CursorPos X="16" Y="10633"/>
+        <UsageCount Value="10"/>
       </Unit7>
       <Unit8>
         <Filename Value="res\packages\twitter\twitter.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="697"/>
         <CursorPos X="19" Y="721"/>
-        <UsageCount Value="31"/>
+        <UsageCount Value="30"/>
       </Unit8>
       <Unit9>
         <Filename Value="res\packages\twitter\oauth1synapse.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="23"/>
         <CursorPos X="28" Y="54"/>
-        <UsageCount Value="34"/>
+        <UsageCount Value="33"/>
       </Unit9>
       <Unit10>
         <Filename Value="Funktionen.pas"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="20" Y="141"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="163"/>
+        <CursorPos Y="57"/>
         <UsageCount Value="201"/>
+        <Loaded Value="True"/>
       </Unit10>
       <Unit11>
         <Filename Value="res\packages\websocket\http_server.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="131"/>
         <CursorPos X="91" Y="136"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit11>
       <Unit12>
         <Filename Value="res\packages\websocket\customserver2.pas"/>
         <UnitName Value="CustomServer2"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="709"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit12>
       <Unit13>
         <Filename Value="res\packages\websocket\bclasses.pas"/>
         <UnitName Value="BClasses"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit13>
       <Unit14>
         <Filename Value="C:\Lazarus\components\lazutils\lazutf8classes.pas"/>
@@ -168,19 +170,19 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="24"/>
         <CursorPos X="64" Y="124"/>
-        <UsageCount Value="6"/>
+        <UsageCount Value="5"/>
       </Unit14>
       <Unit15>
         <Filename Value="C:\lazarus\lcl\include\listitems.inc"/>
         <EditorIndex Value="-1"/>
         <CursorPos Y="41"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit15>
       <Unit16>
         <Filename Value="res\packages\twitter\oauth1.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="43" Y="123"/>
-        <UsageCount Value="34"/>
+        <UsageCount Value="33"/>
       </Unit16>
       <Unit17>
         <Filename Value="Twitter_Picture.pas"/>
@@ -188,8 +190,8 @@
         <ComponentName Value="TwitterForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="58"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="79"/>
         <CursorPos X="29" Y="70"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
@@ -212,7 +214,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="2200"/>
         <CursorPos Y="2221"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit19>
       <Unit20>
         <Filename Value="C:\lazarus\lcl\forms.pp"/>
@@ -220,14 +222,14 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="569"/>
         <CursorPos X="26" Y="595"/>
-        <UsageCount Value="5"/>
+        <UsageCount Value="4"/>
       </Unit20>
       <Unit21>
         <Filename Value="C:\Lazarus\lcl\include\control.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="3190"/>
         <CursorPos Y="3197"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit21>
       <Unit22>
         <Filename Value="C:\Lazarus\lcl\stdctrls.pp"/>
@@ -235,21 +237,21 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1594"/>
         <CursorPos X="38" Y="1510"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit22>
       <Unit23>
         <Filename Value="C:\Lazarus\lcl\include\customlabel.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="327"/>
         <CursorPos X="51" Y="390"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit23>
       <Unit24>
         <Filename Value="C:\Lazarus\lcl\include\font.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="800"/>
         <CursorPos Y="830"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit24>
       <Unit25>
         <Filename Value="C:\Lazarus\lcl\textstrings.pas"/>
@@ -257,158 +259,158 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="158"/>
         <CursorPos Y="179"/>
-        <UsageCount Value="1"/>
+        <UsageCount Value="10"/>
       </Unit25>
       <Unit26>
         <Filename Value="C:\Lazarus\lcl\include\customedit.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="143"/>
         <CursorPos Y="164"/>
-        <UsageCount Value="3"/>
+        <UsageCount Value="2"/>
       </Unit26>
       <Unit27>
         <Filename Value="C:\lazarus\lcl\include\application.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="336"/>
         <CursorPos Y="375"/>
-        <UsageCount Value="4"/>
+        <UsageCount Value="3"/>
       </Unit27>
       <Unit28>
         <Filename Value="packages\synapse\ftpsend.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="291"/>
         <CursorPos X="13" Y="317"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit28>
       <Unit29>
         <Filename Value="packages\twitter\twitter.pas"/>
-        <EditorIndex Value="3"/>
+        <EditorIndex Value="5"/>
         <TopLine Value="677"/>
         <CursorPos X="87" Y="759"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="25"/>
         <Loaded Value="True"/>
       </Unit29>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="Main.pas"/>
-        <Caret Line="353" Column="30" TopLine="316"/>
+        <Caret Line="597" Column="84" TopLine="592"/>
       </Position1>
       <Position2>
         <Filename Value="Main.pas"/>
-        <Caret Line="607" Column="39" TopLine="593"/>
+        <Caret Line="617" Column="49" TopLine="589"/>
       </Position2>
       <Position3>
         <Filename Value="Main.pas"/>
-        <Caret Line="608" Column="22" TopLine="593"/>
+        <Caret Line="617" Column="29" TopLine="589"/>
       </Position3>
       <Position4>
         <Filename Value="Main.pas"/>
-        <Caret Line="609" Column="31" TopLine="593"/>
+        <Caret Line="241" Column="65" TopLine="209"/>
       </Position4>
       <Position5>
-        <Filename Value="Main.pas"/>
-        <Caret Line="617" Column="43" TopLine="593"/>
+        <Filename Value="Wachalarm-IP_Server.lpr"/>
+        <Caret Line="21"/>
       </Position5>
       <Position6>
         <Filename Value="Main.pas"/>
-        <Caret Line="618" Column="43" TopLine="593"/>
+        <Caret Line="619" Column="47" TopLine="596"/>
       </Position6>
       <Position7>
         <Filename Value="Main.pas"/>
-        <Caret Line="620" Column="18" TopLine="593"/>
+        <Caret Line="252" TopLine="242"/>
       </Position7>
       <Position8>
         <Filename Value="Main.pas"/>
-        <Caret Line="621" Column="23" TopLine="593"/>
+        <Caret Line="251" TopLine="241"/>
       </Position8>
       <Position9>
         <Filename Value="Main.pas"/>
-        <Caret Line="623" Column="33" TopLine="593"/>
+        <Caret Line="252" TopLine="242"/>
       </Position9>
       <Position10>
         <Filename Value="Main.pas"/>
-        <Caret Line="625" Column="17" TopLine="593"/>
+        <Caret Line="251" TopLine="241"/>
       </Position10>
       <Position11>
         <Filename Value="Main.pas"/>
-        <Caret Line="1081" Column="47" TopLine="1041"/>
+        <Caret Line="253" TopLine="242"/>
       </Position11>
       <Position12>
         <Filename Value="Main.pas"/>
-        <Caret Line="1087" Column="34" TopLine="1047"/>
+        <Caret Line="626" Column="29" TopLine="613"/>
       </Position12>
       <Position13>
         <Filename Value="Main.pas"/>
-        <Caret Line="1089" Column="31" TopLine="1049"/>
+        <Caret Line="627" Column="17" TopLine="613"/>
       </Position13>
       <Position14>
         <Filename Value="Main.pas"/>
-        <Caret Line="1090" Column="131" TopLine="1050"/>
+        <Caret Line="1102" Column="47" TopLine="1078"/>
       </Position14>
       <Position15>
         <Filename Value="Main.pas"/>
-        <Caret Line="1092" Column="48" TopLine="1052"/>
+        <Caret Line="1108" Column="34" TopLine="1084"/>
       </Position15>
       <Position16>
         <Filename Value="Main.pas"/>
-        <Caret Line="1093" Column="80" TopLine="1053"/>
+        <Caret Line="1110" Column="31" TopLine="1086"/>
       </Position16>
       <Position17>
         <Filename Value="Main.pas"/>
-        <Caret Line="1094" Column="36" TopLine="1054"/>
+        <Caret Line="1111" Column="131" TopLine="1087"/>
       </Position17>
       <Position18>
         <Filename Value="Main.pas"/>
-        <Caret Line="1109" Column="37" TopLine="1076"/>
+        <Caret Line="1113" Column="48" TopLine="1089"/>
       </Position18>
       <Position19>
         <Filename Value="Main.pas"/>
-        <Caret Line="1438" Column="36" TopLine="1397"/>
+        <Caret Line="1114" Column="80" TopLine="1090"/>
       </Position19>
       <Position20>
         <Filename Value="Main.pas"/>
-        <Caret Line="1443" Column="50" TopLine="1402"/>
+        <Caret Line="1115" Column="36" TopLine="1091"/>
       </Position20>
       <Position21>
         <Filename Value="Main.pas"/>
-        <Caret Line="1444" Column="69" TopLine="1403"/>
+        <Caret Line="1129" Column="58" TopLine="1108"/>
       </Position21>
       <Position22>
         <Filename Value="Main.pas"/>
-        <Caret Line="624" Column="53" TopLine="596"/>
+        <Caret Line="1459" Column="36" TopLine="1435"/>
       </Position22>
       <Position23>
         <Filename Value="Main.pas"/>
-        <Caret Line="619" Column="39" TopLine="586"/>
+        <Caret Line="1465" Column="26" TopLine="1440"/>
       </Position23>
       <Position24>
         <Filename Value="Main.pas"/>
-        <Caret Line="1518" Column="3" TopLine="1516"/>
+        <Caret Line="1474" Column="24" TopLine="1450"/>
       </Position24>
       <Position25>
         <Filename Value="Main.pas"/>
-        <Caret Line="1549" Column="41" TopLine="1516"/>
+        <Caret Line="1492" Column="24" TopLine="1468"/>
       </Position25>
       <Position26>
         <Filename Value="Main.pas"/>
-        <Caret Line="619" Column="48" TopLine="593"/>
+        <Caret Line="1500" Column="24" TopLine="1476"/>
       </Position26>
       <Position27>
         <Filename Value="Main.pas"/>
-        <Caret Line="102" Column="54" TopLine="91"/>
+        <Caret Line="1629" Column="34" TopLine="1608"/>
       </Position27>
       <Position28>
-        <Filename Value="Main.pas"/>
-        <Caret Line="20" Column="23" TopLine="94"/>
+        <Filename Value="Config.pas"/>
+        <Caret Line="162" Column="37" TopLine="154"/>
       </Position28>
       <Position29>
         <Filename Value="Main.pas"/>
-        <Caret Line="102" Column="54" TopLine="97"/>
+        <Caret Line="446" Column="25" TopLine="432"/>
       </Position29>
       <Position30>
         <Filename Value="Main.pas"/>
-        <Caret Line="1541" Column="3" TopLine="1527"/>
+        <Caret Line="126" Column="29" TopLine="112"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
@@ -424,9 +426,23 @@
       <OtherUnitFiles Value="packages\synapse;packages\twitter"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <IncludeAssertionCode Value="True"/>
+      </SyntaxOptions>
+    </Parsing>
+    <CodeGeneration>
+      <Checks>
+        <IOChecks Value="True"/>
+        <RangeChecks Value="True"/>
+        <OverflowChecks Value="True"/>
+        <StackChecks Value="True"/>
+      </Checks>
+      <VerifyObjMethodCallValidity Value="True"/>
+    </CodeGeneration>
     <Linking>
       <Debugging>
-        <GenerateDebugInfo Value="False"/>
+        <UseHeaptrc Value="True"/>
         <StripSymbols Value="True"/>
       </Debugging>
       <Options>
@@ -437,170 +453,16 @@
     </Linking>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="1">
+    <Watches Count="3">
       <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="Main.pas"/>
-        <Line Value="602"/>
-      </Item1>
-    </BreakPoints>
-    <Watches Count="51">
-      <Item1>
-        <Expression Value="Einsatzmittel[i].status"/>
+        <Expression Value="SG_WaipChronik.RowCount"/>
       </Item1>
       <Item2>
-        <Expression Value="Einsatzmittel[i].ip"/>
+        <Expression Value="SG_WaipChronik.Cells"/>
       </Item2>
       <Item3>
-        <Expression Value="Einsatzmittel[i].Wache"/>
+        <Expression Value="SG_Clients"/>
       </Item3>
-      <Item4>
-        <Expression Value="Einsatzmittel[i].Fahrzeug"/>
-      </Item4>
-      <Item5>
-        <Expression Value="Einsatzmittel[i].Zuget_zeit"/>
-      </Item5>
-      <Item6>
-        <Expression Value="Einsatzmittel[i].Alarm_zeit"/>
-      </Item6>
-      <Item7>
-        <Expression Value="Einsatzmittel[i].Ausrueck_zeit "/>
-      </Item7>
-      <Item8>
-        <Expression Value="Zeile_I"/>
-      </Item8>
-      <Item9>
-        <Expression Value="PictureForm.LAlarm.Caption"/>
-        <Enabled Value="False"/>
-      </Item9>
-      <Item10>
-        <Expression Value="stringgrid1.RowCount"/>
-      </Item10>
-      <Item11>
-        <Expression Value="Auftrag.Lines.text"/>
-      </Item11>
-      <Item12>
-        <Expression Value="Auftrag"/>
-      </Item12>
-      <Item13>
-        <Expression Value="E_Alarmierte_EM_Pic"/>
-      </Item13>
-      <Item14>
-        <Expression Value="E_Ort"/>
-      </Item14>
-      <Item15>
-        <Expression Value="E_Ortsteil"/>
-      </Item15>
-      <Item16>
-        <Expression Value="E_Strasse"/>
-      </Item16>
-      <Item17>
-        <Expression Value="E_Objekt"/>
-      </Item17>
-      <Item18>
-        <Expression Value="E_Objektnummer"/>
-      </Item18>
-      <Item19>
-        <Expression Value="E_Objektart"/>
-      </Item19>
-      <Item20>
-        <Expression Value="E_Einsatzart"/>
-      </Item20>
-      <Item21>
-        <Expression Value="E_Stichwort"/>
-      </Item21>
-      <Item22>
-        <Expression Value="E_Sondersignal"/>
-      </Item22>
-      <Item23>
-        <Expression Value="E_Einsatznummer"/>
-      </Item23>
-      <Item24>
-        <Expression Value="E_Besonderheiten"/>
-      </Item24>
-      <Item25>
-        <Expression Value="E_PName"/>
-      </Item25>
-      <Item26>
-        <Expression Value="E_Alarmzeit"/>
-      </Item26>
-      <Item27>
-        <Expression Value="E_Wachennummer"/>
-      </Item27>
-      <Item28>
-        <Expression Value="Tweet"/>
-      </Item28>
-      <Item29>
-        <Expression Value="SG_Twitter.Cells[j, 0]"/>
-      </Item29>
-      <Item30>
-        <Expression Value="pos(M_Wachenfilter.Lines[k],Einsatzmittel[j].Wache)"/>
-      </Item30>
-      <Item31>
-        <Expression Value="M_Wachenfilter.Lines[k]"/>
-      </Item31>
-      <Item32>
-        <Expression Value="Einsatzmittel[j].Wache"/>
-      </Item32>
-      <Item33>
-        <Expression Value="i"/>
-      </Item33>
-      <Item34>
-        <Expression Value="j"/>
-      </Item34>
-      <Item35>
-        <Expression Value="k"/>
-      </Item35>
-      <Item36>
-        <Expression Value="E_Wachen"/>
-      </Item36>
-      <Item37>
-        <Expression Value="test"/>
-      </Item37>
-      <Item38>
-        <Expression Value="test_S"/>
-      </Item38>
-      <Item39>
-        <Expression Value="SG_Twitter.Cells[0, j]"/>
-      </Item39>
-      <Item40>
-        <Expression Value="Alarmwege"/>
-      </Item40>
-      <Item41>
-        <Expression Value="MainForm.M_Auftrag.Lines.Count"/>
-      </Item41>
-      <Item42>
-        <Expression Value="Alarmweg"/>
-      </Item42>
-      <Item43>
-        <Expression Value="pos(',', Einsatzmittel[i].IP"/>
-      </Item43>
-      <Item44>
-        <Expression Value="length(Einsatzmittel)"/>
-      </Item44>
-      <Item45>
-        <Expression Value="inttostr(strtoint(copy(SG_Clients.Cells[0,Wache_SG_Row],+1,2))"/>
-      </Item45>
-      <Item46>
-        <Expression Value="copy(SG_Clients.Cells[0,Wache_SG_Row],+1,2)"/>
-      </Item46>
-      <Item47>
-        <Expression Value="SG_IP_Replace.Cells[1, 2]"/>
-      </Item47>
-      <Item48>
-        <Expression Value="SG_IP_Replace.Cells[1, j]"/>
-      </Item48>
-      <Item49>
-        <Expression Value="Einsatzmittel"/>
-      </Item49>
-      <Item50>
-        <Expression Value="ConfigForm.M_DirectoryList.Lines[0]"/>
-      </Item50>
-      <Item51>
-        <Expression Value="TmpFiles[0]"/>
-      </Item51>
     </Watches>
     <Exceptions Count="9">
       <Item1>
