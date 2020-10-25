@@ -61,8 +61,8 @@ type
     AlarmSimulation1: TMenuItem;
     M_StringReplace_Picture: TMemo;
     M_Wachenfilter: TMemo;
-    SG_WaipChronik: TStringGrid;
     SG_Twitter_Filter: TStringGrid;
+    SG_WaipChronik: TStringGrid;
     TabSheet12: TTabSheet;
     TabSheet13: TTabSheet;
     TabSheet14: TTabSheet;
@@ -153,9 +153,10 @@ end;
 var
   MainForm: TMainForm;
   Einsatzmittel: Array Of TEinsatzRecord;
-  E_Ort, E_Ortsteil, E_Strasse, E_Objekt, E_Objektnummer, E_Objektart, E_Einsatzart, E_Stichwort, 
-  E_Sondersignal, E_Einsatznummer, E_Besonderheiten, E_PName, E_Alarmzeit, E_Wachennummer, E_X, E_Y,
-  E_Alarmierte_EM, E_Mitausgerueckte_EM, E_UUID, Dir, Slash, Udp_Sound, User, Pass: String;
+  E_Ort, E_Ortsteil, E_Ortslage, E_Strasse, E_Objekt, E_Objektteil, E_Objektnummer, E_Objektart,
+  E_Einsatzart, E_Stichwort, E_Sondersignal, E_Einsatznummer, E_Besonderheiten,
+  E_PName, E_Alarmzeit, E_Wachennummer, E_X, E_Y, E_Alarmierte_EM, E_Mitausgerueckte_EM,
+  E_UUID, Dir, Slash, Udp_Sound, User, Pass: String;
   Fehlerindex, Anzahl_aktuelle_Alarme, Reset_Timer: Integer;
   Config_INI: TIniFile;
 
@@ -247,7 +248,7 @@ begin
     LoadStringGrid_IniLines(Dir + Slash + 'config.ini', SG_IP_Replace);
     SaveStringGrid_IniXML(Dir + Slash + 'config.ini', SG_IP_Replace);
   end;
-  // Twitter-Chronik laden
+  // Waip-Chronik laden
   if IniSectionExists(Dir + Slash + 'config.ini', SG_WaipChronik.Name + '.XML') = true then
     LoadStringGrid_IniXML(Dir + Slash + 'config.ini', SG_WaipChronik)
   else
@@ -442,18 +443,19 @@ end;
 
 procedure TMainForm.WAIP_Auslesen;
 var i, j, em: integer;
-    Auslesetext, Zeile_I, tmp_Ortslage: string;
+    Auslesetext, Zeile_I: string;
 begin
   // lokale Variablen zurücksetzen
   Auslesetext := '';
   Zeile_I := '';
   em := 0;
-  tmp_Ortslage := '';
   // globale Einsatz-Variablen zurücksetzen
   E_Ort := '';
   E_Ortsteil := '';
+  E_Ortslage := '';
   E_Strasse := '';
   E_Objekt := '';
+  E_Objektteil := '';
   E_Objektnummer := '';
   E_Objektart := '';
   E_Einsatzart := '';
@@ -478,16 +480,7 @@ begin
   // Ortslage auslesen, entfernen, Variable setzen und Label zuweisen
   Auslesetext := copy(MainForm.M_Auftrag.Lines.text,pos('Ortslage~',MainForm.M_Auftrag.Text)+10,50);
   Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
-  tmp_Ortslage := Auslesetext;
-  // Orsteil und Ortslage verketten, falls Ortslage vorhanden
-  if Trim(tmp_Ortslage) <> '' then
-  begin
-    // wenn Ortsteil leer, aber Ortslage, dann Ortslage hinterlegen, sonst Ortslage hinzufuegen
-    if Trim(E_Ortsteil) = '' then
-      E_Ortsteil := tmp_Ortslage
-    else
-      E_Ortsteil := E_Ortsteil + ' / ' + tmp_Ortslage;
-  end;
+  E_Ortslage := Auslesetext;
   // Strasse auslesen, entfernen, Variable setzen und Label zuweisen
   Auslesetext := copy(MainForm.M_Auftrag.Lines.text,pos('Strasse~',MainForm.M_Auftrag.Text)+9,50);
   Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
@@ -496,6 +489,10 @@ begin
   Auslesetext:= copy(MainForm.M_Auftrag.Lines.text,pos('Objekt~',MainForm.M_Auftrag.Text)+8,50);
   Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
   E_Objekt := TrimLeft(Auslesetext);
+  // Unterobjekt auslesen, entfernen, Variable setzen und Label zuweisen
+  Auslesetext:= copy(MainForm.M_Auftrag.Lines.text,pos('Objektteil~',MainForm.M_Auftrag.Text)+12,50);
+  Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
+  E_Objektteil := TrimLeft(Auslesetext);
   // Objektnummer auslesen, Variable setzen und entfernen
   Auslesetext := copy(MainForm.M_Auftrag.Lines.text,pos('Objektnummer~',MainForm.M_Auftrag.Text)+14,20);
   Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
@@ -617,6 +614,7 @@ begin
     E_UUID := StringReplace(E_UUID, '{', '', []);
     E_UUID := StringReplace(E_UUID, '}', '', []);
     // Werte in Tabelle hinterlegen
+    SG_WaipChronik.RowCount := SG_WaipChronik.RowCount + 1;
     SG_WaipChronik.Cells[0, SG_WaipChronik.RowCount - 1] := E_Einsatznummer;
     SG_WaipChronik.Cells[1, SG_WaipChronik.RowCount - 1] := E_UUID;
   end;
@@ -625,6 +623,7 @@ begin
   begin
     GridDeleteRow(SG_WaipChronik,1);
   end;
+  // Waip-Chronik speichern
   SG_WaipChronik.AutoSizeColumns;
   // Alarm an Wachalarm-Web uebergeben
   Web_Alarm(Simulation);
@@ -782,8 +781,10 @@ begin
     '"ortsdaten": {' +
       '"ort": "' + StringReplace(E_Ort, #34, '', [rfReplaceAll]) + '",' +
       '"ortsteil": "' + StringReplace(E_Ortsteil, #34, '', [rfReplaceAll]) + '",' +
+      '"ortslage": "' + StringReplace(E_Ortslage, #34, '', [rfReplaceAll]) + '",' +
       '"strasse": "' + StringReplace(E_Strasse, #34, '', [rfReplaceAll]) + '",' +
       '"objekt": "' + StringReplace(E_Objekt, #34, '', [rfReplaceAll]) + '",' +
+      '"objektteil": "' + StringReplace(E_Objektteil, #34, '', [rfReplaceAll]) + '",' +
       '"objektnr": "' + E_Objektnummer + '",' +
       '"objektart": "' + E_Objektart + '",' +
       '"wachfolge": "' + E_Wachennummer + '",' +
@@ -886,6 +887,11 @@ begin
       PictureForm.LOrtsdaten.Caption := PictureForm.LOrtsdaten.Caption + #13#10 + E_Objekt
     else
       PictureForm.LOrtsdaten.Caption := E_Objekt;
+  if E_Objektteil <> '' then
+    if PictureForm.LOrtsdaten.Caption <> '' then
+      PictureForm.LOrtsdaten.Caption := PictureForm.LOrtsdaten.Caption + #13#10 + E_Objektteil
+    else
+      PictureForm.LOrtsdaten.Caption := E_Objektteil;
   if E_Ort_WB <> '' then
     if PictureForm.LOrtsdaten.Caption <> '' then
       PictureForm.LOrtsdaten.Caption := PictureForm.LOrtsdaten.Caption + #13#10 + E_Ort_WB
@@ -896,6 +902,11 @@ begin
       PictureForm.LOrtsdaten.Caption := PictureForm.LOrtsdaten.Caption + #13#10 + E_Ortsteil
     else
       PictureForm.LOrtsdaten.Caption := E_Ortsteil;
+  if E_Ortslage <> '' then
+    if PictureForm.LOrtsdaten.Caption <> '' then
+      PictureForm.LOrtsdaten.Caption := PictureForm.LOrtsdaten.Caption + #13#10 + E_Ortslage
+    else
+      PictureForm.LOrtsdaten.Caption := E_Ortslage;
   if E_Strasse <> '' then
     if PictureForm.LOrtsdaten.Caption <> '' then
       PictureForm.LOrtsdaten.Caption := PictureForm.LOrtsdaten.Caption + #13#10 + E_Strasse
@@ -959,7 +970,7 @@ begin
   T_Time := leftstr(timetostr(time),5);
   Tweet := '';
   Reply_ID := '';
-  // nps = non-breaking space; damit Texte auf Twitter an bestimmten stellen umgebrochen werden
+  // nbs = non-breaking space; damit Texte auf Twitter an bestimmten stellen umgebrochen werden
   nbs := PChar(#$C2#$A0);
   // als erstes in Twitter-Tabelle nach Account suchen und Zeile merken
   for i := 1 to SG_Twitter.RowCount - 1 do
@@ -1073,13 +1084,20 @@ begin
       //Falls Wachen nicht gewollt, trotzdem Variable setzen
       T_Wachen := '-';
     end;
-    //abschließend den Tweet auf max 260 Zeichen kürzen, Wichtig UTF8Lenght für richtige länge benutzen! (Puffer für EMOJI)
-    if UTF8Length(Tweet) > 280 then
-      Tweet := UTF8LeftStr(Tweet, 260) + nbs + '...';
-    // Dashboard-URL zum Tweet hinzufügen, falls gewollt, URL zählt nicht in Twitter-Zeichenbegrenzung
+    // Dashboard-URL zum Tweet hinzufügen, falls gewollt, sonst Tweet ggf. kürzen
     if SG_Twitter.Cells[9, T_Account_Zeile] = '1' then
     begin
+      //prüfen ob Tweet länger als 240 (280-1-23 - EMOJI-Puffer) Zeichen lang ist, sonst vorher kürzen
+      if UTF8Length(Tweet) > 240 then
+        Tweet := UTF8LeftStr(Tweet, 240) + nbs + '...';
+      // URL hinzufügen
       Tweet := Tweet + ' ' + ConfigForm.E_dbrd_link.Text + E_UUID;
+    end
+    else
+    begin
+      //abschließend den Tweet auf max 260 Zeichen kürzen, Wichtig UTF8Lenght für richtige länge benutzen! (Puffer für EMOJI)
+      if UTF8Length(Tweet) > 280 then
+        Tweet := UTF8LeftStr(Tweet, 260) + nbs + '...';
     end;
     // T_Einsatzdaten für Abgleich in Chronik zusammensetzen
     T_Einsatzdaten := E_Einsatzart +', '+ E_Stichwort +', '+ E_Ort +', '+ E_Ortsteil +', '+ T_Wachen +', '+ E_Alarmierte_EM +', '+ E_Sondersignal;
