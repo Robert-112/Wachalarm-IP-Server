@@ -1,7 +1,7 @@
 object ConfigForm: TConfigForm
-  Left = 212
+  Left = 167
   Height = 500
-  Top = 810
+  Top = 767
   Width = 700
   BorderStyle = bsToolWindow
   Caption = 'Einstellungen'
@@ -14,7 +14,7 @@ object ConfigForm: TConfigForm
   OnClose = FormClose
   OnCreate = FormCreate
   Position = poDesktopCenter
-  LCLVersion = '2.0.2.0'
+  LCLVersion = '2.0.12.0'
   object Btn_Back: TButton
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom

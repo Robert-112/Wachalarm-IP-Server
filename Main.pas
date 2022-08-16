@@ -450,6 +450,7 @@ begin
   Zeile_I := '';
   em := 0;
   // globale Einsatz-Variablen zurücksetzen
+  E_UUID := '';
   E_Ort := '';
   E_Ortsteil := '';
   E_Ortslage := '';
@@ -469,6 +470,10 @@ begin
   E_Alarmierte_EM := '';
   E_Mitausgerueckte_EM := '';
   SetLength(Einsatzmittel, 0);
+  // UUID auslesen, entfernen, Variable setzen und Label zuweisen
+  Auslesetext := copy(MainForm.M_Auftrag.Lines.text,pos('UUID~', MainForm.M_Auftrag.Text)+6,60);
+  Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
+  E_UUID := Auslesetext;
   // Ort auslesen, entfernen, Variable setzen und Label zuweisen
   Auslesetext := copy(MainForm.M_Auftrag.Lines.text,pos('Ort~', MainForm.M_Auftrag.Text)+5,50);
   Delete(Auslesetext,pos('~',Auslesetext), (length(Auslesetext)-pos('~',Auslesetext)+1));
@@ -598,14 +603,13 @@ var i, j, direkter_Alarm: integer;
 begin
   Alarmweg_alarmiert := '';
   // Prüfen ob UUID zu deisem Einsatz bereits existiert
-  E_UUID := '';
   for i := 1 to SG_WaipChronik.RowCount - 1 do
   begin
     // Prüfen ob in WAIP-Chronik zu gleicher Einsatznummer (E_Einsatznummer) bereits ein Eintrag vorhanden ist
     if SG_WaipChronik.Cells[0,i] = E_Einsatznummer then
       E_UUID := SG_WaipChronik.Cells[1,i];
   end;
-  // UUID erzeugen, falls noch nicht hinterlegt
+  // UUID erzeugen, falls noch nicht hinterlegt und auch nicht ausgelesen
   if E_UUID = '' then
   begin
     CreateGUID(TmpGuid);

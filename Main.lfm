@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 938
+  Left = 708
   Height = 500
-  Top = 322
+  Top = 330
   Width = 890
   ActiveControl = PageControl1
   Caption = 'Wachalarm-IP Server'
@@ -152,7 +152,7 @@ object MainForm: TMainForm
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   Position = poScreenCenter
-  LCLVersion = '2.0.2.0'
+  LCLVersion = '2.0.12.0'
   object PageControl1: TPageControl
     Left = 0
     Height = 317
@@ -208,7 +208,6 @@ object MainForm: TMainForm
             Title.Caption = 'Alarm-Text'
           end        
           item
-            MaxSize = 200
             Title.Caption = 'weitere Info'
           end>
         FixedCols = 0
@@ -221,9 +220,6 @@ object MainForm: TMainForm
         RowCount = 1
         ShowHint = True
         TabOrder = 0
-        TitleFont.Color = clWindowText
-        TitleFont.Height = -11
-        TitleFont.Name = 'Tahoma'
         OnKeyDown = SG_ClientsKeyDown
       end
     end
@@ -341,9 +337,6 @@ object MainForm: TMainForm
             RowCount = 2
             ShowHint = True
             TabOrder = 0
-            TitleFont.Color = clWindowText
-            TitleFont.Height = -11
-            TitleFont.Name = 'Tahoma'
             OnEditingDone = SG_IP_ReplaceEditingDone
             OnKeyDown = SG_IP_ReplaceKeyDown
             ColWidths = (
@@ -507,9 +500,6 @@ object MainForm: TMainForm
             RowCount = 2
             ShowHint = True
             TabOrder = 0
-            TitleFont.Color = clWindowText
-            TitleFont.Height = -11
-            TitleFont.Name = 'Tahoma'
             OnEditingDone = SG_TwitterEditingDone
             OnExit = SG_TwitterExit
             OnKeyDown = SG_TwitterKeyDown
@@ -642,9 +632,6 @@ object MainForm: TMainForm
             RowCount = 2
             ShowHint = True
             TabOrder = 0
-            TitleFont.Color = clWindowText
-            TitleFont.Height = -11
-            TitleFont.Name = 'Tahoma'
             OnEditingDone = SG_Twitter_FilterEditingDone
             OnKeyDown = SG_Twitter_FilterKeyDown
           end
@@ -813,9 +800,6 @@ object MainForm: TMainForm
             RowCount = 1
             ShowHint = True
             TabOrder = 0
-            TitleFont.Color = clWindowText
-            TitleFont.Height = -11
-            TitleFont.Name = 'Tahoma'
             OnKeyDown = SG_TweetChronikKeyDown
           end
           object Label13: TLabel
@@ -997,7 +981,7 @@ object MainForm: TMainForm
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 15
       BorderSpacing.Right = 20
-      Caption = 'Version 2.9.3.0 (01.10.2020)'
+      Caption = 'Version 2.9.4.0 (16.08.2022)'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -1070,13 +1054,13 @@ object MainForm: TMainForm
     Interval = 500
     OnTimer = Timer1Timer
     OnStopTimer = Timer1StopTimer
-    left = 400
-    top = 24
+    Left = 400
+    Top = 24
   end
   object MainMenu1: TMainMenu
     Images = ImageList2
-    left = 336
-    top = 24
+    Left = 336
+    Top = 24
     object Programm1: TMenuItem
       Caption = 'Programm'
       object Einstellungen1: TMenuItem
@@ -1129,8 +1113,8 @@ object MainForm: TMainForm
     Height = 32
     ShareImages = True
     Width = 32
-    left = 208
-    top = 24
+    Left = 208
+    Top = 24
     Bitmap = {
       4C691C0000002000000020000000000000000000000000000000000000000000
       000000000000000000000000000000000004B58140B2B8813EFFB7803CFFB77F
@@ -4720,8 +4704,8 @@ object MainForm: TMainForm
     }
   end
   object ImageList2: TImageList
-    left = 272
-    top = 24
+    Left = 272
+    Top = 24
     Bitmap = {
       4C690900000010000000100000004A7CA5004A7CA5004A7CA5004A7CA5004A7E
       A7004A7EA8004A7EA8004A7EA8004A7EA800497DA7004579A400709BBE00B5D2
