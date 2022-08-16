@@ -600,16 +600,11 @@ procedure TMainForm.Alarmierung_durchfuehren(Simulation: Boolean);
 var i, j, direkter_Alarm: integer;
     TmpGuid: TGUID;
     UDP_Funkkenner, Alarmweg_now, Alarmweg_rest, Alarmweg_alarmiert, TMP_E_Ortsteil: string;
+    UUID_Chronik: Boolean;
 begin
   Alarmweg_alarmiert := '';
-  // Prüfen ob UUID zu deisem Einsatz bereits existiert
-  for i := 1 to SG_WaipChronik.RowCount - 1 do
-  begin
-    // Prüfen ob in WAIP-Chronik zu gleicher Einsatznummer (E_Einsatznummer) bereits ein Eintrag vorhanden ist
-    if SG_WaipChronik.Cells[0,i] = E_Einsatznummer then
-      E_UUID := SG_WaipChronik.Cells[1,i];
-  end;
-  // UUID erzeugen, falls noch nicht hinterlegt und auch nicht ausgelesen
+  UUID_Chronik := false;
+  // UUID erzeugen, falls nicht ausgelesen
   if E_UUID = '' then
   begin
     CreateGUID(TmpGuid);
@@ -617,7 +612,20 @@ begin
     E_UUID := LowerCase(E_UUID);
     E_UUID := StringReplace(E_UUID, '{', '', []);
     E_UUID := StringReplace(E_UUID, '}', '', []);
-    // Werte in Tabelle hinterlegen
+  end;
+  // Prüfen ob eine UUID zu deisem Einsatz bereits existiert
+  for i := 1 to SG_WaipChronik.RowCount - 1 do
+  begin
+    // Prüfen ob in WAIP-Chronik zu gleicher Einsatznummer (E_Einsatznummer) bereits ein UUID-Eintrag vorhanden ist
+    if SG_WaipChronik.Cells[0,i] = E_Einsatznummer then
+    begin
+      E_UUID := SG_WaipChronik.Cells[1,i];
+      UUID_Chronik := true;
+    end;
+  end;
+  // Neue UUID in Tabelle hinterlegen, falls noch keine hinterlegt
+  if UUID_Chronik = false  then
+  begin
     SG_WaipChronik.RowCount := SG_WaipChronik.RowCount + 1;
     SG_WaipChronik.Cells[0, SG_WaipChronik.RowCount - 1] := E_Einsatznummer;
     SG_WaipChronik.Cells[1, SG_WaipChronik.RowCount - 1] := E_UUID;
