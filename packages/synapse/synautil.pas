@@ -1,9 +1,9 @@
 {==============================================================================|
-| Project : Ararat Synapse                                       | 004.015.006 |
+| Project : Ararat Synapse                                       | 004.015.007 |
 |==============================================================================|
 | Content: support procedures and functions                                    |
 |==============================================================================|
-| Copyright (c)1999-2013, Lukas Gebauer                                        |
+| Copyright (c)1999-2017, Lukas Gebauer                                        |
 | All rights reserved.                                                         |
 |                                                                              |
 | Redistribution and use in source and binary forms, with or without           |
@@ -33,7 +33,7 @@
 | DAMAGE.                                                                      |
 |==============================================================================|
 | The Initial Developer of the Original Code is Lukas Gebauer (Czech Republic).|
-| Portions created by Lukas Gebauer are Copyright (c) 1999-2013.               |
+| Portions created by Lukas Gebauer are Copyright (c) 1999-2017.               |
 | Portions created by Hernan Sanchez are Copyright (c) 2000.                   |
 | Portions created by Petr Fejfar are Copyright (c)2011-2012.                  |
 | All Rights Reserved.                                                         |
@@ -59,6 +59,11 @@
   {$WARN IMPLICIT_STRING_CAST OFF}
   {$WARN IMPLICIT_STRING_CAST_LOSS OFF}
   {$WARN SUSPICIOUS_TYPECAST OFF}
+  {$WARN SYMBOL_DEPRECATED OFF}
+{$ENDIF}
+
+{$IFDEF NEXTGEN}
+  {$ZEROBASEDSTRINGS OFF}
 {$ENDIF}
 
 unit synautil;
@@ -77,7 +82,7 @@ uses
     {$ENDIF OS2}
   {$ELSE FPC}
     {$IFDEF POSIX}
-      Posix.Base, Posix.Time, Posix.SysTypes, Posix.SysTime, Posix.Stdio,
+      Posix.Base, Posix.Time, Posix.SysTypes, Posix.SysTime, Posix.Stdio, Posix.Unistd,
     {$ELSE}
       Libc,
     {$ENDIF}
@@ -85,6 +90,9 @@ uses
 {$ENDIF}
 {$IFDEF CIL}
   System.IO,
+{$ENDIF}
+{$IFDEF DELPHIX_SEATTLE_UP}
+  AnsiStrings,
 {$ENDIF}
   SysUtils, Classes, SynaFpc;
 
@@ -1842,16 +1850,16 @@ begin
     {$ELSE}
   if Dir = '' then
   begin
-    SetLength(Path, MAX_PATH);
-	  x := GetTempPath(Length(Path), PChar(Path));
-  	SetLength(Path, x);
+    Path := StringOfChar(#0, MAX_PATH);
+	  {x :=} GetTempPath(Length(Path), PChar(Path));
+    Path := PChar(Path);
   end
   else
     Path := Dir;
   x := Length(Path);
   if Path[x] <> '\' then
     Path := Path + '\';
-  SetLength(Result, MAX_PATH + 1);
+  Result := StringOfChar(#0, MAX_PATH);
   GetTempFileName(PChar(Path), PChar(Prefix), 0, PChar(Result));
   Result := PChar(Result);
   SetFileattributes(PChar(Result), GetFileAttributes(PChar(Result)) or FILE_ATTRIBUTE_TEMPORARY);
@@ -1917,7 +1925,7 @@ end;
 procedure SearchForLineBreak(var APtr:PANSIChar; AEtx:PANSIChar; out ABol:PANSIChar; out ALength:integer);
 begin
   ABol := APtr;
-  while (APtr<AEtx) and not (APtr^ in [#0,#10,#13]) do
+  while (APtr<AEtx) and not (Byte(APtr^) in [0, 10, 13]) do
     inc(APtr);
   ALength := APtr-ABol;
 end;
@@ -2021,12 +2029,12 @@ begin
   // Moving Aptr position forward until boundary will be reached
   while (APtr<AEtx) do
     begin
-      if strlcomp(APtr,#13#10'--',4)=0 then
+      if SynaFpc.strlcomp(APtr,#13#10'--',4)=0 then
         begin
           eob  := MatchBoundary(APtr,AEtx,ABoundary);
           Step := 4;
         end
-      else if strlcomp(APtr,'--',2)=0 then
+      else if SynaFpc.strlcomp(APtr,'--',2)=0 then
         begin
           eob  := MatchBoundary(APtr,AEtx,ABoundary);
           Step := 2;
@@ -2059,17 +2067,17 @@ begin
   Lng := length(ABoundary);
   if (MatchPos+2+Lng)>AETX then
     exit;
-  if strlcomp(MatchPos,#13#10,2)=0 then
+  if SynaFpc.strlcomp(MatchPos,#13#10,2)=0 then
     inc(MatchPos,2);
   if (MatchPos+2+Lng)>AETX then
     exit;
-  if strlcomp(MatchPos,'--',2)<>0 then
+  if SynaFpc.strlcomp(MatchPos,'--',2)<>0 then
     exit;
   inc(MatchPos,2);
-  if strlcomp(MatchPos,PANSIChar(ABoundary),Lng)<>0 then
+  if SynaFpc.strlcomp(MatchPos,PANSIChar(ABoundary),Lng)<>0 then
     exit;
   inc(MatchPos,Lng);
-  if ((MatchPos+2)<=AEtx) and (strlcomp(MatchPos,#13#10,2)=0) then
+  if ((MatchPos+2)<=AEtx) and (SynaFpc.strlcomp(MatchPos,#13#10,2)=0) then
     inc(MatchPos,2);
   Result := MatchPos;
 end;
@@ -2084,10 +2092,10 @@ begin
   MatchPos := MatchBoundary(ABOL,AETX,ABoundary);
   if not Assigned(MatchPos) then
     exit;
-  if strlcomp(MatchPos,'--',2)<>0 then
+  if SynaFpc.strlcomp(MatchPos,'--',2)<>0 then
     exit;
   inc(MatchPos,2);
-  if (MatchPos+2<=AEtx) and (strlcomp(MatchPos,#13#10,2)=0) then
+  if (MatchPos+2<=AEtx) and (SynaFpc.strlcomp(MatchPos,#13#10,2)=0) then
     inc(MatchPos,2);
   Result := MatchPos;
 end;

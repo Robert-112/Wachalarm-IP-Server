@@ -981,7 +981,7 @@ object MainForm: TMainForm
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 15
       BorderSpacing.Right = 20
-      Caption = 'Version 2.9.4.0 (16.08.2022)'
+      Caption = 'Version 2.9.5.0 (24.08.2022)'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
