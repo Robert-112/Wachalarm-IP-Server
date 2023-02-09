@@ -4,14 +4,14 @@ object TwitterForm: TTwitterForm
   Top = 245
   Width = 910
   BorderStyle = bsSingle
-  Caption = 'Twitter-Bild'
+  Caption = 'Twitter/Mastodon-Bild'
   ClientHeight = 512
   ClientWidth = 910
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poScreenCenter
   ShowInTaskBar = stAlways
-  LCLVersion = '2.0.2.0'
+  LCLVersion = '2.2.4.0'
   object I_Background: TImage
     Left = 0
     Height = 512

@@ -1,7 +1,7 @@
 object ConfigForm: TConfigForm
-  Left = 212
+  Left = 1615
   Height = 500
-  Top = 810
+  Top = 255
   Width = 700
   BorderStyle = bsToolWindow
   Caption = 'Einstellungen'
@@ -13,8 +13,8 @@ object ConfigForm: TConfigForm
   Font.Name = 'Tahoma'
   OnClose = FormClose
   OnCreate = FormCreate
-  Position = poDesktopCenter
-  LCLVersion = '2.0.2.0'
+  Position = poScreenCenter
+  LCLVersion = '2.2.4.0'
   object Btn_Back: TButton
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
@@ -45,7 +45,7 @@ object ConfigForm: TConfigForm
     Width = 700
     Anchors = [akTop, akLeft, akRight, akBottom]
     BorderSpacing.Bottom = 45
-    Caption = 'Optionale Proxy-Einstellungen für Twitter'
+    Caption = 'Optionale Proxy-Einstellungen (Twitter/Mastodon)'
     ClientHeight = 143
     ClientWidth = 696
     TabOrder = 1

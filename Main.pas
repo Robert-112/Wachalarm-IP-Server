@@ -8,7 +8,7 @@ uses
   SysUtils, Variants, Classes, Graphics, LazUTF8, base64, Controls,
   LConvEncoding, Forms, Dialogs, LCLType, StdCtrls, Menus, Grids, fpjson,
   ComCtrls, ExtCtrls, IniFiles, FileUtil, twitter, lclintf,
-  blcksock, ftpsend, Funktionen, Types;
+  blcksock, ftpsend, Funktionen, Types, Process;
 
 type
 
@@ -20,13 +20,17 @@ type
     Thr_Type, Thr_Log_Text: string;
     Thr_Fehlerindex: integer;
     Thr_Empfaenger_IP_now, Thr_Empfaenger_IP_all, Thr_Empfaenger_Wache, Thr_Einsatznummer, Thr_Zusatztext: string;
-    Thr_Tw_Text, Thr_Tw_ConsumerKey, Thr_Tw_ConsumerSecret, Thr_Tw_AuthToken, Thr_Tw_AuthSecret, Thr_Tw_ProxyHost, Thr_Tw_ProxyPort, Thr_Tw_ProxyUser, Thr_Tw_ProxyPass, Thr_FTP_User, Thr_FTP_Pass: string;
+    Thr_Tw_Text, Thr_Tw_ConsumerKey, Thr_Tw_ConsumerSecret, Thr_Tw_AuthToken, Thr_Tw_AuthSecret,
+      Thr_Tw_ProxyHost, Thr_Tw_ProxyPort, Thr_Tw_ProxyUser, Thr_Tw_ProxyPass,
+      Thr_Mtd_Text, Thr_Mtd_BaseURL, Thr_Mtd_Token, Thr_Mtd_ProxyHost, Thr_Mtd_ProxyPort, Thr_Mtd_File_Path,
+      Thr_FTP_User, Thr_FTP_Pass: string;
     Thr_Stream: TMemoryStream;
     FTwitter: TTwitter;
     procedure ShowStatus;
-	procedure alert_Web;					
+    procedure alert_Web;
     procedure alert_FTP;
     procedure alert_Twitter;
+    procedure alert_Mastodon;
   protected
     procedure Execute; override;
   public
@@ -44,6 +48,7 @@ type
     Label16: TLabel;
     Label2: TLabel;
     Label3: TLabel;
+    Label5: TLabel;
     Label7: TLabel;
     GroupBox1: TGroupBox;
     ImageList1: TImageList;
@@ -63,9 +68,11 @@ type
     M_Wachenfilter: TMemo;
     SG_Twitter_Filter: TStringGrid;
     SG_WaipChronik: TStringGrid;
+    SG_Mastodon: TStringGrid;
     TabSheet12: TTabSheet;
     TabSheet13: TTabSheet;
     TabSheet14: TTabSheet;
+    TabSheet15: TTabSheet;
     TwitterFenster1: TMenuItem;
     WachalarmFenster1: TMenuItem;
     M_Auftrag: TMemo;
@@ -108,6 +115,10 @@ type
     procedure SG_ClientsKeyDown(Sender: TObject; var Key: Word);
     procedure SG_IP_ReplaceEditingDone(Sender: TObject);
     procedure SG_IP_ReplaceKeyDown(Sender: TObject; var Key: Word);
+    procedure SG_MastodonEditingDone(Sender: TObject);
+    procedure SG_MastodonExit(Sender: TObject);
+    procedure SG_MastodonKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
     procedure SG_TweetChronikKeyDown(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure SG_TwitterEditingDone(Sender: TObject);
@@ -124,6 +135,7 @@ type
     procedure WAIP_Auslesen;
     procedure Alarmierung_durchfuehren(Simulation: Boolean);
     procedure Twitter_Alarm(T_Wache, T_Einsatznummer, T_Empfanger_IP_all, T_Empfanger_IP_now: String; Simulation: Boolean);
+    procedure Mastodon_Alarm(T_Wache, T_Einsatznummer, T_Empfanger_IP_all, T_Empfanger_IP_now: String; Simulation: Boolean);
     procedure FTP_Alarm(F_Wache, F_Einsatznummer, F_Empfanger_IP_all, F_Empfanger_IP_now, F_UDP_Text: String; Simulation: Boolean);
 	procedure Web_Alarm(Simulation: Boolean);										 
     procedure Client_Status(S_Fehlerindex: integer; S_Typ, S_Wache, S_IP, S_Einsatznummer, S_Meldung: String);
@@ -264,6 +276,14 @@ begin
     LoadStringGrid_IniLines(Dir + Slash + 'config.ini', SG_Twitter);
     SaveStringGrid_IniXML(Dir + Slash + 'config.ini', SG_Twitter);
   end;
+  // Mastodon-Accounts laden
+  if IniSectionExists(Dir + Slash + 'config.ini', SG_Mastodon.Name + '.XML') = true then
+    LoadStringGrid_IniXML(Dir + Slash + 'config.ini', SG_Mastodon)
+  else
+  begin
+    LoadStringGrid_IniLines(Dir + Slash + 'config.ini', SG_Mastodon);
+    SaveStringGrid_IniXML(Dir + Slash + 'config.ini', SG_Mastodon);
+  end;
   // Twitter-Filter laden
   if IniSectionExists(Dir + Slash + 'config.ini', SG_Twitter_Filter.Name + '.XML') = true then
     LoadStringGrid_IniXML(Dir + Slash + 'config.ini', SG_Twitter_Filter)
@@ -286,8 +306,10 @@ begin
   LoadMemoLines(Dir + Slash + 'config.ini', M_StringReplace_Picture);
   // Picklist in SG_Twitter_Filter anpassen
   SG_Twitter_Filter.Columns[0].PickList.Clear;
-      for i := 1 to SG_Twitter.RowCount - 1 do
-        SG_Twitter_Filter.Columns[0].PickList.Add(SG_Twitter.Cells[0, i]);
+  for i := 1 to SG_Twitter.RowCount - 1 do
+    SG_Twitter_Filter.Columns[0].PickList.Add(SG_Twitter.Cells[0, i]);
+  for i := 1 to SG_Mastodon.RowCount - 1 do
+    SG_Twitter_Filter.Columns[0].PickList.Add(SG_Mastodon.Cells[0, i]);
   // MainForm formatieren
   MainForm.Height := 600;
   MainForm.Width := 1000;
@@ -381,7 +403,62 @@ begin
     end;
     SG_TweetChronik.AutoSizeColumns;
   end;
-  // feststellen ob IP/Twiiter-Account bereits in SG_Clients vorhanden, um Status zuzuordnen
+  if S_Typ = 'Mastodon' then
+  begin
+    // Unicode Character 'Elephant' (U+1F418)
+    S_Typ := #$F0#$9F#$90#$98 + ' Mastodon';
+    info_ok := 'Mastodon-Tröt erfolgreich gesendet.';
+    info_err := 'Fehler beim senden an Mastodon, bitte Log-Datei pruefen!';
+    // wenn kenn Fehler in Tröt, dann weitere Daten in Tabellen hinterlegen
+    if S_Fehlerindex = 0 then
+    begin
+      jData := GetJSON(S_Meldung);
+        //  Thr_Zusatztext := '{"EVI-Text":"' + Thr_Mtd_Text + '","id_str":"' + troet_id + '","accountname":"' + account_name + '","File_Path":"' + Thr_Mtd_File_Path + '"}';
+      try
+        // Tweet-ID in Chronik hinterlegen, für spätere Replys
+        for i := 1 to SG_TWeetChronik.RowCount - 1 do
+        begin
+          if (SG_TweetChronik.Cells[0, i] = S_IP) AND (SG_TweetChronik.Cells[1,i] = S_Einsatznummer) then
+          begin
+            try
+              SG_TweetChronik.Cells[3, i] := Jdata.FindPath('id_str').AsString;
+            except
+              SG_TweetChronik.Cells[3, i] := '';
+            end;
+          end;
+        end;
+        // echten Twitter-User-Namen in Accounts hinterlegen für Bild
+        for i := 1 to SG_Mastodon.RowCount - 1 do
+        begin
+          if (SG_Mastodon.Cells[0, i] = S_IP) and (Jdata.FindPath('accountname').AsString <> '') then
+            try
+              SG_Mastodon.Cells[1, i] := Jdata.FindPath('accountname').AsString;
+            except
+            end;
+        end;
+        // Tweet auslesen
+        try
+          S_Meldung := Jdata.FindPath('EVI-Text').AsString;
+        except
+          S_Meldung :='Fehler beim Parsen der Mastodon-Rueckmeldung!';
+        end;
+        // Bild-Datei auslesen und löschen
+        try
+          DeleteFile(Jdata.FindPath('File_Path').AsString);
+        except
+        end;
+      finally
+        jData.Free;
+      end;
+    end;
+    // Chronik auf 100 Einträge begrenzen
+    while SG_TWeetChronik.RowCount - 1 > 100 do
+    begin
+      GridDeleteRow(SG_TweetChronik,1);
+    end;
+    SG_TweetChronik.AutoSizeColumns;
+  end;
+  // feststellen ob IP/Twitter-Account bereits in SG_Clients vorhanden, um Status zuzuordnen
   for i := 1 to SG_Clients.RowCount - 1 do
   begin
     if SG_Clients.Cells[3, i] = S_IP then
@@ -726,6 +803,8 @@ begin
             // prüfen ob es sich um Twitter-Account handelt
             if Pos('@', Alarmweg_now) <> 0 then
             begin
+              // Troet mittels hinterlegten Account senden
+              Mastodon_Alarm(Einsatzmittel[i].Wache, E_Einsatznummer, Einsatzmittel[i].IP, Alarmweg_now, Simulation);
               // Tweet mittels hinterlegten Account senden
               Twitter_Alarm(Einsatzmittel[i].Wache, E_Einsatznummer, Einsatzmittel[i].IP, Alarmweg_now, Simulation);
             end
@@ -936,7 +1015,7 @@ begin
   MyThread.Thr_FTP_User := User;
   MyThread.Thr_FTP_Pass := Pass;
   // Alarmbild in Auflösung 1024x768 erstellen
-  MyThread.Thr_Stream := Alarmbild(PictureForm, 1024, 786);
+  MyThread.Thr_Stream := Alarmbild(PictureForm, 1024, 786, '');
   MyThread.Thr_Empfaenger_IP_now := F_Empfanger_IP_now;
   MyThread.Thr_Empfaenger_IP_all := F_Empfanger_IP_all;
   MyThread.Thr_Empfaenger_Wache := F_Wache;
@@ -1241,9 +1320,302 @@ begin
       MyThread.Thr_FTP_Pass := '';
       // Bild an Thread zuweisen, falls gewollt
       if SG_Twitter.Cells[4, T_Account_Zeile] = '1' then
-        MyThread.Thr_Stream := Alarmbild(TwitterForm, 0, 0)
+        MyThread.Thr_Stream := Alarmbild(TwitterForm, 0, 0, '')
       else
         MyThread.Thr_Stream := nil;
+      MyThread.Thr_Empfaenger_IP_now := T_Empfanger_IP_now;
+      MyThread.Thr_Empfaenger_IP_all := T_Empfanger_IP_all;
+      MyThread.Thr_Empfaenger_Wache := T_Wachen;
+      MyThread.Thr_Einsatznummer := T_Einsatznummer;
+      MyThread.Thr_Zusatztext := Reply_ID;
+      // Simulation?
+      if Simulation = false then
+      begin
+        // Alarm zur Anzahl der aktuellen Alarme hinzuzählen
+        Anzahl_aktuelle_Alarme := Anzahl_aktuelle_Alarme + 1;
+        // Thread ausfuehren
+        MyThread.start;
+      end;
+    end;
+  end;
+end;
+
+procedure TMainForm.Mastodon_Alarm(T_Wache, T_Einsatznummer, T_Empfanger_IP_all, T_Empfanger_IP_now: string; Simulation: Boolean);
+var i, j, Wachenfilter, Troetfilter, T_Account_Zeile, Wachen_Zeile :integer;
+    nbs, T_Time, T_Date, T_Wachen, T_Einsatzdaten, Troet, Reply_ID, Old_Str, New_Str, File_UUID, Alarmbild_File_Path: string;
+    Wache_doppelt, wache_gefunden: boolean;
+    MyThread: TMyThread;
+    Arr_Wachen: Array of String;
+    Wachen_zu_EM: Array Of TEinsatzRecord;
+    FileGuid: TGUID;
+begin
+  // Troet zusammensetzen nach: [Datum&Uhrzeit] [Stichwort] [Einsatzort und Ortsteil] Wachen: [Alarmierte Wachen] [Dashboard-Link]
+  T_Wachen := '';
+  T_Einsatzdaten := '';
+  SetLength(Arr_Wachen, 0);
+  T_Account_Zeile := 0;
+  Wachen_Zeile := 0;
+  T_Date := datetostr(date);
+  T_Time := leftstr(timetostr(time),5);
+  Troet := '';
+  Reply_ID := '';
+  File_UUID := '';
+  Alarmbild_File_Path := '';
+  // nbs = non-breaking space; damit Texte auf Mastodon an bestimmten stellen umgebrochen werden
+  nbs := PChar(#$C2#$A0);
+  // als erstes in Mastodon-Tabelle nach Account suchen und Zeile merken
+  for i := 1 to SG_Mastodon.RowCount - 1 do
+  begin
+    if (SG_Mastodon.Cells[0, i] = T_Empfanger_IP_now) then
+      T_Account_Zeile := i
+  end;
+  // prüfen ob Einsatzart für diesen Account erlaubt
+  for i := 1 to SG_Twitter_Filter.RowCount - 1 do
+  begin
+    // wenn Account in Filter-Liste dann auf Einsatzart prüfen
+    if SG_Twitter_Filter.Cells[0, i] = SG_Mastodon.Cells[0, T_Account_Zeile] then
+    begin
+      // Wenn zu Einsatzart kein Hacken gesetzt, dann T_Account_Ziele wieder auf 0 (Troet wird nachfolgend nicht erstellt)
+      if (E_Einsatzart = 'Brandeinsatz') and (SG_Twitter_Filter.Cells[1, i] = '0') then
+        T_Account_Zeile  := 0;
+      if (E_Einsatzart = 'Hilfeleistungseinsatz') and (SG_Twitter_Filter.Cells[2, i] = '0') then
+        T_Account_Zeile := 0;
+      if (E_Einsatzart = 'Rettungseinsatz') and (SG_Twitter_Filter.Cells[3, i] = '0') then
+        T_Account_Zeile := 0;
+      if (E_Einsatzart = 'Krankentransport') and (SG_Twitter_Filter.Cells[4, i] = '0') then
+        T_Account_Zeile := 0;
+      if (E_Einsatzart = 'Sonstiges') and (SG_Twitter_Filter.Cells[5, i] = '0') then
+        T_Account_Zeile := 0;
+    end;
+  end;
+  // jetzt Troet erstellen, falls Account vorhanden/erlaubt
+  if T_Account_Zeile = 0 then
+    Log.Lines.Insert(0, datetostr(date) + '-' + timetostr(time) +': Mastodon-Account nicht hinterlegt, oder Troet bei Einsatzart ' + E_Einsatzart + ' verworfen! ('+ T_Empfanger_IP_now + '): ' + Troet)
+  else
+  begin
+    // Symbol für Sondersignal am beginn anfügen
+    if E_Sondersignal = '[mit Sondersignal]' then
+      //Unicode Character 'POLICE CARS REVOLVING LIGHT' (U+1F6A8)
+      Troet := #$F0#$9F#$9A#$A8
+    else
+      //Unicode Character 'BELL WITH CANCELLATION STROKE' (U+1F515)
+      Troet := #$F0#$9F#$94#$95;
+    //Datum und Uhrzeit anfühgen
+    Troet := Troet + nbs + T_Date + nbs + T_Time;
+    //Stichwort anfügen
+    Troet := Troet + ' ' + StringReplace(E_Stichwort, ' ', nbs, [rfReplaceAll]);
+    //Symbol für Orte anfügen Unicode Character 'GLOBE WITH MERIDIANS' (U+1F310)
+    Troet := Troet + ' ' + #$F0#$9F#$8C#$90 + nbs;
+    //Ort und Ortsteil anfügen
+    if E_Ortsteil = '' then
+      Troet := Troet + StringReplace(E_Ort, ' ', nbs, [rfReplaceAll])
+    else
+      Troet := Troet + StringReplace(E_Ort, ' ', nbs, [rfReplaceAll]) + ', ' + StringReplace(E_Ortsteil, ' ', nbs, [rfReplaceAll]);
+    //Alarmierte Wachen ermitteln
+    for i:=0 to high(Einsatzmittel) do
+    begin
+      Application.ProcessMessages;
+      //vor Zusammenfassung filtern damit _nicht_ alle alarmierten Wachen im Troet erscheinen
+      Wachenfilter := 0;
+      for j := 0 to M_Wachenfilter.Lines.Count-1 do
+      begin
+        if pos(M_Wachenfilter.Lines[j],Einsatzmittel[i].Wache) > 0 then
+          Wachenfilter := Wachenfilter + 1;
+      end;
+      //Wachen für Troet zusammenfassen, jedoch nur falls Wache nicht in Wachenfilter
+      if Wachenfilter > 0 then
+      begin
+        //prüfen ob Wache nicht bereits im Array vorhanden
+        Wache_doppelt := false;
+        for j := 0 to high(Arr_Wachen) do
+          if Arr_Wachen[j] = Einsatzmittel[i].Wache then
+            Wache_doppelt := true;
+        //Wache zu Array hinzufügen wenn nicht doppelt
+        if Wache_doppelt = false then
+        begin
+          SetLength(Arr_Wachen, length(Arr_Wachen) + 1);
+          Arr_Wachen[high(Arr_Wachen)] := Einsatzmittel[i].Wache;
+        end;
+      end;
+    end;
+    //String-Replace für gesamt Tweet und Arr_Wachen
+    for i := 0 to M_StringReplace_Tweet.Lines.Count - 1 do
+    begin
+      Old_Str := copy(M_StringReplace_Tweet.Lines[i], 0, pos('==', M_StringReplace_Tweet.Lines[i]) - 1);
+      New_Str := copy(M_StringReplace_Tweet.Lines[i], pos('==', M_StringReplace_Tweet.Lines[i]) + 2, 100);
+      //String-Replace im Tweet
+      Troet := StringReplace(Troet, Old_Str, New_Str, [rfReplaceAll]);
+      //String-Replace in Wachen
+      for j := 0 to high(Arr_Wachen) do
+        Arr_Wachen[j] := StringReplace(Arr_Wachen[j], Old_Str, New_Str, [rfReplaceAll]);
+    end;
+    //Troet und Arr_Wachen jetzt zusammenfügen
+    for i := 0 to high(Arr_Wachen) do
+    begin
+      //Wachen modifizieren, damit Word-Wrap auf Mastodon nicht greift
+      Arr_Wachen[i] := StringReplace(Arr_Wachen[i], ' ', nbs, [rfReplaceAll]);
+      if T_Wachen = '' then
+        T_Wachen := Arr_Wachen[i]
+      else
+        T_Wachen := T_Wachen + ', ' + Arr_Wachen[i];
+    end;
+    if T_Wachen <> '' then
+      //Troet + Wachen, Unicode Character 'FIRE ENGINE' (U+1F692) and 'RIGHTWARDS WHITE ARROW' (U+21E8)
+      Troet := Troet + ' ' + #$F0#$9F#$9A#$92 + nbs + #$E2#$87#$A8 + nbs + T_Wachen;
+;
+    // Dashboard-URL zum Troet hinzufügen, falls gewollt, sonst Troet ggf. kürzen
+    if SG_Mastodon.Cells[4, T_Account_Zeile] = '1' then
+    begin
+      //prüfen ob Troet länger als 460 (500-1-23 - EMOJI-Puffer) Zeichen lang ist, sonst vorher kürzen
+      if UTF8Length(Troet) > 460 then
+        Troet := UTF8LeftStr(Troet, 460) + nbs + '...';
+      // URL hinzufügen
+      Troet := Troet + ' ' + ConfigForm.E_dbrd_link.Text + E_UUID;
+    end
+    else
+    begin
+      //abschließend den Troet auf max 460 Zeichen kürzen, Wichtig UTF8Lenght für richtige länge benutzen! (Puffer für EMOJI)
+      if UTF8Length(Troet) > 460 then
+        Troet := UTF8LeftStr(Troet, 460) + nbs + '...';
+    end;
+    // T_Einsatzdaten für Abgleich in Chronik zusammensetzen
+    T_Einsatzdaten := E_Einsatzart +', '+ E_Stichwort +', '+ E_Ort +', '+ E_Ortsteil +', '+ T_Wachen +', '+ E_Alarmierte_EM +', '+ E_Sondersignal;
+    // T_Einsatzdaten in UID umwandeln (kürzerer Text)
+    T_Einsatzdaten := inttostr(Unc(T_Einsatzdaten));
+    //Prüfen ob Troet zu deisem Einsatz bereits existiert, oder ob es einen zu verknüpfenden Troet gibt
+    Troetfilter := 0;
+    for i := 1 to SG_TWeetChronik.RowCount - 1 do
+    begin
+      // Prüfen ob in Chronik zu gleichem Account (T_Empfanger_IP_now) und Einsatznummer (E_Einsatznummer) bereits ein gleicher Troet vorhanden ist (Symbol, Datum und Uhrzeit werden abgezogen (RightStr -21)
+      if (SG_TweetChronik.Cells[0,i] = T_Empfanger_IP_now) AND (SG_TweetChronik.Cells[1,i] = E_Einsatznummer) AND (SG_TweetChronik.Cells[2,i] = T_Einsatzdaten) then
+        Troetfilter := Troetfilter + 1;
+      // Reply_ID übernehmen, falls in Chronik vorhanden gegeben
+      if (SG_TweetChronik.Cells[0,i] = T_Empfanger_IP_now) AND (SG_TweetChronik.Cells[1,i] = E_Einsatznummer) then
+        Reply_ID := SG_TweetChronik.Cells[3,i];
+    end;
+    // existiert noch kein gleicher Troet, dann jetzt das Senden starten, ansonsten abbrechen
+    if Troetfilter > 0 then
+      Log.Lines.Insert(0, datetostr(date) + '-' + timetostr(time) + ': doppelter Troet wurde verworfen ('+ T_Empfanger_IP_now + ', Einsatz-Nr. ' + E_Einsatznummer + '): ' + Troet)
+    else
+    begin
+      Application.ProcessMessages;
+      // Eintrag in Chronik hinzufügen
+      SG_TweetChronik.RowCount := SG_TweetChronik.RowCount + 1;
+      SG_TweetChronik.Cells[0, SG_TWeetChronik.RowCount - 1] := T_Empfanger_IP_now;
+      SG_TweetChronik.Cells[1, SG_TWeetChronik.RowCount - 1] := E_Einsatznummer;
+      SG_TweetChronik.Cells[2, SG_TWeetChronik.RowCount - 1] := T_Einsatzdaten;
+      // Bild erstellen
+      TwitterForm.L_At_Account.Caption := SG_Mastodon.Cells[0, T_Account_Zeile] + ' (' + SG_Mastodon.Cells[2, T_Account_Zeile] + ')';
+      TwitterForm.L_Account_Name.Caption := SG_Twitter.Cells[1, T_Account_Zeile];
+      TwitterForm.L_Datum_Uhrzeit.Caption := T_Date + ' ' + T_Time;
+      // Ortsinformationen setzen
+      if E_Ortsteil = '' then
+        TwitterForm.L_Ort_Ortsteil.Caption := E_Ort
+      else
+        TwitterForm.L_Ort_Ortsteil.Caption := E_Ort + ', ' + E_Ortsteil;
+      if E_Einsatzart = 'Brandeinsatz' then
+      begin
+        TwitterForm.L_Einsatzart_Langtext.Font.Color := RGB(255, 80, 80);
+        TwitterForm.L_Stichwort_Langtext.Font.Color := RGB(255, 80, 80);
+      end;
+      if E_Einsatzart = 'Hilfeleistungseinsatz' then
+      begin
+        TwitterForm.L_Einsatzart_Langtext.Font.Color := RGB(0, 172, 229);
+        TwitterForm.L_Stichwort_Langtext.Font.Color := RGB(0, 172, 229);
+      end;
+      if E_Einsatzart = 'Rettungseinsatz' then
+      begin
+        TwitterForm.L_Einsatzart_Langtext.Font.Color := RGB(255, 161, 78);
+        TwitterForm.L_Stichwort_Langtext.Font.Color := RGB(255, 161, 78);
+      end;
+      if E_Einsatzart = 'Krankentransport' then
+      begin
+        TwitterForm.L_Einsatzart_Langtext.Font.Color := RGB(30, 144, 255);
+        TwitterForm.L_Stichwort_Langtext.Font.Color := RGB(30, 144, 255);
+      end;
+      if E_Einsatzart = 'Sonstiges' then
+      begin
+        TwitterForm.L_Einsatzart_Langtext.Font.Color := RGB(245, 245, 245);
+        TwitterForm.L_Stichwort_Langtext.Font.Color := RGB(245, 245, 245);
+      end;
+      // Einsatzart und Stichwort zunächst zurücksetzen
+      TwitterForm.L_Stichwort_Langtext.Caption := '';
+      TwitterForm.L_Einsatzart_Langtext.Caption := '';
+      // String-Replace für Einsatzart oder Stichwort
+      for i := 0 to M_StringReplace_Picture.Lines.Count - 1 do
+      begin
+        Old_Str := copy(M_StringReplace_Picture.Lines[i], 0, pos('==', M_StringReplace_Picture.Lines[i]) - 1);
+        New_Str := copy(M_StringReplace_Picture.Lines[i], pos('==', M_StringReplace_Picture.Lines[i]) + 2, 100);
+        if E_Stichwort = Old_Str then
+          TwitterForm.L_Stichwort_Langtext.Caption := StringReplace(E_Stichwort, Old_Str, New_Str, []);
+        if E_Einsatzart = Old_Str then
+          TwitterForm.L_Einsatzart_Langtext.Caption:=  StringReplace(E_Einsatzart, Old_Str, New_Str, []) ;
+      end;
+      // Einsatzart und Stichwort setzen, falls kein String-Replace gefunden wurde
+      if TwitterForm.L_Stichwort_Langtext.Caption = '' then
+        TwitterForm.L_Stichwort_Langtext.Caption := E_Stichwort;
+      if TwitterForm.L_Einsatzart_Langtext.Caption = '' then
+        TwitterForm.L_Einsatzart_Langtext.Caption:=  E_Einsatzart;
+      // Einsatzmittel je Wache ermitteln
+      TwitterForm.L_Wachen_Einsatzmittel.Caption := '';
+      // die Daten aus Einsatzmittel[] in angepasstes Array Wachen_zu_EM übertragen
+      SetLength(Wachen_zu_EM, 0);
+      for i := 0 to high(Einsatzmittel) do
+      begin
+        Wache_gefunden := false;
+        for j := 0 to high(Wachen_zu_EM) do
+        begin
+          if Wachen_zu_EM[j].Wache = Einsatzmittel[i].Wache then
+          begin
+            Wache_gefunden:= true;
+            Wachen_Zeile := j
+          end;
+        end;
+        if Wache_gefunden = false then
+        begin
+          SetLength(Wachen_zu_EM, length(Wachen_zu_EM) + 1);
+          Wachen_zu_EM[high(Wachen_zu_EM)].Wache := Einsatzmittel[i].Wache;
+          // Unicode Character 'RIGHTWARDS WHITE ARROW' (U+21E8)
+          Wachen_zu_EM[high(Wachen_zu_EM)].Status := #$E2#$87#$A8;
+          Wachen_zu_EM[high(Wachen_zu_EM)].Fahrzeug := Einsatzmittel[i].Fahrzeug;
+        end;
+        if Wache_gefunden = true then
+        begin
+          Wachen_zu_EM[Wachen_Zeile].Wache := Wachen_zu_EM[Wachen_Zeile].Wache;
+          Wachen_zu_EM[Wachen_Zeile].Status := Wachen_zu_EM[Wachen_Zeile].Status;
+          Wachen_zu_EM[Wachen_Zeile].Fahrzeug := Wachen_zu_EM[Wachen_Zeile].Fahrzeug +  ', '  + Einsatzmittel[i].Fahrzeug;
+        end;
+      end;
+      // ermittelte Wachen und Einsatzmittel jetzt in Bild hinterlegen
+      for i := 0 to high(Wachen_zu_EM) do
+      begin
+        if TwitterForm.L_Wachen_Einsatzmittel.Caption = '' then
+          TwitterForm.L_Wachen_Einsatzmittel.Caption := Wachen_zu_EM[i].Wache + '   ' + Wachen_zu_EM[i].Status + '   ' + Wachen_zu_EM[i].Fahrzeug
+        else
+          TwitterForm.L_Wachen_Einsatzmittel.Caption := TwitterForm.L_Wachen_Einsatzmittel.Caption + #13#10 + Wachen_zu_EM[i].Wache + '   ' + Wachen_zu_EM[i].Status + '   ' + Wachen_zu_EM[i].Fahrzeug ;
+      end;
+      // Dateinamen inkl. Pfad für temporaere JPG-Datei erstellen
+      CreateGUID(FileGuid);
+      File_UUID := GUIDToString(FileGuid);
+      File_UUID := LowerCase(File_UUID);
+      File_UUID := StringReplace(File_UUID, '{', '', []);
+      File_UUID := StringReplace(File_UUID, '}', '', []);
+      Alarmbild_File_Path := ExtractFilePath(ParamStr(0)) + File_UUID + '.jpg';
+      // Alarmbild als Datei erzeugen
+      Alarmbild(TwitterForm, 0, 0, Alarmbild_File_Path);
+      // Thread vorbereiten
+      MyThread := TMyThread.Create(True);
+      if Assigned(MyThread.FatalException) then
+        raise MyThread.FatalException;
+      // Variablen an Thread zuweisen
+      MyThread.Thr_Type := 'Mastodon';
+      MyThread.Thr_Mtd_Text := Troet;
+      MyThread.Thr_Mtd_BaseURL := SG_Mastodon.Cells[2, T_Account_Zeile];
+      MyThread.Thr_Mtd_Token := SG_Mastodon.Cells[3, T_Account_Zeile];
+      MyThread.Thr_Mtd_ProxyHost := ConfigForm.ProxyHost.Text;
+      MyThread.Thr_Mtd_ProxyPort := ConfigForm.ProxyPort.Text;
+      MyThread.Thr_Mtd_File_Path := Alarmbild_File_Path;
+      // Bild an Thread zuweisen
       MyThread.Thr_Empfaenger_IP_now := T_Empfanger_IP_now;
       MyThread.Thr_Empfaenger_IP_all := T_Empfanger_IP_all;
       MyThread.Thr_Empfaenger_Wache := T_Wachen;
@@ -1386,6 +1758,8 @@ begin
   SG_Twitter_Filter.Columns[0].PickList.Clear;
   for i := 1 to SG_Twitter.RowCount - 1 do
     SG_Twitter_Filter.Columns[0].PickList.Add(SG_Twitter.Cells[0, i]);
+  for i := 1 to SG_Mastodon.RowCount - 1 do
+    SG_Twitter_Filter.Columns[0].PickList.Add(SG_Mastodon.Cells[0, i]);
 end;
 
 procedure TMainForm.SG_TwitterKeyDown(Sender: TObject; var Key: Word);
@@ -1408,6 +1782,8 @@ begin
       SG_Twitter_Filter.Columns[0].PickList.Clear;
       for i := 1 to SG_Twitter.RowCount - 1 do
         SG_Twitter_Filter.Columns[0].PickList.Add(SG_Twitter.Cells[0, i]);
+      for i := 1 to SG_Mastodon.RowCount - 1 do
+        SG_Twitter_Filter.Columns[0].PickList.Add(SG_Mastodon.Cells[0, i]);
     end;
     delete_row := 0;
     // zu löschende Ziele in SG_Clients finden
@@ -1453,6 +1829,68 @@ begin
   begin
     GridDeleteRow(SG_IP_Replace,SG_IP_Replace.Row);
     SaveStringGrid_IniXML(Dir + Slash + 'config.ini',SG_IP_Replace);
+  end;
+end;
+
+procedure TMainForm.SG_MastodonEditingDone(Sender: TObject);
+begin
+  if SG_Mastodon.Cells[0,SG_Mastodon.RowCount-1] <> '' then
+   SG_Mastodon.RowCount := SG_Mastodon.RowCount + 1;
+  SG_Mastodon.AutoSizeColumns;
+  SaveStringGrid_IniXML(Dir + Slash + 'config.ini', SG_Mastodon);
+end;
+
+procedure TMainForm.SG_MastodonExit(Sender: TObject);
+var i: integer;
+begin
+  // Picklist in SG_Twitter_Filter anpassen
+  SG_Twitter_Filter.Columns[0].PickList.Clear;
+  for i := 1 to SG_Twitter.RowCount - 1 do
+    SG_Twitter_Filter.Columns[0].PickList.Add(SG_Twitter.Cells[0, i]);
+  for i := 1 to SG_Mastodon.RowCount - 1 do
+    SG_Twitter_Filter.Columns[0].PickList.Add(SG_Mastodon.Cells[0, i]);
+end;
+
+procedure TMainForm.SG_MastodonKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var i, delete_row: integer;
+begin
+  if (Key = VK_DELETE) then
+  begin
+    delete_row := 0;
+    // zu löschende Ziele in SG_Twitter_Filter finden
+    for i := 1 to SG_Twitter_Filter.RowCount - 1 do
+    begin
+      if SG_Twitter_Filter.Cells[0, i] = SG_Mastodon.Cells[0, SG_Mastodon.Row] then
+         delete_row := i;
+    end;
+    // Zeile löschen in SG_Twitter_Filter
+    if delete_row <> 0 then
+    begin
+      GridDeleteRow(SG_Twitter_Filter, delete_row);
+      // Picklist in SG_Twitter_Filter anpassen
+      SG_Twitter_Filter.Columns[0].PickList.Clear;
+      for i := 1 to SG_Twitter.RowCount - 1 do
+        SG_Twitter_Filter.Columns[0].PickList.Add(SG_Twitter.Cells[0, i]);
+      for i := 1 to SG_Mastodon.RowCount - 1 do
+        SG_Twitter_Filter.Columns[0].PickList.Add(SG_Mastodon.Cells[0, i]);
+    end;
+    delete_row := 0;
+    // zu löschende Ziele in SG_Clients finden
+    for i := 1 to SG_Clients.RowCount - 1 do
+    begin
+      if SG_Clients.Cells[3, i] = SG_Mastodon.Cells[0, SG_Mastodon.Row] then
+         delete_row := i;
+    end;
+    // Ziele löschen in SG_Clients
+    if delete_row <> 0 then
+      GridDeleteRow(SG_Clients, delete_row);
+    // Löschen in SG_Twitter
+    GridDeleteRow(SG_Mastodon,SG_Twitter.Row);
+    // Tabellen neu speichern
+    SaveStringGrid_IniXML(Dir + Slash + 'config.ini', SG_Mastodon);
+    SaveStringGrid_IniXML(Dir + Slash + 'config.ini', SG_Clients);
+    SaveStringGrid_IniXML(Dir + Slash + 'config.ini', SG_Twitter_Filter);
   end;
 end;
 
@@ -1637,6 +2075,9 @@ begin
   // Twitter-Teilthread
   if Thr_Type = 'Twitter' then
     alert_Twitter;
+  // Mastodon-Teilthread
+  if Thr_Type = 'Mastodon' then
+    alert_Mastodon;
   Synchronize(@ShowStatus);
 end;
 
@@ -1837,6 +2278,138 @@ begin
   // Verbindung wieder trennen
   FTwitter.Disconnect;
   FTwitter.Free;
+end;
+
+procedure TMyThread.alert_Mastodon;
+var status, media_id, curl_auth, pxy_str, pxy_pm, base_url, curl_url, troet_id, account_name: string;
+    i: integer;
+    jData: TJSONData;
+    Fehler_Texte: Array of String;
+begin
+  // Variablen zurucksetzen
+  status := '';
+  media_id := '';
+  Thr_Log_Text := '';
+  Thr_Fehlerindex := 0;
+  SetLength(Fehler_Texte, 0);
+  curl_auth := '';
+  base_url := '';
+  curl_url := '';
+  troet_id := '';
+  account_name := '';
+
+  curl_auth := 'Authorization: Bearer ' + Thr_Mtd_Token;
+
+  if Thr_Mtd_ProxyHost = '' then
+  begin
+    pxy_str := '';
+    pxy_pm := ''
+  end
+  else
+  begin
+    pxy_str := 'http://' + Thr_Mtd_ProxyHost + ':' + Thr_Mtd_ProxyPort;
+    pxy_pm := '--proxy'
+  end;
+
+  base_url := 'https://' + Thr_Mtd_BaseURL;
+  {
+     MyThread.Thr_Mtd_Text := Troet;
+      MyThread.Thr_Mtd_BaseURL := SG_Mastodon.Cells[2, T_Account_Zeile];
+      MyThread.Thr_Mtd_Token := SG_Mastodon.Cells[3, T_Account_Zeile];
+      MyThread.Thr_Mtd_ProxyHost := ConfigForm.ProxyHost.Text;
+      MyThread.Thr_Mtd_ProxyPort := ConfigForm.ProxyPort.Text;
+      Thr_Mtd_File_Path
+      // Bild an Thread zuweisen
+      MyThread.Thr_Stream := Alarmbild(TwitterForm, 0, 0, Alarmbild_File_Path);
+      MyThread.Thr_Empfaenger_IP_now := T_Empfanger_IP_now;
+      MyThread.Thr_Empfaenger_IP_all := T_Empfanger_IP_all;
+      MyThread.Thr_Empfaenger_Wache := T_Wachen;
+      MyThread.Thr_Einsatznummer := T_Einsatznummer;
+      MyThread.Thr_Zusatztext := Reply_ID;
+  }
+
+  // Account und Proxy für Troet vorbereiten
+
+  // Schritt 1: Account prüfen
+  curl_url := base_url + '/api/v1/accounts/verify_credentials';
+  if not RunCommand('curl', ['-v', '-H', curl_auth, '--connect-timeout', '15', pxy_pm, pxy_str, curl_url], status, [poWaitOnExit], swoHide) then
+  begin
+    SetLength(Fehler_Texte, length(Fehler_Texte) + 1);
+    Fehler_Texte[high(Fehler_Texte)] := 'Mastodon-Fehler - Account-Zugangsdaten konnten nicht geprüft werden';
+    Thr_Fehlerindex := high(Fehler_Texte) + 1;
+  end;
+  // Schritt 2: Bild hochladen
+  if Thr_Fehlerindex = 0 then
+  begin
+    curl_url := base_url + '/api/v2/media';
+    if not RunCommand('curl', ['-v', '-H', curl_auth, '--connect-timeout', '15', pxy_pm, pxy_str, '-F', 'file=@' + Thr_Mtd_File_Path, curl_url], status, [poWaitOnExit], swoHide) then
+    begin
+      SetLength(Fehler_Texte, length(Fehler_Texte) + 1);
+      Fehler_Texte[high(Fehler_Texte)] := 'Mastodon-Fehler - Bild konnte nicht hochgeladen werden';
+      Thr_Fehlerindex := high(Fehler_Texte) + 1;
+    end
+    else
+    begin
+      // Media-ID aus Upload-Rückmeldung ermitteln
+      jData := GetJSON(status);
+      try
+        try
+          media_id := Jdata.FindPath('id').AsString;
+        except
+          media_id := '';
+          SetLength(Fehler_Texte, length(Fehler_Texte) + 1);
+          Fehler_Texte[high(Fehler_Texte)] := 'Mastodon-Fehler - ID des Datei-Uploads konnte nicht ermittelt werden';
+          Thr_Fehlerindex := high(Fehler_Texte) + 1;
+        end;
+      finally
+        jData.Free;
+      end;
+    end;
+  end;
+  // Schritt 3: Troet mit Bild-ID senden
+  if Thr_Fehlerindex = 0 then
+  begin
+    curl_url := base_url + '/api/v1/statuses';
+    if not RunCommand('curl', ['-v', '-H', curl_auth, '--connect-timeout', '15', pxy_pm, pxy_str, '-F', 'status='+ CP1252ToUTF8(Thr_Mtd_Text), '-F', 'visibility=private', '-F', 'media_ids[]=' + media_id, curl_url], status, [poWaitOnExit], swoHide) then
+    begin
+      SetLength(Fehler_Texte, length(Fehler_Texte) + 1);
+      Fehler_Texte[high(Fehler_Texte)] := 'Mastodon-Fehler - Tröt konnte nicht an Mastodon (' + Thr_Mtd_BaseURL + ') gesendet werden';
+      Thr_Fehlerindex := high(Fehler_Texte) + 1;
+    end
+    else
+    begin
+      // Tröt-ID und Account-Namen aus Status-Meldung ermitteln
+      jData := GetJSON(status);
+      try
+        try
+          troet_id := Jdata.FindPath('id').AsString;
+          account_name := Jdata.FindPath('account.display_name').AsString;
+        except
+          troet_id := '';
+          account_name := '';
+          SetLength(Fehler_Texte, length(Fehler_Texte) + 1);
+          Fehler_Texte[high(Fehler_Texte)] := 'Mastodon-Fehler - ID des Tröts und Account-Name konnten nicht ermittelt werden';
+          Thr_Fehlerindex := high(Fehler_Texte) + 1;
+        end;
+      finally
+        jData.Free;
+      end;
+    end;
+  end;
+
+  // Tweet-Status an Zusatztext übergeben, damit dieser im Haup-Thread ausgewertet werden kann
+  Thr_Zusatztext := '{"EVI-Text":"' + Thr_Mtd_Text + '","id_str":"' + troet_id + '","accountname":"' + account_name + '","File_Path":"' + Thr_Mtd_File_Path + '"}';
+  // Fehlerindex festlegen und Texte für Log übergeben
+  Thr_Fehlerindex := high(Fehler_Texte) + 1;
+  if Thr_Fehlerindex = 0 then
+    Thr_Log_Text := (datetostr(date) + '-' + timetostr(time) + ': erfolgreich getrötet ('+ Thr_Empfaenger_IP_now + ', Einsatz-Nr. ' + Thr_Einsatznummer + '): ' + Thr_Mtd_Text)
+  else
+  begin
+    for i := 0 to high(Fehler_Texte) do
+      Thr_Log_Text := Fehler_Texte[i] + '; ' + Thr_Log_Text;
+    Thr_Log_Text := (datetostr(date) + '-' + timetostr(time) + ': Fehler bei Mastodon! ('+ Thr_Empfaenger_IP_now + ', Einsatz-Nr. ' + Thr_Einsatznummer + '): ' + Thr_Mtd_Text + '; ' + inttostr(high(Fehler_Texte)+1) + ' Fehler: ' + Thr_Log_Text);
+  end;
+
 end;
 
 end.

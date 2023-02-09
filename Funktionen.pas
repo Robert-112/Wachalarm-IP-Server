@@ -19,7 +19,7 @@ procedure ListFileDir(Path: string; const Mask: string; FileList: TStrings);
 function IniSectionExists(FileName : TFileName; SectionName : String): Boolean;
 function GetIpAddrList(): string;
 function Unc(s: string): UInt64;
-function Alarmbild(Form_for_Image: TForm; Image_Width, Image_Height: Integer): TMemoryStream;
+function Alarmbild(Form_for_Image: TForm; Image_Width, Image_Height: Integer; Filename: string): TMemoryStream;
 function memofindtext(AMemo:TMemo;Search_Text:string;Direction,Case_Sensitiv:boolean):integer;
 
 implementation
@@ -27,7 +27,7 @@ implementation
 uses
   Main, Config;
 
-function Alarmbild(Form_for_Image: TForm; Image_Width, Image_Height: Integer): TMemoryStream;
+function Alarmbild(Form_for_Image: TForm; Image_Width, Image_Height: Integer; Filename: string): TMemoryStream;
 var FormImage: TBitmap;
     Jpg: TJpegImage;
 begin
@@ -60,6 +60,8 @@ begin
     Form_for_Image.hide;
     try
       Jpg.SaveToStream(result);
+      if Filename <> '' then
+        Jpg.SaveToFile(Filename);
     finally
       Jpg.Free;
     end;
