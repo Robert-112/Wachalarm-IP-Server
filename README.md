@@ -60,7 +60,7 @@ Unter Linux muss *opensll* und *libssl-dev* installiert werden.
 
 ## cURL
 
-Um Meldungen auf einer Mastodon-Instanz zu veröffentlichen, muss auf das Betriebssystem auf dem die Server-Anwendung ausgeführt wird, das Programm [curl](https://curl.se/) installiert sein.
+Um Meldungen auf einer Mastodon-Instanz zu veröffentlichen, muss das Betriebssystem auf dem die Server-Anwendung ausgeführt wird, das Programm [curl](https://curl.se/) bereitstellen.
 
 # Schnittstelle
 Neue Alarme werden i.d.R. durch das Einsatzleitsystem der Leitstelle an den Wachalarm-IP-Server übertragen. Hierfür wurde vor über 15 Jahren eine Text-Schnittstelle definiert (und fortlaufend weiterentwickelt), in der die zu übergebenden Werte ausgeben werden. Durch das Einsatzleitsystem muss für jeden Alarm eine Textdatei (*.txt) erstellt und in einem festgelegten Verzeichnis abgelegt werden. Der Wachalarm-IP-Server *"lauscht"* auf dieses Verzeichnis und ließt neue Textdateien automatisch ein sobald eine neue Datei vorhanden ist.
@@ -147,7 +147,7 @@ Die Anwendung wird über das  Menu *"Programm"* -> *"Beenden"* geschlossen.
 ![Anwendung](https://user-images.githubusercontent.com/19272095/47463344-3c5d5680-d7e6-11e8-8618-5eaff3c05e99.jpg)
 ## Alarmbild (Vorschau)
 ![Alarm](https://user-images.githubusercontent.com/19272095/47463988-2b154980-d7e8-11e8-9fe3-60ae368419a4.PNG)
-## Einsatzvorinformation (Twitter & Mastodon) (Vorschau)
+## Einsatzvorinformation (Vorschau)
 ![Twitter und Mastodon](https://user-images.githubusercontent.com/19272095/47464023-45e7be00-d7e8-11e8-8336-443903508102.PNG)
 ## Alarm-Simulation
 ![Simulation](https://user-images.githubusercontent.com/19272095/47464505-ab887a00-d7e9-11e8-98b8-2cc996b29dbe.PNG)
