@@ -147,8 +147,8 @@ Die Anwendung wird über das  Menu *"Programm"* -> *"Beenden"* geschlossen.
 ![Anwendung](https://user-images.githubusercontent.com/19272095/47463344-3c5d5680-d7e6-11e8-8618-5eaff3c05e99.jpg)
 ## Alarmbild (Vorschau)
 ![Alarm](https://user-images.githubusercontent.com/19272095/47463988-2b154980-d7e8-11e8-9fe3-60ae368419a4.PNG)
-## Twitter (Vorschau)
-![Twitter](https://user-images.githubusercontent.com/19272095/47464023-45e7be00-d7e8-11e8-8336-443903508102.PNG)
+## Einsatzvorinformation (Twitter & Mastodon) (Vorschau)
+![Twitter und Mastodon](https://user-images.githubusercontent.com/19272095/47464023-45e7be00-d7e8-11e8-8336-443903508102.PNG)
 ## Alarm-Simulation
 ![Simulation](https://user-images.githubusercontent.com/19272095/47464505-ab887a00-d7e9-11e8-98b8-2cc996b29dbe.PNG)
 # Lizenz
