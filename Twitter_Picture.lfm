@@ -1,7 +1,7 @@
 object TwitterForm: TTwitterForm
-  Left = 577
+  Left = 439
   Height = 512
-  Top = 245
+  Top = 253
   Width = 910
   BorderStyle = bsSingle
   Caption = 'Twitter/Mastodon-Bild'
