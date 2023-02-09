@@ -10,7 +10,7 @@ Die Leitstelle Lausitz bietet den Wachalarm-IP aktuell nur für ständig besetzt
 
  - Auslesen der vom Einsatzleitsystem übermittelten Einsatzdaten
  - Senden von Einsatzalarmen an Computer im Netzwerk auf denen der Wachalarm-IP-Client läuft
- - Veröffentlichen Twitter-Meldungen (sog. Einsatzvorinformationen #EVI) 
+ - Veröffentlichen Meldungen auf Twitter und Mastodon (sog. Einsatzvorinformationen #EVI) 
  - Weiterleiten von Alarmen an Waip-Web (aktuell in der Entwicklung)
  - Protokollierung der gesendeten Alarme
 
@@ -57,6 +57,10 @@ Im Ordner *"[lib/](https://github.com/Robert-112/Wachalarm-IP-Server/tree/master
 
 Unter Windows müssen die die DLLs entweder im selben Verzeichnis wie die *"Wachalarm-IP-Server_%.exe"*, oder in "*%SystemRoot%\System32*" bzw. "*%SystemRoot%\SysWOW64*" hinterlegt werden. 
 Unter Linux muss *opensll* und *libssl-dev* installiert werden.
+
+## cURL
+
+Um Meldungen auf einer Mastodon-Instanz zu veröffentlichen, muss auf das Betriebssystem auf dem die Server-Anwendung ausgeführt wird, das Programm [curl](https://curl.se/) installiert sein.
 
 # Schnittstelle
 Neue Alarme werden i.d.R. durch das Einsatzleitsystem der Leitstelle an den Wachalarm-IP-Server übertragen. Hierfür wurde vor über 15 Jahren eine Text-Schnittstelle definiert (und fortlaufend weiterentwickelt), in der die zu übergebenden Werte ausgeben werden. Durch das Einsatzleitsystem muss für jeden Alarm eine Textdatei (*.txt) erstellt und in einem festgelegten Verzeichnis abgelegt werden. Der Wachalarm-IP-Server *"lauscht"* auf dieses Verzeichnis und ließt neue Textdateien automatisch ein sobald eine neue Datei vorhanden ist.
@@ -126,7 +130,7 @@ Im nachfolgenden wird erklärt, welche allgemeinen Einstellungen am Wachalarm-IP
 >Regelt die Komprimierung des Alarmbildes (0% sehr geringe Qualität, 100% beste Qualität)
 #### IP-Adresse für Waip-Web
 >An die hier hinterlegte IP-Adresse wird jeder Alarm parallel an die Anwendung Waip-Web übermittelt (JSON-Format, Anwendung in Entwicklung).
-#### Proxy-Einstellungen (für Twitter)
+#### Proxy-Einstellungen (für Twitter und Mastodon)
 >Hier kein Proxy für die Veröffentlichung der Twitter-Nachrichten angegeben werden.
 
 ### Einstellungen Wachalarm
