@@ -59,9 +59,14 @@ begin
     FormImage.Free;
     Form_for_Image.hide;
     try
-      Jpg.SaveToStream(result);
-      if Filename <> '' then
+
+      if Filename = '' then
+        Jpg.SaveToStream(result)
+      else
+      begin
         Jpg.SaveToFile(Filename);
+        result.free;
+      end;
     finally
       Jpg.Free;
     end;
