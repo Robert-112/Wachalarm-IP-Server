@@ -311,14 +311,14 @@ begin
   for i := 1 to SG_Mastodon.RowCount - 1 do
     SG_Twitter_Filter.Columns[0].PickList.Add(SG_Mastodon.Cells[0, i]);
   // MainForm formatieren
-  MainForm.Height := 600;
-  MainForm.Width := 1000;
+  MainForm.Height := 800;
+  MainForm.Width := 1200;
   MainForm.Position := poScreenCenter;
   MainForm.WindowState := wsNormal;
 end;
 
 procedure TMainForm.Client_Status(S_Fehlerindex: integer; S_Typ, S_Wache, S_IP, S_Einsatznummer, S_Meldung: String);
-var Alarm_Status, info, info_ok, info_err, Wachalarm_Client_Info: string;
+var Alarm_Status, info, info_ok, info_err, Wachalarm_Client_Info, File_Path: string;
     i, Status_Zeile: integer;
     Adresse_bekannt: boolean;
     jData: TJSONData;
@@ -328,6 +328,7 @@ begin
   Status_Zeile := 0;
   Alarm_Status := '';
   Wachalarm_Client_Info := '';
+  File_Path := '';
   info := '';
   info_ok := '';
   info_err := '';
@@ -407,15 +408,15 @@ begin
   begin
     // Unicode Character 'Elephant' (U+1F418)
     S_Typ := #$F0#$9F#$90#$98 + ' Mastodon';
-    info_ok := 'Mastodon-Tröt erfolgreich gesendet.';
+    //Log.Lines.Insert(0, datetostr(date) + '-' + timetostr(time) + ': DEBUG - ' + S_Meldung);
+    info_ok := 'Mastodon-Troet erfolgreich gesendet.';
     info_err := 'Fehler beim senden an Mastodon, bitte Log-Datei pruefen!';
     // wenn kenn Fehler in Tröt, dann weitere Daten in Tabellen hinterlegen
     if S_Fehlerindex = 0 then
     begin
       jData := GetJSON(S_Meldung);
-        //  Thr_Zusatztext := '{"EVI-Text":"' + Thr_Mtd_Text + '","id_str":"' + troet_id + '","accountname":"' + account_name + '","File_Path":"' + Thr_Mtd_File_Path + '"}';
       try
-        // Tweet-ID in Chronik hinterlegen, für spätere Replys
+        // Troet-ID in Chronik hinterlegen, für spätere Replys
         for i := 1 to SG_TWeetChronik.RowCount - 1 do
         begin
           if (SG_TweetChronik.Cells[0, i] = S_IP) AND (SG_TweetChronik.Cells[1,i] = S_Einsatznummer) then
@@ -427,7 +428,7 @@ begin
             end;
           end;
         end;
-        // echten Twitter-User-Namen in Accounts hinterlegen für Bild
+        // echten Mastodon-User-Namen in Accounts hinterlegen für Bild
         for i := 1 to SG_Mastodon.RowCount - 1 do
         begin
           if (SG_Mastodon.Cells[0, i] = S_IP) and (Jdata.FindPath('accountname').AsString <> '') then
@@ -444,7 +445,9 @@ begin
         end;
         // Bild-Datei auslesen und löschen
         try
-          DeleteFile(Jdata.FindPath('File_Path').AsString);
+          File_Path := Jdata.FindPath('File_Path').AsString;
+          File_Path := StringReplace(File_Path, '\\', '\', [rfReplaceAll]);
+          DeleteFile(File_Path);
         except
         end;
       finally
@@ -1517,8 +1520,8 @@ begin
       SG_TweetChronik.Cells[1, SG_TWeetChronik.RowCount - 1] := E_Einsatznummer;
       SG_TweetChronik.Cells[2, SG_TWeetChronik.RowCount - 1] := T_Einsatzdaten;
       // Bild erstellen
-      TwitterForm.L_At_Account.Caption := SG_Mastodon.Cells[0, T_Account_Zeile] + ' (' + SG_Mastodon.Cells[2, T_Account_Zeile] + ')';
-      TwitterForm.L_Account_Name.Caption := SG_Twitter.Cells[1, T_Account_Zeile];
+      TwitterForm.L_At_Account.Caption := SG_Mastodon.Cells[0, T_Account_Zeile] + '@' + SG_Mastodon.Cells[2, T_Account_Zeile];
+      TwitterForm.L_Account_Name.Caption := SG_Mastodon.Cells[1, T_Account_Zeile];
       TwitterForm.L_Datum_Uhrzeit.Caption := T_Date + ' ' + T_Time;
       // Ortsinformationen setzen
       if E_Ortsteil = '' then
@@ -1628,6 +1631,7 @@ begin
       MyThread.Thr_Mtd_ProxyPort := ConfigForm.ProxyPort.Text;
       MyThread.Thr_Mtd_File_Path := Alarmbild_File_Path;
       // Bild an Thread zuweisen
+      MyThread.Thr_Stream := nil;
       MyThread.Thr_Empfaenger_IP_now := T_Empfanger_IP_now;
       MyThread.Thr_Empfaenger_IP_all := T_Empfanger_IP_all;
       MyThread.Thr_Empfaenger_Wache := T_Wachen;
@@ -2233,7 +2237,7 @@ begin
       media_data_bytes := Stream.Read(media_data[1], Stream.Size);
       SetLength(media_data, media_data_bytes);
     finally
-      Stream.Free;;
+      Stream.Free;
     end;
     // Bild-TEXT vor Upload in Base64 umwandeln
     media_data := encodestringbase64(media_data);
@@ -2309,9 +2313,9 @@ begin
   curl_url := '';
   troet_id := '';
   account_name := '';
-
+  // Authentifizierungs-String fuer Mastodon zusammensetzen
   curl_auth := 'Authorization: Bearer ' + Thr_Mtd_Token;
-
+  // Proxy-Einstellungen setzen
   if Thr_Mtd_ProxyHost = '' then
   begin
     pxy_str := '';
@@ -2322,32 +2326,14 @@ begin
     pxy_str := 'http://' + Thr_Mtd_ProxyHost + ':' + Thr_Mtd_ProxyPort;
     pxy_pm := '--proxy'
   end;
-
+  // URL setzen
   base_url := 'https://' + Thr_Mtd_BaseURL;
-  {
-     MyThread.Thr_Mtd_Text := Troet;
-      MyThread.Thr_Mtd_BaseURL := SG_Mastodon.Cells[2, T_Account_Zeile];
-      MyThread.Thr_Mtd_Token := SG_Mastodon.Cells[3, T_Account_Zeile];
-      MyThread.Thr_Mtd_ProxyHost := ConfigForm.ProxyHost.Text;
-      MyThread.Thr_Mtd_ProxyPort := ConfigForm.ProxyPort.Text;
-      Thr_Mtd_File_Path
-      // Bild an Thread zuweisen
-      MyThread.Thr_Stream := Alarmbild(TwitterForm, 0, 0, Alarmbild_File_Path);
-      MyThread.Thr_Empfaenger_IP_now := T_Empfanger_IP_now;
-      MyThread.Thr_Empfaenger_IP_all := T_Empfanger_IP_all;
-      MyThread.Thr_Empfaenger_Wache := T_Wachen;
-      MyThread.Thr_Einsatznummer := T_Einsatznummer;
-      MyThread.Thr_Zusatztext := Reply_ID;
-  }
-
-  // Account und Proxy für Troet vorbereiten
-
   // Schritt 1: Account prüfen
   curl_url := base_url + '/api/v1/accounts/verify_credentials';
   if not RunCommand('curl', ['-v', '-H', curl_auth, '--connect-timeout', '15', pxy_pm, pxy_str, curl_url], status, [poWaitOnExit], swoHide) then
   begin
     SetLength(Fehler_Texte, length(Fehler_Texte) + 1);
-    Fehler_Texte[high(Fehler_Texte)] := 'Mastodon-Fehler - Account-Zugangsdaten konnten nicht geprüft werden';
+    Fehler_Texte[high(Fehler_Texte)] := 'Mastodon-Fehler - Account-Zugangsdaten konnten nicht geprueft werden';
     Thr_Fehlerindex := high(Fehler_Texte) + 1;
   end;
   // Schritt 2: Bild hochladen
@@ -2382,10 +2368,10 @@ begin
   if Thr_Fehlerindex = 0 then
   begin
     curl_url := base_url + '/api/v1/statuses';
-    if not RunCommand('curl', ['-v', '-H', curl_auth, '--connect-timeout', '15', pxy_pm, pxy_str, '-F', 'status='+ CP1252ToUTF8(Thr_Mtd_Text), '-F', 'visibility=private', '-F', 'media_ids[]=' + media_id, curl_url], status, [poWaitOnExit], swoHide) then
+    if not RunCommand('curl', ['-v', '-H', curl_auth, '--connect-timeout', '15', pxy_pm, pxy_str, '-F', 'status='+ CP1252ToUTF8(Thr_Mtd_Text), '-F', 'media_ids[]=' + media_id, '-F', 'in_reply_to_id=' + Thr_Zusatztext, curl_url], status, [poWaitOnExit], swoHide) then
     begin
       SetLength(Fehler_Texte, length(Fehler_Texte) + 1);
-      Fehler_Texte[high(Fehler_Texte)] := 'Mastodon-Fehler - Tröt konnte nicht an Mastodon (' + Thr_Mtd_BaseURL + ') gesendet werden';
+      Fehler_Texte[high(Fehler_Texte)] := 'Mastodon-Fehler - Troet konnte nicht an Mastodon (' + Thr_Mtd_BaseURL + ') gesendet werden';
       Thr_Fehlerindex := high(Fehler_Texte) + 1;
     end
     else
@@ -2400,7 +2386,7 @@ begin
           troet_id := '';
           account_name := '';
           SetLength(Fehler_Texte, length(Fehler_Texte) + 1);
-          Fehler_Texte[high(Fehler_Texte)] := 'Mastodon-Fehler - ID des Tröts und Account-Name konnten nicht ermittelt werden';
+          Fehler_Texte[high(Fehler_Texte)] := 'Mastodon-Fehler - ID des Troets und Account-Name konnten nicht ermittelt werden';
           Thr_Fehlerindex := high(Fehler_Texte) + 1;
         end;
       finally
@@ -2410,11 +2396,11 @@ begin
   end;
 
   // Tweet-Status an Zusatztext übergeben, damit dieser im Haup-Thread ausgewertet werden kann
-  Thr_Zusatztext := '{"EVI-Text":"' + Thr_Mtd_Text + '","id_str":"' + troet_id + '","accountname":"' + account_name + '","File_Path":"' + Thr_Mtd_File_Path + '"}';
+  Thr_Zusatztext := '{"EVI-Text":"' + Thr_Mtd_Text + '","id_str":"' + troet_id + '","accountname":"' + account_name + '","File_Path":"' + StringReplace(Thr_Mtd_File_Path, '\', '\\', [rfReplaceAll]) + '"}';
   // Fehlerindex festlegen und Texte für Log übergeben
   Thr_Fehlerindex := high(Fehler_Texte) + 1;
   if Thr_Fehlerindex = 0 then
-    Thr_Log_Text := (datetostr(date) + '-' + timetostr(time) + ': erfolgreich getrötet ('+ Thr_Empfaenger_IP_now + ', Einsatz-Nr. ' + Thr_Einsatznummer + '): ' + Thr_Mtd_Text)
+    Thr_Log_Text := (datetostr(date) + '-' + timetostr(time) + ': erfolgreich getroetet ('+ Thr_Empfaenger_IP_now + ', Einsatz-Nr. ' + Thr_Einsatznummer + '): ' + Thr_Mtd_Text)
   else
   begin
     for i := 0 to high(Fehler_Texte) do
