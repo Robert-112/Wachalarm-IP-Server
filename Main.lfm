@@ -1,12 +1,12 @@
 object MainForm: TMainForm
-  Left = 592
-  Height = 600
-  Top = 284
-  Width = 1000
+  Left = 1315
+  Height = 800
+  Top = 218
+  Width = 1200
   ActiveControl = PageControl1
   Caption = 'Wachalarm-IP Server'
-  ClientHeight = 580
-  ClientWidth = 1000
+  ClientHeight = 780
+  ClientWidth = 1200
   Color = clBtnFace
   Font.Color = clWindowText
   Font.Height = -11
@@ -155,9 +155,9 @@ object MainForm: TMainForm
   LCLVersion = '2.2.4.0'
   object PageControl1: TPageControl
     Left = 0
-    Height = 417
+    Height = 617
     Top = 140
-    Width = 1000
+    Width = 1200
     ActivePage = TabSheet3
     Align = alClient
     Font.Color = clWindowText
@@ -169,8 +169,8 @@ object MainForm: TMainForm
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'Statusübersicht'
-      ClientHeight = 374
-      ClientWidth = 992
+      ClientHeight = 574
+      ClientWidth = 1192
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'Tahoma'
@@ -178,10 +178,10 @@ object MainForm: TMainForm
       ParentFont = False
       object SG_Clients: TStringGrid
         Left = 0
-        Height = 374
+        Height = 574
         Hint = 'Wird bei jedem neuen Alarm automatisch nach Zeit sortiert.'#13#10'''Entfernen'' drücken, um ausgewählte Zeile zu löschen.'
         Top = 0
-        Width = 992
+        Width = 1192
         Align = alClient
         ColCount = 8
         ColumnClickSorts = True
@@ -225,8 +225,8 @@ object MainForm: TMainForm
     end
     object TabSheet7: TTabSheet
       Caption = 'Wachalarm'
-      ClientHeight = 374
-      ClientWidth = 992
+      ClientHeight = 574
+      ClientWidth = 1192
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'Tahoma'
@@ -234,9 +234,9 @@ object MainForm: TMainForm
       ParentFont = False
       object PageControl3: TPageControl
         Left = 0
-        Height = 374
+        Height = 574
         Top = 0
-        Width = 992
+        Width = 1192
         ActivePage = TabSheet14
         Align = alClient
         Font.Color = clWindowText
@@ -248,8 +248,8 @@ object MainForm: TMainForm
         TabOrder = 0
         object TabSheet5: TTabSheet
           Caption = 'letzte waip.txt'
-          ClientHeight = 331
-          ClientWidth = 984
+          ClientHeight = 531
+          ClientWidth = 1184
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'Tahoma'
@@ -257,9 +257,9 @@ object MainForm: TMainForm
           ParentFont = False
           object M_Auftrag: TMemo
             Left = 0
-            Height = 331
+            Height = 531
             Top = 0
-            Width = 984
+            Width = 1184
             Align = alClient
             Font.Color = clWindowText
             Font.Height = -11
@@ -272,8 +272,8 @@ object MainForm: TMainForm
         end
         object TabSheet10: TTabSheet
           Caption = 'letztes Alarmbild'
-          ClientHeight = 331
-          ClientWidth = 984
+          ClientHeight = 531
+          ClientWidth = 1184
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'Tahoma'
@@ -281,9 +281,9 @@ object MainForm: TMainForm
           ParentFont = False
           object I_Alarmbild: TImage
             Left = 0
-            Height = 331
+            Height = 531
             Top = 0
-            Width = 984
+            Width = 1184
             Align = alClient
             Proportional = True
             Stretch = True
@@ -291,8 +291,8 @@ object MainForm: TMainForm
         end
         object TabSheet11: TTabSheet
           Caption = 'IP-Replace'
-          ClientHeight = 331
-          ClientWidth = 984
+          ClientHeight = 531
+          ClientWidth = 1184
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'Tahoma'
@@ -319,10 +319,10 @@ object MainForm: TMainForm
             AnchorSideBottom.Control = TabSheet11
             AnchorSideBottom.Side = asrBottom
             Left = 0
-            Height = 276
+            Height = 476
             Hint = '''Entfernen'' drücken, um ausgewählte Zeile zu löschen.'#13#10'Eintrag in letzte Zeile fügt neue Clients hinzu.'
             Top = 55
-            Width = 984
+            Width = 1184
             Align = alCustom
             Anchors = [akTop, akLeft, akRight, akBottom]
             BorderSpacing.Top = 8
@@ -356,8 +356,8 @@ object MainForm: TMainForm
         end
         object TabSheet14: TTabSheet
           Caption = 'WAIP-Chronik'
-          ClientHeight = 331
-          ClientWidth = 984
+          ClientHeight = 531
+          ClientWidth = 1184
           ImageIndex = 27
           object Label15: TLabel
             Left = 8
@@ -380,9 +380,9 @@ object MainForm: TMainForm
             AnchorSideBottom.Control = TabSheet14
             AnchorSideBottom.Side = asrBottom
             Left = 0
-            Height = 289
+            Height = 489
             Top = 42
-            Width = 984
+            Width = 1184
             Anchors = [akTop, akLeft, akRight, akBottom]
             BorderSpacing.Top = 8
             ColCount = 2
@@ -407,8 +407,8 @@ object MainForm: TMainForm
     end
     object TabSheet3: TTabSheet
       Caption = 'Twitter / Mastodon'
-      ClientHeight = 374
-      ClientWidth = 992
+      ClientHeight = 574
+      ClientWidth = 1192
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'Tahoma'
@@ -416,9 +416,9 @@ object MainForm: TMainForm
       ParentFont = False
       object PageControl2: TPageControl
         Left = 0
-        Height = 374
+        Height = 574
         Top = 0
-        Width = 992
+        Width = 1192
         ActivePage = TabSheet15
         Align = alClient
         Font.Color = clWindowText
@@ -430,8 +430,8 @@ object MainForm: TMainForm
         TabOrder = 0
         object TabSheet6: TTabSheet
           Caption = 'Twitter-Accounts'
-          ClientHeight = 331
-          ClientWidth = 984
+          ClientHeight = 531
+          ClientWidth = 1184
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'Tahoma'
@@ -446,10 +446,10 @@ object MainForm: TMainForm
             AnchorSideBottom.Control = TabSheet6
             AnchorSideBottom.Side = asrBottom
             Left = 0
-            Height = 263
+            Height = 463
             Hint = '''Entfernen'' drücken, um ausgewählte Zeile zu löschen.'#13#10'Eintrag in letzte Zeile fügt neuen Account hinzu.'
             Top = 68
-            Width = 984
+            Width = 1184
             Align = alCustom
             Anchors = [akTop, akLeft, akRight, akBottom]
             BorderSpacing.Top = 8
@@ -525,8 +525,8 @@ object MainForm: TMainForm
         end
         object TabSheet15: TTabSheet
           Caption = 'Mastodon-Accounts'
-          ClientHeight = 331
-          ClientWidth = 984
+          ClientHeight = 531
+          ClientWidth = 1184
           ImageIndex = 29
           object Label5: TLabel
             Left = 8
@@ -545,9 +545,9 @@ object MainForm: TMainForm
             AnchorSideBottom.Control = TabSheet15
             AnchorSideBottom.Side = asrBottom
             Left = 0
-            Height = 276
+            Height = 476
             Top = 55
-            Width = 984
+            Width = 1184
             Anchors = [akTop, akLeft, akRight, akBottom]
             BorderSpacing.Top = 8
             Columns = <            
@@ -578,8 +578,8 @@ object MainForm: TMainForm
         end
         object TabSheet8: TTabSheet
           Caption = 'Filter für Wachen'
-          ClientHeight = 331
-          ClientWidth = 984
+          ClientHeight = 531
+          ClientWidth = 1184
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'Tahoma'
@@ -606,9 +606,9 @@ object MainForm: TMainForm
             AnchorSideBottom.Control = TabSheet8
             AnchorSideBottom.Side = asrBottom
             Left = 0
-            Height = 263
+            Height = 463
             Top = 68
-            Width = 984
+            Width = 1184
             Align = alCustom
             Anchors = [akTop, akLeft, akRight, akBottom]
             BorderSpacing.Top = 8
@@ -626,8 +626,8 @@ object MainForm: TMainForm
         end
         object TabSheet12: TTabSheet
           Caption = 'Filter nach Einsatzart'
-          ClientHeight = 331
-          ClientWidth = 984
+          ClientHeight = 531
+          ClientWidth = 1184
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'Tahoma'
@@ -642,10 +642,10 @@ object MainForm: TMainForm
             AnchorSideBottom.Control = TabSheet12
             AnchorSideBottom.Side = asrBottom
             Left = 0
-            Height = 276
+            Height = 476
             Hint = '''Entfernen'' drücken, um ausgewählte Zeile zu löschen.'#13#10'Eintrag in letzte Zeile fügt neue Clients hinzu.'
             Top = 55
-            Width = 984
+            Width = 1184
             Align = alCustom
             Anchors = [akTop, akLeft, akRight, akBottom]
             BorderSpacing.Top = 8
@@ -703,8 +703,8 @@ object MainForm: TMainForm
         end
         object TabSheet9: TTabSheet
           Caption = 'Text-Ersetzungen im Tweet'
-          ClientHeight = 331
-          ClientWidth = 984
+          ClientHeight = 531
+          ClientWidth = 1184
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'Tahoma'
@@ -719,9 +719,9 @@ object MainForm: TMainForm
             AnchorSideBottom.Control = TabSheet9
             AnchorSideBottom.Side = asrBottom
             Left = 0
-            Height = 276
+            Height = 476
             Top = 55
-            Width = 984
+            Width = 1184
             Align = alCustom
             Anchors = [akTop, akLeft, akRight, akBottom]
             BorderSpacing.Top = 8
@@ -754,8 +754,8 @@ object MainForm: TMainForm
         end
         object TabSheet13: TTabSheet
           Caption = 'Text-Ersetzungen im Bild'
-          ClientHeight = 331
-          ClientWidth = 984
+          ClientHeight = 531
+          ClientWidth = 1184
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'Tahoma'
@@ -770,9 +770,9 @@ object MainForm: TMainForm
             AnchorSideBottom.Control = TabSheet13
             AnchorSideBottom.Side = asrBottom
             Left = 0
-            Height = 263
+            Height = 463
             Top = 68
-            Width = 984
+            Width = 1184
             Align = alCustom
             Anchors = [akTop, akLeft, akRight, akBottom]
             BorderSpacing.Top = 8
@@ -805,8 +805,8 @@ object MainForm: TMainForm
         end
         object TabSheet1: TTabSheet
           Caption = 'Twitter/Mastodon-Chronik'
-          ClientHeight = 331
-          ClientWidth = 984
+          ClientHeight = 531
+          ClientWidth = 1184
           Font.Color = clWindowText
           Font.Height = -11
           Font.Name = 'Tahoma'
@@ -821,10 +821,10 @@ object MainForm: TMainForm
             AnchorSideBottom.Control = TabSheet1
             AnchorSideBottom.Side = asrBottom
             Left = 0
-            Height = 289
+            Height = 489
             Hint = 'Zeigt die letzten 50 Tweets'
             Top = 42
-            Width = 984
+            Width = 1184
             Align = alCustom
             Anchors = [akTop, akLeft, akRight, akBottom]
             AutoEdit = False
@@ -872,8 +872,8 @@ object MainForm: TMainForm
     end
     object TabSheet2: TTabSheet
       Caption = 'Log-Datei'
-      ClientHeight = 374
-      ClientWidth = 992
+      ClientHeight = 574
+      ClientWidth = 1192
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'Tahoma'
@@ -888,9 +888,9 @@ object MainForm: TMainForm
         AnchorSideBottom.Control = TabSheet2
         AnchorSideBottom.Side = asrBottom
         Left = 0
-        Height = 345
+        Height = 545
         Top = 29
-        Width = 992
+        Width = 1192
         Align = alCustom
         Anchors = [akTop, akLeft, akRight, akBottom]
         BorderSpacing.Top = 8
@@ -925,11 +925,11 @@ object MainForm: TMainForm
     Left = 0
     Height = 140
     Top = 0
-    Width = 1000
+    Width = 1200
     Align = alTop
     Caption = 'Systeminformation'
     ClientHeight = 119
-    ClientWidth = 996
+    ClientWidth = 1196
     Font.CharSet = ANSI_CHARSET
     Font.Color = clWindowText
     Font.Height = -13
@@ -1027,14 +1027,14 @@ object MainForm: TMainForm
       AnchorSideTop.Control = GroupBox1
       AnchorSideRight.Control = GroupBox1
       AnchorSideRight.Side = asrBottom
-      Left = 802
+      Left = 1002
       Height = 16
       Top = 15
       Width = 174
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 15
       BorderSpacing.Right = 20
-      Caption = 'Version 2.10.1.0 (08.02.2023)'
+      Caption = 'Version 2.10.1.0 (14.02.2023)'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
@@ -1051,7 +1051,7 @@ object MainForm: TMainForm
       Left = 135
       Height = 17
       Top = 75
-      Width = 841
+      Width = 1041
       Anchors = [akTop, akLeft, akRight]
       BorderSpacing.Left = 135
       BorderSpacing.Top = 75
@@ -1064,7 +1064,7 @@ object MainForm: TMainForm
       AnchorSideRight.Control = GroupBox1
       AnchorSideRight.Side = asrBottom
       Cursor = crHandPoint
-      Left = 672
+      Left = 872
       Height = 17
       Top = 45
       Width = 304
@@ -1085,8 +1085,8 @@ object MainForm: TMainForm
   object StatusBar1: TStatusBar
     Left = 0
     Height = 23
-    Top = 557
-    Width = 1000
+    Top = 757
+    Width = 1200
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Tahoma'

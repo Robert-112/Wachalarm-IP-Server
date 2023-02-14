@@ -24,6 +24,7 @@
       <MajorVersionNr Value="2"/>
       <MinorVersionNr Value="10"/>
       <RevisionNr Value="1"/>
+      <BuildNr Value="3"/>
       <Language Value="0407"/>
     </VersionInfo>
     <BuildModes Count="1" Active="Default">
@@ -59,8 +60,8 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="402"/>
-        <CursorPos Y="447"/>
+        <TopLine Value="2305"/>
+        <CursorPos X="218" Y="2371"/>
         <UsageCount Value="209"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -96,42 +97,28 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="13" Y="7"/>
-        <UsageCount Value="130"/>
+        <UsageCount Value="146"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="res\packages\twitter\twitter.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="697"/>
+        <CursorPos X="19" Y="721"/>
+        <UsageCount Value="14"/>
       </Unit5>
       <Unit6>
         <Filename Value="C:\lazarus\lcl\include\customform.inc"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2564"/>
         <CursorPos X="61" Y="2574"/>
-        <UsageCount Value="4"/>
-      </Unit6>
-      <Unit7>
-        <Filename Value="C:\lazarus\lcl\grids.pas"/>
-        <UnitName Value="Grids"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="10620"/>
-        <CursorPos X="16" Y="10633"/>
-        <UsageCount Value="10"/>
-      </Unit7>
-      <Unit8>
-        <Filename Value="res\packages\twitter\twitter.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="697"/>
-        <CursorPos X="19" Y="721"/>
-        <UsageCount Value="15"/>
-      </Unit5>
-      <Unit6>
-        <Filename Value="res\packages\twitter\oauth1synapse.pas"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="23"/>
-        <CursorPos X="28" Y="54"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="3"/>
       </Unit6>
       <Unit7>
         <Filename Value="Funktionen.pas"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="2"/>
-        <CursorPos X="28" Y="37"/>
+        <TopLine Value="29"/>
+        <CursorPos X="43" Y="85"/>
         <UsageCount Value="201"/>
         <Loaded Value="True"/>
       </Unit7>
@@ -139,7 +126,7 @@
         <Filename Value="res\packages\twitter\oauth1.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="43" Y="123"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="17"/>
       </Unit8>
       <Unit9>
         <Filename Value="Twitter_Picture.pas"/>
@@ -152,8 +139,8 @@
         <CursorPos X="29" Y="70"/>
         <UsageCount Value="200"/>
         <Loaded Value="True"/>
-      </Unit17>
-      <Unit18>
+      </Unit9>
+      <Unit10>
         <Filename Value="Simulation.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="SimulationForm"/>
@@ -169,130 +156,130 @@
         <EditorIndex Value="5"/>
         <TopLine Value="677"/>
         <CursorPos X="87" Y="759"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="37"/>
         <Loaded Value="True"/>
       </Unit11>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="Main.pas"/>
-        <Caret Line="958" Column="15" TopLine="893"/>
+        <Caret Line="409" TopLine="390"/>
       </Position1>
       <Position2>
         <Filename Value="Main.pas"/>
-        <Caret Line="959" Column="62" TopLine="894"/>
+        <Caret Line="410" TopLine="390"/>
       </Position2>
       <Position3>
         <Filename Value="Main.pas"/>
-        <Caret Line="1264" Column="63" TopLine="1229"/>
+        <Caret Line="411" TopLine="390"/>
       </Position3>
       <Position4>
         <Filename Value="Main.pas"/>
-        <Caret Line="1537" Column="17" TopLine="1484"/>
+        <Caret Line="412" TopLine="390"/>
       </Position4>
       <Position5>
         <Filename Value="Main.pas"/>
-        <Caret Line="631" Column="39" TopLine="592"/>
+        <Caret Line="414" TopLine="390"/>
       </Position5>
       <Position6>
-        <Filename Value="Funktionen.pas"/>
-        <Caret Line="22" Column="78"/>
+        <Filename Value="Main.pas"/>
+        <Caret Line="416" TopLine="390"/>
       </Position6>
       <Position7>
         <Filename Value="Main.pas"/>
-        <Caret Line="748" Column="69" TopLine="712"/>
+        <Caret Line="418" TopLine="390"/>
       </Position7>
       <Position8>
         <Filename Value="Main.pas"/>
-        <Caret Line="1543" Column="43" TopLine="1507"/>
+        <Caret Line="420" TopLine="390"/>
       </Position8>
       <Position9>
         <Filename Value="Main.pas"/>
-        <Caret Line="1544" Column="80" TopLine="1510"/>
+        <Caret Line="422" TopLine="390"/>
       </Position9>
       <Position10>
         <Filename Value="Main.pas"/>
-        <Caret Line="25" Column="7"/>
+        <Caret Line="420" TopLine="390"/>
       </Position10>
       <Position11>
         <Filename Value="Main.pas"/>
-        <Caret Line="28" Column="24"/>
+        <Caret Line="1521" Column="126" TopLine="1489"/>
       </Position11>
       <Position12>
         <Filename Value="Main.pas"/>
-        <Caret Line="26" Column="42"/>
+        <Caret Line="1494" Column="48" TopLine="1489"/>
       </Position12>
       <Position13>
         <Filename Value="Main.pas"/>
-        <Caret Line="25" Column="90"/>
+        <Caret Line="2324" Column="20" TopLine="2292"/>
       </Position13>
       <Position14>
-        <Filename Value="Funktionen.pas"/>
-        <Caret Line="30" Column="78"/>
+        <Filename Value="Main.pas"/>
+        <Caret Line="47" Column="29"/>
       </Position14>
       <Position15>
         <Filename Value="Main.pas"/>
-        <Caret Line="2286" Column="35" TopLine="2243"/>
+        <Caret Line="71" Column="16" TopLine="4"/>
       </Position15>
       <Position16>
         <Filename Value="Main.pas"/>
-        <Caret Line="2227" Column="13" TopLine="2213"/>
+        <Caret Line="118" Column="26" TopLine="52"/>
       </Position16>
       <Position17>
         <Filename Value="Main.pas"/>
-        <Caret Line="2246" Column="57" TopLine="2211"/>
+        <Caret Line="119" Column="26" TopLine="53"/>
       </Position17>
       <Position18>
         <Filename Value="Main.pas"/>
-        <Caret Line="2283" Column="110" TopLine="2270"/>
+        <Caret Line="120" Column="26" TopLine="54"/>
       </Position18>
       <Position19>
         <Filename Value="Main.pas"/>
-        <Caret Line="2274" Column="46" TopLine="2240"/>
+        <Caret Line="138" Column="23" TopLine="72"/>
       </Position19>
       <Position20>
         <Filename Value="Main.pas"/>
-        <Caret Line="2346" TopLine="793"/>
+        <Caret Line="279" Column="14" TopLine="213"/>
       </Position20>
       <Position21>
         <Filename Value="Main.pas"/>
-        <Caret Line="11" Column="16"/>
+        <Caret Line="280" Column="62" TopLine="214"/>
       </Position21>
       <Position22>
         <Filename Value="Main.pas"/>
-        <Caret Line="18" Column="18"/>
+        <Caret Line="281" Column="66" TopLine="215"/>
       </Position22>
       <Position23>
         <Filename Value="Main.pas"/>
-        <Caret Line="26" Column="28"/>
+        <Caret Line="284" Column="68" TopLine="218"/>
       </Position23>
       <Position24>
         <Filename Value="Main.pas"/>
-        <Caret Line="31" Column="24"/>
+        <Caret Line="285" Column="66" TopLine="219"/>
       </Position24>
       <Position25>
         <Filename Value="Main.pas"/>
-        <Caret Line="139" Column="18" TopLine="74"/>
+        <Caret Line="311" Column="28" TopLine="245"/>
       </Position25>
       <Position26>
         <Filename Value="Main.pas"/>
-        <Caret Line="235" Column="49" TopLine="169"/>
+        <Caret Line="312" Column="58" TopLine="246"/>
       </Position26>
       <Position27>
         <Filename Value="Main.pas"/>
-        <Caret Line="101" Column="83" TopLine="88"/>
+        <Caret Line="2370" Column="244" TopLine="2339"/>
       </Position27>
       <Position28>
         <Filename Value="Main.pas"/>
-        <Caret Line="449" Column="13" TopLine="402"/>
+        <Caret Line="455" Column="42" TopLine="414"/>
       </Position28>
       <Position29>
         <Filename Value="Main.pas"/>
-        <Caret Line="2284" Column="33" TopLine="2281"/>
+        <Caret Line="1634" Column="7" TopLine="1603"/>
       </Position29>
       <Position30>
         <Filename Value="Main.pas"/>
-        <Caret Line="2368" Column="7" TopLine="2333"/>
+        <Caret Line="2332" Column="41" TopLine="1594"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
@@ -322,25 +309,25 @@
     </Linking>
   </CompilerOptions>
   <Debugging>
-    <BreakPoints Count="1">
+    <Watches Count="6">
       <Item1>
-        <Kind Value="bpkSource"/>
-        <WatchScope Value="wpsLocal"/>
-        <WatchKind Value="wpkWrite"/>
-        <Source Value="Main.pas"/>
-        <Line Value="1364"/>
-      </Item1>
-    </BreakPoints>
-    <Watches Count="3">
-      <Item1>
-        <Expression Value="SG_WaipChronik.RowCount"/>
+        <Expression Value="S_Fehlerindex"/>
       </Item1>
       <Item2>
-        <Expression Value="SG_WaipChronik.Cells"/>
+        <Expression Value="S_Typ"/>
       </Item2>
       <Item3>
-        <Expression Value="SG_Clients"/>
+        <Expression Value="S_Wache"/>
       </Item3>
+      <Item4>
+        <Expression Value="S_IP"/>
+      </Item4>
+      <Item5>
+        <Expression Value="S_Einsatznummer"/>
+      </Item5>
+      <Item6>
+        <Expression Value="S_Meldung"/>
+      </Item6>
     </Watches>
     <Exceptions Count="9">
       <Item1>
