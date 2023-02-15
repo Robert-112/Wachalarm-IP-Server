@@ -8,7 +8,7 @@ uses
   SysUtils, Variants, Classes, Graphics, LazUTF8, base64, Controls,
   LConvEncoding, Forms, Dialogs, LCLType, StdCtrls, Menus, Grids, fpjson,
   ComCtrls, ExtCtrls, IniFiles, FileUtil, twitter, lclintf,
-  blcksock, ftpsend, Funktionen, Types, Process;
+  blcksock, ftpsend, Funktionen, Types, Process, fileinfo;
 
 type
 
@@ -41,6 +41,7 @@ type
 
   TMainForm = class(TForm)
     I_Alarmbild: TImage;
+    L_ErrorMsg: TLabel;
     Label11: TLabel;
     Label13: TLabel;
     Label14: TLabel;
@@ -188,6 +189,7 @@ procedure TMainForm.FormCreate(Sender: TObject);
 var Wa_Log: File;
     RS: TResourceStream;
     i: integer;
+    FileVerInfo: TFileVersionInfo;
 begin
   // globale Variablen setzen
   {$ifdef  Windows}
@@ -202,6 +204,14 @@ begin
   DefaultFormatSettings.TimeSeparator := ':';
   DefaultFormatSettings.ShortDateFormat := 'dd.mm.yyyy';
   DefaultFormatSettings.ShortTimeFormat := 'hh:nn:ss';
+  // Version ermitteln
+  FileVerInfo:=TFileVersionInfo.Create(nil);
+  try
+    FileVerInfo.ReadFileInfo;
+    L_Version.Caption := 'Version ' + FileVerInfo.VersionStrings.Values['FileVersion'] + ' (' + FileVerInfo.VersionStrings.Values['InternalName'] + ')';
+  finally
+    FileVerInfo.Free;
+  end;
   // IP ermitteln
   L_IP.Caption := GetIpAddrList();
   // PageControl-Seiten auf aktiv setzen
@@ -1990,7 +2000,13 @@ begin
     Log.Lines.Delete(Log.Lines.Count - 1);
   Log.SelStart := 0;
   //Logdatei speichern
-  Log.Lines.SaveToFile(Dir + Slash + 'WA-Log.txt');
+  try
+    Log.Lines.SaveToFile(Dir + Slash + 'WA-Log.txt');
+  except
+    // If there was an error the reason can be found here
+    on E:Exception do
+      L_ErrorMsg.Caption := datetostr(date) + '-' + timetostr(time) + ': ' + E.Message;
+  end;
 end;
 
 procedure TMainForm.Verbindung1Click(Sender: TObject);
@@ -2130,6 +2146,7 @@ begin
   // Text für Log übergeben
   Thr_Log_Text := (datetostr(date) + '-' + timetostr(time) + ': Web-Alarm fuer ' + Thr_Empfaenger_Wache +' (Einsatz-Nr. ' + Thr_Einsatznummer + ') an ' + Thr_Empfaenger_IP_now + ':' + UDP_Port + ' gesendet.')
 end;
+
 procedure TMyThread.alert_FTP;
 var
   UDP_Port: string;
@@ -2297,7 +2314,7 @@ begin
 end;
 
 procedure TMyThread.alert_Mastodon;
-var status, media_id, curl_auth, pxy_str, pxy_pm, base_url, curl_url, troet_id, account_name: string;
+var status, media_id, curl_auth, pxy_str, pxy_pm, base_url, curl_url, troet_id, troet_txt, account_name: string;
     i: integer;
     jData: TJSONData;
     Fehler_Texte: Array of String;
@@ -2312,6 +2329,7 @@ begin
   base_url := '';
   curl_url := '';
   troet_id := '';
+  troet_txt := '';
   account_name := '';
   // Authentifizierungs-String fuer Mastodon zusammensetzen
   curl_auth := 'Authorization: Bearer ' + Thr_Mtd_Token;
@@ -2328,6 +2346,12 @@ begin
   end;
   // URL setzen
   base_url := 'https://' + Thr_Mtd_BaseURL;
+  // Zeichen-Kodierung des Troets bei Windows anpassen, sonst so lassen
+  {$ifdef  Windows}
+  troet_txt := CP1252ToUTF8(Thr_Mtd_Text);
+  {$else}
+  troet_txt := Thr_Mtd_Text;
+  {$endif}
   // Schritt 1: Account prüfen
   curl_url := base_url + '/api/v1/accounts/verify_credentials';
   if not RunCommand('curl', ['-v', '-H', curl_auth, '--connect-timeout', '15', pxy_pm, pxy_str, curl_url], status, [poWaitOnExit], swoHide) then
@@ -2368,7 +2392,7 @@ begin
   if Thr_Fehlerindex = 0 then
   begin
     curl_url := base_url + '/api/v1/statuses';
-    if not RunCommand('curl', ['-v', '-H', curl_auth, '--connect-timeout', '15', pxy_pm, pxy_str, '-F', 'status='+ CP1252ToUTF8(Thr_Mtd_Text), '-F', 'media_ids[]=' + media_id, '-F', 'in_reply_to_id=' + Thr_Zusatztext, curl_url], status, [poWaitOnExit], swoHide) then
+    if not RunCommand('curl', ['-v', '-H', curl_auth, '--connect-timeout', '15', pxy_pm, pxy_str, '-F', 'status='+ troet_txt, '-F', 'media_ids[]=' + media_id, '-F', 'in_reply_to_id=' + Thr_Zusatztext, curl_url], status, [poWaitOnExit], swoHide) then
     begin
       SetLength(Fehler_Texte, length(Fehler_Texte) + 1);
       Fehler_Texte[high(Fehler_Texte)] := 'Mastodon-Fehler - Troet konnte nicht an Mastodon (' + Thr_Mtd_BaseURL + ') gesendet werden';
