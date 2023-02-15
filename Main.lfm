@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 1315
+  Left = 464
   Height = 800
-  Top = 218
+  Top = 165
   Width = 1200
   ActiveControl = PageControl1
   Caption = 'Wachalarm-IP Server'
@@ -158,14 +158,14 @@ object MainForm: TMainForm
     Height = 617
     Top = 140
     Width = 1200
-    ActivePage = TabSheet3
+    ActivePage = TabSheet2
     Align = alClient
     Font.Color = clWindowText
     Font.Height = -11
     Font.Name = 'Tahoma'
     Images = ImageList1
     ParentFont = False
-    TabIndex = 2
+    TabIndex = 3
     TabOrder = 0
     object TabSheet4: TTabSheet
       Caption = 'Statusübersicht'
@@ -881,15 +881,15 @@ object MainForm: TMainForm
       ParentFont = False
       object Log: TMemo
         AnchorSideLeft.Control = TabSheet2
-        AnchorSideTop.Control = Label2
+        AnchorSideTop.Control = L_ErrorMsg
         AnchorSideTop.Side = asrBottom
         AnchorSideRight.Control = TabSheet2
         AnchorSideRight.Side = asrBottom
         AnchorSideBottom.Control = TabSheet2
         AnchorSideBottom.Side = asrBottom
         Left = 0
-        Height = 545
-        Top = 29
+        Height = 524
+        Top = 50
         Width = 1192
         Align = alCustom
         Anchors = [akTop, akLeft, akRight, akBottom]
@@ -918,6 +918,14 @@ object MainForm: TMainForm
         Font.Name = 'Tahoma'
         ParentColor = False
         ParentFont = False
+      end
+      object L_ErrorMsg: TLabel
+        Left = 8
+        Height = 13
+        Top = 29
+        Width = 24
+        Caption = '        '
+        ParentColor = False
       end
     end
   end
@@ -1027,14 +1035,14 @@ object MainForm: TMainForm
       AnchorSideTop.Control = GroupBox1
       AnchorSideRight.Control = GroupBox1
       AnchorSideRight.Side = asrBottom
-      Left = 1002
+      Left = 994
       Height = 16
       Top = 15
-      Width = 174
+      Width = 182
       Anchors = [akTop, akRight]
       BorderSpacing.Top = 15
       BorderSpacing.Right = 20
-      Caption = 'Version 2.10.1.0 (14.02.2023)'
+      Caption = 'Version a.b.c.d (dd.mm.yyyy)'
       Font.CharSet = ANSI_CHARSET
       Font.Color = clWindowText
       Font.Height = -13
